@@ -1,7 +1,10 @@
 {
   "name": "@aweebit/react-essentials",
-  "version": "0.0.0",
+  "version": "0.4.0",
   "type": "module",
+  "repository": "github:aweebit/react-essentials",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
     "prettier:base": "prettier --write",
     "prettier": "npm run prettier:base -- .",
@@ -27,5 +30,6 @@
     "rimraf": "^6.0.1",
     "typescript": "~5.8.3",
     "typescript-eslint": "^8.33.0"
-  }
+  },
+  "license": "MIT"
 }

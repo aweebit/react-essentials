@@ -1,0 +1,4 @@
+/.*
+*.config.*
+tsconfig
+tsconfig.json
