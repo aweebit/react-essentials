@@ -5,6 +5,7 @@
     "rootDir": "../lib",
     "outDir": "../dist",
     "noEmit": false,
+    "lib": ["ESNext", "DOM", "DOM.Iterable"],
     "types": ["react"],
     "jsx": "react-jsx"
   },
