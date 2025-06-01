@@ -1,0 +1,8 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "tsBuildInfoFile": "../node_modules/.tsbuildinfo/tsconfig.config.tsbuildinfo",
+    "types": ["prettier"]
+  },
+  "include": ["../*.ts", "../*.js"]
+}

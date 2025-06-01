@@ -1,0 +1,36 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "lib": ["ESNext"],
+    "types": [],
+    "skipLibCheck": true,
+    "checkJs": true,
+
+    /* Build: */
+    "rootDir": "..",
+    "noEmit": true,
+    "declaration": true,
+    "declarationMap": true,
+    "incremental": true,
+
+    /* Language: */
+    "useDefineForClassFields": true,
+    "erasableSyntaxOnly": true,
+
+    /* Modules: */
+    "module": "Preserve",
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "moduleDetection": "force",
+    "rewriteRelativeImportExtensions": true,
+    "verbatimModuleSyntax": true,
+
+    /* Strictness: */
+    "strict": true,
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitOverride": true,
+    "noUncheckedIndexedAccess": true,
+    "noUncheckedSideEffectImports": true,
+    "noUnusedLocals": true
+  }
+}

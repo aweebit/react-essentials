@@ -1,0 +1,12 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "tsBuildInfoFile": "../node_modules/.tsbuildinfo/tsconfig.lib.tsbuildinfo",
+    "rootDir": "../lib",
+    "outDir": "../dist",
+    "noEmit": false,
+    "types": ["react"],
+    "jsx": "react-jsx"
+  },
+  "include": ["../lib"]
+}
