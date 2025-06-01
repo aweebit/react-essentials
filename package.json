@@ -3,8 +3,15 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "prettier": "prettier . --write",
-    "build": "rimraf dist && tsc -b -f"
+    "prettier:base": "prettier --write",
+    "prettier": "npm run prettier:base -- .",
+    "lint": "eslint --max-warnings=0",
+    "build": "rimraf dist && tsc -b -f",
+    "prepare": "husky && npm run build"
+  },
+  "lint-staged": {
+    "!(*.{jsx,jsx,ts,tsx})": "npm run prettier -- --ignore-unknown",
+    "**.{jsx,jsx,ts,tsx}": "npm run lint --"
   },
   "peerDependencies": {
     "react": ">=18.0.0 <20"
@@ -14,6 +21,8 @@
     "@types/react": "^19.1.6",
     "eslint": "^9.28.0",
     "eslint-plugin-react-hooks": "^5.2.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.1.0",
     "prettier": "3.5.3",
     "rimraf": "^6.0.1",
     "typescript": "~5.8.3",
