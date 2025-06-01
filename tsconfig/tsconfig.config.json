@@ -2,7 +2,14 @@
   "extends": "./tsconfig.base.json",
   "compilerOptions": {
     "tsBuildInfoFile": "../node_modules/.tsbuildinfo/tsconfig.config.tsbuildinfo",
-    "types": ["prettier"]
+    "types": [
+      "prettier",
+      "eslint",
+      "globals",
+      "@eslint/js",
+      "typescript-eslint",
+      "eslint-plugin-react-hooks"
+    ]
   },
   "include": ["../*.ts", "../*.js"]
 }
