@@ -12,8 +12,8 @@ import {
   type Dispatch,
   type SetStateAction,
 } from 'react';
-import { depsAreEqual, isFunction } from '../utils';
-import useForceUpdate from './useForceUpdate';
+import { depsAreEqual, isFunction } from '../utils/index.js';
+import useForceUpdate from './useForceUpdate.js';
 
 /**
  * `useState` hook with an additional dependency array that resets the state

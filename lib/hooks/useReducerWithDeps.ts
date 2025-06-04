@@ -5,7 +5,7 @@ import {
   useCallback,
   useRef,
 } from 'react';
-import useStateWithDeps from './useStateWithDeps';
+import useStateWithDeps from './useStateWithDeps.js';
 
 /**
  * `useReducer` hook with an additional dependency array that resets the state

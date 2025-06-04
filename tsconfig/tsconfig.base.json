@@ -19,7 +19,7 @@
     "erasableSyntaxOnly": true,
 
     /* Modules: */
-    "module": "Preserve",
+    "module": "nodenext",
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "moduleDetection": "force",
