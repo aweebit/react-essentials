@@ -10,14 +10,11 @@ export default tseslint.config(
   reactHooks.configs['recommended-latest'],
   {
     files: ['**/*.{js,jsx,ts,tsx}'],
-    languageOptions: {
-      ecmaVersion: 'latest',
-      globals: globals.browser,
-    },
+    languageOptions: { globals: globals.browser },
     rules: {
       'react-hooks/exhaustive-deps': [
         'warn',
-        { additionalHooks: 'useDerivedState' },
+        { additionalHooks: '^useStateWithDeps$' },
       ],
     },
   },

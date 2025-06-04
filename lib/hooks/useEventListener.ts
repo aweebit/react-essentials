@@ -28,7 +28,7 @@ import { useEffect, useLayoutEffect, useRef } from 'react';
 
 /**
  * Adds `handler` as a listener for the event `eventName` of `element`
- * (or `window` by default) with the provided `options` applied.
+ * (or `window` by default) with the provided `options` applied
  *
  * It is the user's responsibility to make sure `element` and `options` values
  * are correctly memoized!
