@@ -21,7 +21,7 @@ function useEventListener<
   T extends SVGElement,
 >(
   eventName: K,
-  handler: (event: SVGElementEventMap[K]) => void,
+  handler: (this: T, event: SVGElementEventMap[K]) => void,
   element: T,
   options?: boolean | AddEventListenerOptions,
 ): void;
@@ -32,7 +32,7 @@ function useEventListener<
   T extends HTMLElement,
 >(
   eventName: K,
-  handler: (event: HTMLElementEventMap[K]) => void,
+  handler: (this: T, event: HTMLElementEventMap[K]) => void,
   element: T,
   options?: boolean | AddEventListenerOptions,
 ): void;
@@ -40,7 +40,7 @@ function useEventListener<
 // Document Event based useEventListener interface
 function useEventListener<K extends keyof DocumentEventMap>(
   eventName: K,
-  handler: (event: DocumentEventMap[K]) => void,
+  handler: (this: Document, event: DocumentEventMap[K]) => void,
   element: Document,
   options?: boolean | AddEventListenerOptions,
 ): void;
@@ -48,7 +48,7 @@ function useEventListener<K extends keyof DocumentEventMap>(
 // Window Event based useEventListener interface
 function useEventListener<K extends keyof WindowEventMap>(
   eventName: K,
-  handler: (event: WindowEventMap[K]) => void,
+  handler: (this: Window, event: WindowEventMap[K]) => void,
   element?: Window,
   options?: boolean | AddEventListenerOptions,
 ): void;
@@ -56,14 +56,14 @@ function useEventListener<K extends keyof WindowEventMap>(
 // Fallback overload for all other event targets and types
 function useEventListener(
   eventName: string,
-  handler: (event: Event) => void,
+  handler: (this: EventTarget, event: Event) => void,
   element?: EventTarget,
   options?: boolean | AddEventListenerOptions,
 ): void;
 
 function useEventListener(
   eventName: string,
-  handler: (event: Event) => void,
+  handler: (this: EventTarget, event: Event) => void,
   element?: EventTarget,
   options?: boolean | AddEventListenerOptions,
 ) {
@@ -79,8 +79,8 @@ function useEventListener(
     const targetElement = element ?? window;
 
     // Create event listener that calls handler function stored in ref
-    const listener: typeof handler = (event) => {
-      savedHandler.current(event);
+    const listener: typeof handler = function (event) {
+      savedHandler.current.call(this, event);
     };
 
     targetElement.addEventListener(eventName, listener, options);
