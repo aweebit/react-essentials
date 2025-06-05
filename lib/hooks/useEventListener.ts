@@ -53,6 +53,14 @@ function useEventListener<K extends keyof WindowEventMap>(
   options?: boolean | AddEventListenerOptions,
 ): void;
 
+// Fallback overload for all other event targets and types
+function useEventListener(
+  eventName: string,
+  handler: (event: Event) => void,
+  element?: EventTarget,
+  options?: boolean | AddEventListenerOptions,
+): void;
+
 function useEventListener(
   eventName: string,
   handler: (event: Event) => void,
