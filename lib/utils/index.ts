@@ -1,5 +1,7 @@
 import type { DependencyList } from 'react';
 
+export function noop() {}
+
 // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
 export function isFunction(input: unknown): input is Function {
   return typeof input === 'function';

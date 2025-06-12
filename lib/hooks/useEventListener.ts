@@ -5,7 +5,8 @@
  * @copyright 2020 Julien CARON
  */
 
-import { useEffect, useLayoutEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
+import useIsomorphicLayoutEffect from './useIsomorphicLayoutEffect.ts';
 
 /**
  * Adds `handler` as a listener for the event `eventName` of `element`
@@ -70,7 +71,7 @@ function useEventListener(
   // Create a ref that stores handler
   const savedHandler = useRef(handler);
 
-  useLayoutEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     savedHandler.current = handler;
   }, [handler]);
 
