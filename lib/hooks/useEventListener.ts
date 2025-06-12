@@ -22,7 +22,7 @@ function useEventListener<
 >(
   eventName: K,
   handler: (this: T, event: SVGElementEventMap[K]) => void,
-  element: T,
+  element: T | null,
   options?: boolean | AddEventListenerOptions,
 ): void;
 
@@ -33,7 +33,7 @@ function useEventListener<
 >(
   eventName: K,
   handler: (this: T, event: HTMLElementEventMap[K]) => void,
-  element: T,
+  element: T | null,
   options?: boolean | AddEventListenerOptions,
 ): void;
 
@@ -57,14 +57,14 @@ function useEventListener<K extends keyof WindowEventMap>(
 function useEventListener<T extends EventTarget>(
   eventName: string,
   handler: (this: T, event: Event) => void,
-  element?: T,
+  element?: T | null,
   options?: boolean | AddEventListenerOptions,
 ): void;
 
 function useEventListener(
   eventName: string,
   handler: (this: EventTarget, event: Event) => void,
-  element?: EventTarget,
+  element?: EventTarget | null,
   options?: boolean | AddEventListenerOptions,
 ) {
   // Create a ref that stores handler
@@ -75,6 +75,11 @@ function useEventListener(
   }, [handler]);
 
   useEffect(() => {
+    if (element === null) {
+      // No element has been attached to the ref yet
+      return;
+    }
+
     // Define the listening target
     const targetElement = element ?? window;
 
