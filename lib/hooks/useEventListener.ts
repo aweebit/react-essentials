@@ -6,7 +6,7 @@
  */
 
 import { useEffect, useRef } from 'react';
-import useIsomorphicLayoutEffect from './useIsomorphicLayoutEffect.ts';
+import { useIsomorphicLayoutEffect } from './useIsomorphicLayoutEffect.ts';
 
 /**
  * Adds `handler` as a listener for the event `eventName` of `element`
@@ -17,7 +17,7 @@ import useIsomorphicLayoutEffect from './useIsomorphicLayoutEffect.ts';
  */
 
 // SVGElement Event based useEventListener interface
-function useEventListener<
+export function useEventListener<
   K extends keyof SVGElementEventMap,
   T extends SVGElement,
 >(
@@ -28,7 +28,7 @@ function useEventListener<
 ): void;
 
 // HTMLElement Event based useEventListener interface
-function useEventListener<
+export function useEventListener<
   K extends keyof HTMLElementEventMap,
   T extends HTMLElement,
 >(
@@ -39,7 +39,7 @@ function useEventListener<
 ): void;
 
 // Document Event based useEventListener interface
-function useEventListener<K extends keyof DocumentEventMap>(
+export function useEventListener<K extends keyof DocumentEventMap>(
   eventName: K,
   handler: (this: Document, event: DocumentEventMap[K]) => void,
   element: Document,
@@ -47,7 +47,7 @@ function useEventListener<K extends keyof DocumentEventMap>(
 ): void;
 
 // Window Event based useEventListener interface
-function useEventListener<K extends keyof WindowEventMap>(
+export function useEventListener<K extends keyof WindowEventMap>(
   eventName: K,
   handler: (this: Window, event: WindowEventMap[K]) => void,
   element?: Window,
@@ -55,14 +55,14 @@ function useEventListener<K extends keyof WindowEventMap>(
 ): void;
 
 // Fallback overload for all other event targets and types
-function useEventListener<T extends EventTarget>(
+export function useEventListener<T extends EventTarget>(
   eventName: string,
   handler: (this: T, event: Event) => void,
   element?: T | null,
   options?: boolean | AddEventListenerOptions,
 ): void;
 
-function useEventListener(
+export function useEventListener(
   eventName: string,
   handler: (this: EventTarget, event: Event) => void,
   element?: EventTarget | null,
@@ -97,5 +97,3 @@ function useEventListener(
     };
   }, [eventName, element, options]);
 }
-
-export default useEventListener;

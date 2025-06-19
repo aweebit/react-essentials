@@ -5,7 +5,7 @@ import {
   useCallback,
   useRef,
 } from 'react';
-import useStateWithDeps from './useStateWithDeps.js';
+import { useStateWithDeps } from './useStateWithDeps.js';
 
 /**
  * `useReducer` hook with an additional dependency array that resets the state
@@ -40,7 +40,7 @@ import useStateWithDeps from './useStateWithDeps.js';
  *
  * @param deps Dependencies that reset the state to `initialState`
  */
-export default function useReducerWithDeps<S, A extends AnyActionArg>(
+export function useReducerWithDeps<S, A extends AnyActionArg>(
   reducer: (prevState: S, ...args: A) => S,
   initialState: S | ((previousState?: S) => S),
   deps: DependencyList,

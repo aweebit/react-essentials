@@ -13,7 +13,7 @@ import {
   type SetStateAction,
 } from 'react';
 import { depsAreEqual, isFunction } from '../utils/index.js';
-import useForceUpdate from './useForceUpdate.js';
+import { useForceUpdate } from './useForceUpdate.js';
 
 /**
  * `useState` hook with an additional dependency array that resets the state
@@ -29,7 +29,7 @@ import useForceUpdate from './useForceUpdate.js';
  *
  * @param deps Dependencies that reset the state to `initialState`
  */
-export default function useStateWithDeps<S>(
+export function useStateWithDeps<S>(
   initialState: S | ((previousState?: S) => S),
   deps: DependencyList,
 ): [S, Dispatch<SetStateAction<S>>] {

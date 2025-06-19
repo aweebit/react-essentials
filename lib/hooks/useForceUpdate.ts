@@ -25,9 +25,7 @@ import { useReducer, useRef } from 'react';
  * 1. A `forceUpdate` function that triggers a re-render
  * 2. The number of times `forceUpdate` has been called so far
  */
-export default function useForceUpdate(
-  callback?: () => void,
-): [() => void, bigint] {
+export function useForceUpdate(callback?: () => void): [() => void, bigint] {
   // It is very unlikely that the number of updates will exceed
   // Number.MAX_SAFE_INTEGER, but not impossible. That is why we use bigints.
   const [counter, forceUpdate] = useReducer((prev) => prev + 1n, 0n);
