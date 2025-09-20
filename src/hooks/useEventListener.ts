@@ -8,10 +8,31 @@
 import { useEffect, useMemo, useRef } from 'react';
 
 /**
- * Adds `handler` as a listener for the event `eventName` of `element`
- * (or `window` by default) with the provided `options` applied
+ * Adds `handler` as a listener for the event `eventName` of `element` with the
+ * provided `options` applied
+ *
+ * If `element` is `undefined`, `window` is used instead.
+ *
+ * If `element` is `null`, no event listener is added.
+ *
+ * @example
+ * ```tsx
+ * useEventListener('resize', () => {
+ *   console.log(window.innerWidth, window.innerHeight);
+ * });
+ *
+ * useEventListener(
+ *   'visibilitychange',
+ *   () => console.log(document.visibilityState),
+ *   document
+ * );
+ *
+ * const buttonRef = useRef<HTMLButtonElement>(null);
+ * useEventListener("click", () => console.log("click"), buttonRef.current);
+ * ```
+ *
+ * @ignore
  */
-
 export function useEventListener<
   K extends keyof HTMLElementEventMap,
   T extends HTMLElement,
@@ -22,6 +43,10 @@ export function useEventListener<
   options?: boolean | AddEventListenerOptions,
 ): void;
 
+/**
+ * @see {@linkcode useEventListener}
+ * @ignore
+ */
 export function useEventListener<
   K extends keyof SVGElementEventMap,
   T extends SVGElement,
@@ -32,6 +57,10 @@ export function useEventListener<
   options?: boolean | AddEventListenerOptions,
 ): void;
 
+/**
+ * @see {@linkcode useEventListener}
+ * @ignore
+ */
 export function useEventListener<
   K extends keyof MathMLElementEventMap,
   T extends MathMLElement,
@@ -42,6 +71,10 @@ export function useEventListener<
   options?: boolean | AddEventListenerOptions,
 ): void;
 
+/**
+ * @see {@linkcode useEventListener}
+ * @ignore
+ */
 export function useEventListener<K extends keyof DocumentEventMap>(
   eventName: K,
   handler: (this: Document, event: DocumentEventMap[K]) => void,
@@ -49,6 +82,10 @@ export function useEventListener<K extends keyof DocumentEventMap>(
   options?: boolean | AddEventListenerOptions,
 ): void;
 
+/**
+ * @see {@linkcode useEventListener}
+ * @ignore
+ */
 export function useEventListener<K extends keyof WindowEventMap>(
   eventName: K,
   handler: (this: Window, event: WindowEventMap[K]) => void,
@@ -56,10 +93,34 @@ export function useEventListener<K extends keyof WindowEventMap>(
   options?: boolean | AddEventListenerOptions,
 ): void;
 
+/**
+ * Adds `handler` as a listener for the event `eventName` of `element` with the
+ * provided `options` applied
+ *
+ * If `element` is `undefined`, `window` is used instead.
+ *
+ * If `element` is `null`, no event listener is added.
+ *
+ * @example
+ * ```tsx
+ * useEventListener('resize', () => {
+ *   console.log(window.innerWidth, window.innerHeight);
+ * });
+ *
+ * useEventListener(
+ *   'visibilitychange',
+ *   () => console.log(document.visibilityState),
+ *   document
+ * );
+ *
+ * const buttonRef = useRef<HTMLButtonElement>(null);
+ * useEventListener("click", () => console.log("click"), buttonRef.current);
+ * ```
+ */
 export function useEventListener<T extends EventTarget>(
   eventName: string,
   handler: (this: NoInfer<T>, event: Event) => void,
-  element: T | null,
+  element?: T | null,
   options?: boolean | AddEventListenerOptions,
 ): void;
 

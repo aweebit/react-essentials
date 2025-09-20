@@ -16,14 +16,13 @@ import { depsAreEqual, isFunction } from '../utils.js';
 import { useForceUpdate } from './useForceUpdate.js';
 
 /**
- * `useState` hook with an additional dependency array that resets the state
- * to the `initialState` param when the dependencies passed in the `deps` array
- * change
+ * `useState` hook with an additional dependency array `deps` that resets the
+ * state to `initialState` when dependencies change
  *
- * @param initialState The state that will be set when the component mounts or
- * the dependencies change
+ * @param initialState The value to which the state is set when the component is
+ * mounted or dependencies change
  *
- * It can also be a function which returns a state value. If the state is reset
+ * It can also be a function that returns a state value. If the state is reset
  * due to a change of dependencies, this function will be passed the previous
  * state as its argument (will be `undefined` in the first call upon mount).
  *

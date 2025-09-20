@@ -1,5 +1,10 @@
 import { useReducer, useRef } from 'react';
 
+/* eslint-disable */
+import type { useStateWithDeps } from './useStateWithDeps.js';
+import type { useReducerWithDeps } from './useReducerWithDeps.js';
+/* eslint-enable */
+
 /**
  * Enables you to imperatively trigger re-rendering of components
  *
@@ -12,9 +17,8 @@ import { useReducer, useRef } from 'react';
  * Can be used for conditionally calling state setters when state needs to be
  * reset. That is legal and better than using effects (see
  * {@link https://react.dev/learn/-might-not-need-an-effect#adjusting-some-state-when-a-prop-changes You Might Not Need an Effect > Adjusting some state when a prop changes}),
- * but can often be avoided by using
- * [`useStateWithDeps`]({@link ./useStateWithDeps.ts}) or
- * [`useReducerWithDeps`]({@link ./useReducerWithDeps.ts}).
+ * but can often be avoided by using {@linkcode useStateWithDeps} or
+ * {@linkcode useReducerWithDeps}.
  *
  * Important: the callback function is called once per render, not once per
  * `forceUpdate` call! If React batches `forceUpdate` calls, then it will only

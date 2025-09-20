@@ -5,17 +5,18 @@ import { useStateWithDeps } from './useStateWithDeps.js';
 // only available starting from React 19, but we also want to support React 18
 // whose type declarations for useReducer are very different.
 
+/** @ignore */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type AnyActionArg = [] | [any];
 
+/** @ignore */
 export type ActionDispatch<ActionArg extends AnyActionArg> = (
   ...args: ActionArg
 ) => void;
 
 /**
- * `useReducer` hook with an additional dependency array that resets the state
- * to the `initialState` param when the dependencies passed in the `deps` array
- * change
+ * `useReducer` hook with an additional dependency array `deps` that resets the
+ * state to `initialState` when dependencies change
  *
  * ### On linter support
  *
@@ -24,7 +25,7 @@ export type ActionDispatch<ActionArg extends AnyActionArg> = (
  * However, as we would like to keep the hook as compatible with `useReducer` as
  * possible, we don't want to artificially change the parameter's position.
  * Therefore, there will be no warnings about missing dependencies.
- * Because of that, addition caution is advised!
+ * Because of that, additional caution is advised!
  * Be sure to check no dependencies are missing from the `deps` array.
  *
  * Related issue: {@link https://github.com/facebook/react/issues/25443}.
@@ -32,14 +33,14 @@ export type ActionDispatch<ActionArg extends AnyActionArg> = (
  * Unlike `eslint-plugin-react-hooks` maintained by React's team, the unofficial
  * `useExhaustiveDependencies` rule provided for Biome by Biome's team
  * does actually have support for dependency arrays at other positions, see
- * {@link https://biomejs.dev/linter/rules/use-exhaustive-dependencies/#validating-dependencies}.
+ * {@link https://biomejs.dev/linter/rules/use-exhaustive-dependencies/#validating-dependencies useExhaustiveDependencies > Options > Validating dependencies}.
  *
  * @param reducer The reducer function that specifies how the state gets updated
  *
- * @param initialState The state that will be set when the component mounts or
- * the dependencies change
+ * @param initialState The value to which the state is set when the component is
+ * mounted or dependencies change
  *
- * It can also be a function which returns a state value. If the state is reset
+ * It can also be a function that returns a state value. If the state is reset
  * due to a change of dependencies, this function will be passed the previous
  * state as its argument (will be `undefined` in the first call upon mount).
  *

@@ -6,18 +6,46 @@ import type { ArgumentFallback } from '../utils.js';
  * property purposefully omitted so that it is impossible to pass the context
  * as an argument to `useContext` or `use` (the hook produced with
  * {@linkcode createSafeContext} should be used instead)
+ *
+ * @see {@linkcode createSafeContext}
  */
-export interface RestrictedContext<T> extends Provider<T> {
+export type RestrictedContext<T> = Provider<T> & {
   Provider: Provider<T>;
   displayName: string;
-}
+};
 
+/**
+ * @see {@linkcode createSafeContext}
+ */
 export type SafeContext<DisplayName extends string, T> =
   ArgumentFallback<DisplayName, never, string> extends never
     ? never
     : { [K in `${DisplayName}Context`]: RestrictedContext<T> } & {
         [K in `use${DisplayName}`]: () => T;
       };
+
+/**
+ * @see {@linkcode createSafeContext}
+ */
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
+export function createSafeContext<T extends {} | null = never>(options?: {
+  optional?: false | undefined;
+}): <DisplayName extends string>(
+  displayName: [T] extends [never]
+    ? never
+    : ArgumentFallback<DisplayName, never, string>,
+) => SafeContext<DisplayName, T>;
+
+/**
+ * @see {@linkcode createSafeContext}
+ */
+export function createSafeContext<T>(options: {
+  optional: true;
+}): <DisplayName extends string>(
+  displayName: [T] extends [never]
+    ? never
+    : ArgumentFallback<DisplayName, never, string>,
+) => SafeContext<DisplayName, T | undefined>;
 
 /**
  * For a given type `T`, returns a function that produces both a context of that
@@ -36,27 +64,11 @@ export type SafeContext<DisplayName extends string, T> =
  * - ``` `use${displayName}` ``` (e.g. `useItems`): a hook that returns the
  *   context value, ensuring that one is provided unless it is optional
  */
+export function createSafeContext<T>(options?: {
+  optional?: boolean | undefined;
+}) {
+  const { optional = false } = options ?? {};
 
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export function createSafeContext<T extends {} | null = never>(options?: {
-  optional?: false | undefined;
-}): <DisplayName extends string>(
-  displayName: [T] extends [never]
-    ? never
-    : ArgumentFallback<DisplayName, never, string>,
-) => SafeContext<DisplayName, T>;
-
-export function createSafeContext<T>(options: {
-  optional: true;
-}): <DisplayName extends string>(
-  displayName: [T] extends [never]
-    ? never
-    : ArgumentFallback<DisplayName, never, string>,
-) => SafeContext<DisplayName, T | undefined>;
-
-export function createSafeContext<T>({
-  optional = false,
-}: { optional?: boolean | undefined } = {}) {
   return <DisplayName extends string>(
     displayName: [T] extends [never]
       ? never

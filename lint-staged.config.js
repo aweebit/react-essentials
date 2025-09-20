@@ -3,7 +3,7 @@ const pattern = '*.{js,jsx,ts,tsx}';
 /**
  * @type {import('lint-staged').Configuration}
  */
-export default {
+const config = {
   [pattern]: [
     'npm run prettier:base --',
     'npm run lint --',
@@ -11,3 +11,5 @@ export default {
   ],
   [`!${pattern}`]: 'npm run prettier:base -- --ignore-unknown',
 };
+
+export default config;
