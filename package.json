@@ -11,7 +11,8 @@
     "lint": "eslint --max-warnings=0",
     "build": "rimraf dist && tsc -b -f",
     "doc": "rimraf README.md && typedoc",
-    "prepare": "husky && npm run build && npm run doc"
+    "prepack": "npm run build && npm run doc",
+    "prepare": "husky"
   },
   "peerDependencies": {
     "@types/react": ">=18",
