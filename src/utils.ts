@@ -1,9 +1,16 @@
 import type { DependencyList } from 'react';
 
+export type Callable = (...args: never) => unknown;
+
+export type ArgumentFallback<
+  T extends Base,
+  Default extends Base,
+  Base = unknown,
+> = [T] extends [never] ? Default : [Base] extends [T] ? Default : T;
+
 export function noop() {}
 
-// eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
-export function isFunction(input: unknown): input is Function {
+export function isFunction(input: unknown): input is Callable {
   return typeof input === 'function';
 }
 

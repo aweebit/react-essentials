@@ -5,40 +5,43 @@
  * @copyright 2020 Julien CARON
  */
 
-import { useEffect, useRef } from 'react';
-import { useIsomorphicLayoutEffect } from './useIsomorphicLayoutEffect.ts';
+import { useEffect, useMemo, useRef } from 'react';
 
 /**
  * Adds `handler` as a listener for the event `eventName` of `element`
  * (or `window` by default) with the provided `options` applied
- *
- * It is the user's responsibility to make sure `element` and `options` values
- * are correctly memoized!
  */
 
-// SVGElement Event based useEventListener interface
-export function useEventListener<
-  K extends keyof SVGElementEventMap,
-  T extends SVGElement,
->(
-  eventName: K,
-  handler: (this: T, event: SVGElementEventMap[K]) => void,
-  element: T | null,
-  options?: boolean | AddEventListenerOptions,
-): void;
-
-// HTMLElement Event based useEventListener interface
 export function useEventListener<
   K extends keyof HTMLElementEventMap,
   T extends HTMLElement,
 >(
   eventName: K,
-  handler: (this: T, event: HTMLElementEventMap[K]) => void,
+  handler: (this: NoInfer<T>, event: HTMLElementEventMap[K]) => void,
   element: T | null,
   options?: boolean | AddEventListenerOptions,
 ): void;
 
-// Document Event based useEventListener interface
+export function useEventListener<
+  K extends keyof SVGElementEventMap,
+  T extends SVGElement,
+>(
+  eventName: K,
+  handler: (this: NoInfer<T>, event: SVGElementEventMap[K]) => void,
+  element: T | null,
+  options?: boolean | AddEventListenerOptions,
+): void;
+
+export function useEventListener<
+  K extends keyof MathMLElementEventMap,
+  T extends MathMLElement,
+>(
+  eventName: K,
+  handler: (this: NoInfer<T>, event: MathMLElementEventMap[K]) => void,
+  element: T | null,
+  options?: boolean | AddEventListenerOptions,
+): void;
+
 export function useEventListener<K extends keyof DocumentEventMap>(
   eventName: K,
   handler: (this: Document, event: DocumentEventMap[K]) => void,
@@ -46,7 +49,6 @@ export function useEventListener<K extends keyof DocumentEventMap>(
   options?: boolean | AddEventListenerOptions,
 ): void;
 
-// Window Event based useEventListener interface
 export function useEventListener<K extends keyof WindowEventMap>(
   eventName: K,
   handler: (this: Window, event: WindowEventMap[K]) => void,
@@ -54,11 +56,10 @@ export function useEventListener<K extends keyof WindowEventMap>(
   options?: boolean | AddEventListenerOptions,
 ): void;
 
-// Fallback overload for all other event targets and types
 export function useEventListener<T extends EventTarget>(
   eventName: string,
-  handler: (this: T, event: Event) => void,
-  element?: T | null,
+  handler: (this: NoInfer<T>, event: Event) => void,
+  element: T | null,
   options?: boolean | AddEventListenerOptions,
 ): void;
 
@@ -68,12 +69,21 @@ export function useEventListener(
   element?: EventTarget | null,
   options?: boolean | AddEventListenerOptions,
 ) {
-  // Create a ref that stores handler
-  const savedHandler = useRef(handler);
+  const handlerRef = useRef(handler);
+  handlerRef.current = handler;
 
-  useIsomorphicLayoutEffect(() => {
-    savedHandler.current = handler;
-  }, [handler]);
+  const {
+    capture = false,
+    once = false,
+    passive,
+    signal,
+  } = typeof options === 'boolean' ? { capture: options } : (options ?? {});
+
+  const memoizedOptions = useMemo(
+    () => options,
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [capture, once, passive, signal],
+  );
 
   useEffect(() => {
     if (element === null) {
@@ -86,14 +96,14 @@ export function useEventListener(
 
     // Create event listener that calls handler function stored in ref
     const listener: typeof handler = function (event) {
-      savedHandler.current.call(this, event);
+      handlerRef.current.call(this, event);
     };
 
-    targetElement.addEventListener(eventName, listener, options);
+    targetElement.addEventListener(eventName, listener, memoizedOptions);
 
     // Remove event listener on cleanup
     return () => {
-      targetElement.removeEventListener(eventName, listener, options);
+      targetElement.removeEventListener(eventName, listener, memoizedOptions);
     };
-  }, [eventName, element, options]);
+  }, [eventName, element, memoizedOptions]);
 }

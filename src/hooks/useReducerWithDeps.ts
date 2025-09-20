@@ -1,11 +1,16 @@
-import {
-  type ActionDispatch,
-  type AnyActionArg,
-  type DependencyList,
-  useCallback,
-  useRef,
-} from 'react';
+import { type DependencyList, useCallback, useRef } from 'react';
 import { useStateWithDeps } from './useStateWithDeps.js';
+
+// We cannot simply import the following types from @types/react since they are
+// only available starting from React 19, but we also want to support React 18
+// whose type declarations for useReducer are very different.
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type AnyActionArg = [] | [any];
+
+export type ActionDispatch<ActionArg extends AnyActionArg> = (
+  ...args: ActionArg
+) => void;
 
 /**
  * `useReducer` hook with an additional dependency array that resets the state

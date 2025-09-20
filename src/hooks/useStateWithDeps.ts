@@ -12,7 +12,7 @@ import {
   type Dispatch,
   type SetStateAction,
 } from 'react';
-import { depsAreEqual, isFunction } from '../utils/index.js';
+import { depsAreEqual, isFunction } from '../utils.js';
 import { useForceUpdate } from './useForceUpdate.js';
 
 /**

@@ -4,11 +4,12 @@
     "tsBuildInfoFile": "../node_modules/.tsbuildinfo/tsconfig.config.tsbuildinfo",
     "types": [
       "prettier",
-      "eslint",
+      "eslint/config",
       "globals",
       "@eslint/js",
       "typescript-eslint",
       "eslint-plugin-react-hooks",
+      "eslint-config-prettier/flat",
       "lint-staged"
     ]
   },

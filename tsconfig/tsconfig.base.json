@@ -20,14 +20,12 @@
 
     /* Modules: */
     "module": "nodenext",
-    "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
     "moduleDetection": "force",
-    "rewriteRelativeImportExtensions": true,
     "verbatimModuleSyntax": true,
 
     /* Strictness: */
     "strict": true,
+    "exactOptionalPropertyTypes": true,
     "noFallthroughCasesInSwitch": true,
     "noImplicitOverride": true,
     "noUncheckedIndexedAccess": true,

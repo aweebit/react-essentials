@@ -1,6 +1,6 @@
 {
   "name": "@aweebit/react-essentials",
-  "version": "0.5.4",
+  "version": "0.6.0",
   "type": "module",
   "repository": "github:aweebit/react-essentials",
   "main": "dist/index.js",
@@ -13,18 +13,28 @@
     "prepare": "husky && npm run build"
   },
   "peerDependencies": {
-    "react": ">=18.0.0 <20"
+    "@types/react": ">=18",
+    "react": ">=18",
+    "typescript": ">=5.4"
   },
-  "dependencies": {
-    "@types/react": "19.1.13"
+  "peerDependenciesMeta": {
+    "@types/react": {
+      "optional": true
+    },
+    "typescript": {
+      "optional": true
+    }
   },
   "devDependencies": {
     "@eslint/js": "^9.36.0",
+    "@types/react": "^18.3.24",
     "eslint": "^9.36.0",
+    "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-react-hooks": "^5.2.0",
     "husky": "^9.1.7",
     "lint-staged": "^16.1.6",
     "prettier": "3.6.2",
+    "react": "^18.3.1",
     "rimraf": "^6.0.1",
     "typescript": "~5.9.2",
     "typescript-eslint": "^8.44.0"
