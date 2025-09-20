@@ -12,10 +12,6 @@
     "build": "rimraf dist && tsc -b -f",
     "prepare": "husky && npm run build"
   },
-  "lint-staged": {
-    "!(*.{jsx,jsx,ts,tsx})": "npm run prettier -- --ignore-unknown",
-    "**.{jsx,jsx,ts,tsx}": "npm run lint --"
-  },
   "peerDependencies": {
     "react": ">=18.0.0 <20"
   },
