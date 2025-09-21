@@ -3,25 +3,24 @@
 ## RestrictedContext
 
 ```ts
-type RestrictedContext<T> = Provider<T> & {
-  Provider: Provider<T>;
-  displayName: string;
-};
+type RestrictedContext<T> =
+  Context<T> extends Provider<T>
+    ? {
+        Provider: Provider<T>;
+        displayName: string;
+      } & Provider<T>
+    : {
+        Provider: Provider<T>;
+        displayName: string;
+      };
 ```
 
-Defined in: [misc/createSafeContext.ts:12](https://github.com/aweebit/react-essentials/blob/v0.6.0/src/misc/createSafeContext.ts#L12)
+Defined in: [misc/createSafeContext.ts:17](https://github.com/aweebit/react-essentials/blob/v0.6.0/src/misc/createSafeContext.ts#L17)
 
 A React context with a required `displayName` and the obsolete `Consumer`
 property purposefully omitted so that it is impossible to pass the context
 as an argument to `useContext` or `use` (the hook produced with
 [`createSafeContext`](#createsafecontext) should be used instead)
-
-### Type Declaration
-
-| Name          | Type              |
-| ------------- | ----------------- |
-| `Provider`    | `Provider`\<`T`\> |
-| `displayName` | `string`          |
 
 ### Type Parameters
 
@@ -38,15 +37,12 @@ as an argument to `useContext` or `use` (the hook produced with
 ## SafeContext
 
 ```ts
-type SafeContext<DisplayName, T> =
-  ArgumentFallback<DisplayName, never, string> extends never
-    ? never
-    : { [K in `${DisplayName}Context`]: RestrictedContext<T> } & {
-        [K in `use${DisplayName}`]: () => T;
-      };
+type SafeContext<DisplayName, T> = {
+  [K in `${DisplayName}Context`]: RestrictedContext<T>;
+} & { [K in `use${DisplayName}`]: () => T };
 ```
 
-Defined in: [misc/createSafeContext.ts:20](https://github.com/aweebit/react-essentials/blob/v0.6.0/src/misc/createSafeContext.ts#L20)
+Defined in: [misc/createSafeContext.ts:25](https://github.com/aweebit/react-essentials/blob/v0.6.0/src/misc/createSafeContext.ts#L25)
 
 ### Type Parameters
 
@@ -232,110 +228,63 @@ state to `initialState` when dependencies change
 
 ## createSafeContext()
 
-For a given type `T`, returns a function that produces both a context of that
-type and a hook that throws if a context value is required but none was
-provided, or returns the context's value otherwise
-
-### Param
-
-An optional configuration object with the property `optional` that, when set
-to `true`, results in the context value type being `T | undefined` and no
-errors being thrown when no context value was provided
-
-### Call Signature
-
 ```ts
-function createSafeContext<T>(
-  options?,
-): <DisplayName>(displayName) => SafeContext<DisplayName, T>;
+function createSafeContext<T>(): <DisplayName>(
+  displayName,
+) => SafeContext<DisplayName, T>;
 ```
 
-Defined in: [misc/createSafeContext.ts:31](https://github.com/aweebit/react-essentials/blob/v0.6.0/src/misc/createSafeContext.ts#L31)
+Defined in: [misc/createSafeContext.ts:56](https://github.com/aweebit/react-essentials/blob/v0.6.0/src/misc/createSafeContext.ts#L56)
 
-#### Type Parameters
+For a given type `T`, returns a function that produces both a context of that
+type and a hook that returns the current context value if one was provided,
+or throws an error otherwise
 
-| Type Parameter                   | Default type |
-| -------------------------------- | ------------ |
-| `T` _extends_ \| `null` \| \{ \} | `never`      |
+### Example
 
-#### Parameters
+```tsx
+const { ItemsContext, useItems } = createSafeContext<string[]>()('Items');
 
-| Parameter           | Type                        |
-| ------------------- | --------------------------- |
-| `options?`          | \{ `optional?`: `false`; \} |
-| `options.optional?` | `false`                     |
+const Parent = () => (
+  <ItemsContext value={['compass', 'newspaper', 'banana']}>
+    <Child />
+  </ItemsContext>
+);
 
-#### Returns
+const Child = () => useItems().join(', ');
+```
+
+### Type Parameters
+
+| Type Parameter | Default type |
+| -------------- | ------------ |
+| `T`            | `never`      |
+
+### Returns
+
+A function that accepts a single string argument `displayName` (e.g.
+`"Items"`) and returns an object with the following properties:
+
+- `` `${displayName}Context` `` (e.g. `ItemsContext`): the context
+- `` `use${displayName}` `` (e.g. `useItems`): a hook that returns the
+  current context value if one was provided, or throws an error otherwise
 
 ```ts
 <DisplayName>(displayName): SafeContext<DisplayName, T>;
 ```
 
-##### Type Parameters
+#### Type Parameters
 
 | Type Parameter                   |
 | -------------------------------- |
 | `DisplayName` _extends_ `string` |
-
-##### Parameters
-
-| Parameter     | Type                                                                                             |
-| ------------- | ------------------------------------------------------------------------------------------------ |
-| `displayName` | \[`T`\] _extends_ \[`never`\] ? `never` : `ArgumentFallback`\<`DisplayName`, `never`, `string`\> |
-
-##### Returns
-
-[`SafeContext`](#safecontext)\<`DisplayName`, `T`\>
-
-#### See
-
-[`createSafeContext`](#createsafecontext)
-
-### Call Signature
-
-```ts
-function createSafeContext<T>(
-  options,
-): <DisplayName>(displayName) => SafeContext<DisplayName, undefined | T>;
-```
-
-Defined in: [misc/createSafeContext.ts:42](https://github.com/aweebit/react-essentials/blob/v0.6.0/src/misc/createSafeContext.ts#L42)
-
-#### Type Parameters
-
-| Type Parameter |
-| -------------- |
-| `T`            |
 
 #### Parameters
 
-| Parameter          | Type                      |
-| ------------------ | ------------------------- |
-| `options`          | \{ `optional`: `true`; \} |
-| `options.optional` | `true`                    |
-
-#### Returns
-
-```ts
-<DisplayName>(displayName): SafeContext<DisplayName, undefined | T>;
-```
-
-##### Type Parameters
-
-| Type Parameter                   |
-| -------------------------------- |
-| `DisplayName` _extends_ `string` |
-
-##### Parameters
-
 | Parameter     | Type                                                                                             |
 | ------------- | ------------------------------------------------------------------------------------------------ |
 | `displayName` | \[`T`\] _extends_ \[`never`\] ? `never` : `ArgumentFallback`\<`DisplayName`, `never`, `string`\> |
 
-##### Returns
+#### Returns
 
-[`SafeContext`](#safecontext)\<`DisplayName`, `undefined` \| `T`\>
-
-#### See
-
-[`createSafeContext`](#createsafecontext)
+[`SafeContext`](#safecontext)\<`DisplayName`, `T`\>
