@@ -19,6 +19,41 @@ import { useForceUpdate } from './useForceUpdate.js';
  * `useState` hook with an additional dependency array `deps` that resets the
  * state to `initialState` when dependencies change
  *
+ * For motivation and more examples, see
+ * https://github.com/facebook/react/issues/33041.
+ *
+ * @example
+ * ```tsx
+ * type Activity = 'breakfast' | 'exercise' | 'swim' | 'board games' | 'dinner';
+ *
+ * const timeOfDayOptions = ['morning', 'afternoon', 'evening'] as const;
+ * type TimeOfDay = (typeof timeOfDayOptions)[number];
+ *
+ * const activityOptionsByTimeOfDay: {
+ *   [K in TimeOfDay]: [Activity, ...Activity[]];
+ * } = {
+ *   morning: ['breakfast', 'exercise', 'swim'],
+ *   afternoon: ['exercise', 'swim', 'board games'],
+ *   evening: ['board games', 'dinner'],
+ * };
+ *
+ * export function Example() {
+ *   const [timeOfDay, setTimeOfDay] = useState<TimeOfDay>('morning');
+ *
+ *   const activityOptions = activityOptionsByTimeOfDay[timeOfDay];
+ *   const [activity, setActivity] = useStateWithDeps<Activity>(
+ *     (prev) => {
+ *       // Make sure activity is always valid for the current timeOfDay value,
+ *       // but also don't reset it unless necessary:
+ *       return prev && activityOptions.includes(prev) ? prev : activityOptions[0];
+ *     },
+ *     [activityOptions],
+ *   );
+ *
+ *   return '...';
+ * }
+ * ```
+ *
  * @param initialState The value to which the state is set when the component is
  * mounted or dependencies change
  *
@@ -32,12 +67,10 @@ export function useStateWithDeps<S>(
   initialState: S | ((previousState?: S) => S),
   deps: DependencyList,
 ): [S, Dispatch<SetStateAction<S>>] {
-  // It would be possible to use useState instead of
-  // useRef to store the state, however this would
-  // trigger re-renders whenever the state is reset due
-  // to a change in dependencies. In order to avoid these
-  // re-renders, the state is stored in a ref and an
-  // update is triggered via forceUpdate below when necessary
+  // It would be possible to use useState instead of useRef to store the state,
+  // however this would trigger re-renders whenever the state is reset due to a
+  // change in dependencies. In order to avoid these re-renders, the state is
+  // stored in a ref, and updates are triggered with forceUpdate when necessary.
   const state = useRef(undefined as S);
 
   const prevDeps = useRef(deps);

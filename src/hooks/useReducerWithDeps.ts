@@ -18,6 +18,9 @@ export type ActionDispatch<ActionArg extends AnyActionArg> = (
  * `useReducer` hook with an additional dependency array `deps` that resets the
  * state to `initialState` when dependencies change
  *
+ * For motivation and examples, see
+ * https://github.com/facebook/react/issues/33041.
+ *
  * ### On linter support
  *
  * The `react-hooks/exhaustive-deps` ESLint rule doesn't support hooks where
@@ -26,7 +29,7 @@ export type ActionDispatch<ActionArg extends AnyActionArg> = (
  * possible, we don't want to artificially change the parameter's position.
  * Therefore, there will be no warnings about missing dependencies.
  * Because of that, additional caution is advised!
- * Be sure to check no dependencies are missing from the `deps` array.
+ * Be sure to check that no dependencies are missing from the `deps` array.
  *
  * Related issue: {@link https://github.com/facebook/react/issues/25443}.
  *
