@@ -1,95 +1,14 @@
 # @aweebit/react-essentials
 
-## RestrictedContext
+[![NPM Version](https://img.shields.io/npm/v/%40aweebit%2Freact-essentials)](https://www.npmjs.com/package/@aweebit/react-essentials)
 
-```ts
-type RestrictedContext<T> =
-  Context<T> extends Provider<T>
-    ? {
-        Provider: Provider<T>;
-        displayName: string;
-      } & Provider<T>
-    : {
-        Provider: Provider<T>;
-        displayName: string;
-      };
-```
-
-Defined in: [misc/createSafeContext.ts:17](https://github.com/aweebit/react-essentials/blob/v0.7.0/src/misc/createSafeContext.ts#L17)
-
-A React context with a required `displayName` and the obsolete `Consumer`
-property purposefully omitted so that it is impossible to pass the context
-as an argument to `useContext` or `use` (the hook produced with
-[`createSafeContext`](#createsafecontext) should be used instead)
-
-### Type Parameters
-
-<table>
-<thead>
-<tr>
-<th>Type Parameter</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-
-`T`
-
-</td>
-</tr>
-</tbody>
-</table>
-
-### See
-
-[`createSafeContext`](#createsafecontext)
-
----
-
-## SafeContext
-
-```ts
-type SafeContext<DisplayName, T> = {
-  [K in `${DisplayName}Context`]: RestrictedContext<T>;
-} & { [K in `use${DisplayName}`]: () => T };
-```
-
-Defined in: [misc/createSafeContext.ts:27](https://github.com/aweebit/react-essentials/blob/v0.7.0/src/misc/createSafeContext.ts#L27)
-
-The return type of [`createSafeContext`](#createsafecontext)
-
-### Type Parameters
-
-<table>
-<thead>
-<tr>
-<th>Type Parameter</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-
-`DisplayName` _extends_ `string`
-
-</td>
-</tr>
-<tr>
-<td>
-
-`T`
-
-</td>
-</tr>
-</tbody>
-</table>
-
-### See
-
-[`createSafeContext`](#createsafecontext)
-
----
+- [useEventListener()](#useeventlistener)
+- [useForceUpdate()](#useforceupdate)
+- [useReducerWithDeps()](#usereducerwithdeps)
+- [useStateWithDeps()](#usestatewithdeps)
+- [createSafeContext()](#createsafecontext)
+- [RestrictedContext](#restrictedcontext)
+- [SafeContext](#safecontext)
 
 ## useEventListener()
 
@@ -824,3 +743,94 @@ A function that accepts a single string argument `displayName` (e.g.
 #### Returns
 
 [`SafeContext`](#safecontext)\<`DisplayName`, `T`\>
+
+---
+
+## RestrictedContext
+
+```ts
+type RestrictedContext<T> =
+  Context<T> extends Provider<T>
+    ? {
+        Provider: Provider<T>;
+        displayName: string;
+      } & Provider<T>
+    : {
+        Provider: Provider<T>;
+        displayName: string;
+      };
+```
+
+Defined in: [misc/createSafeContext.ts:17](https://github.com/aweebit/react-essentials/blob/v0.7.0/src/misc/createSafeContext.ts#L17)
+
+A React context with a required `displayName` and the obsolete `Consumer`
+property purposefully omitted so that it is impossible to pass the context
+as an argument to `useContext` or `use` (the hook produced with
+[`createSafeContext`](#createsafecontext) should be used instead)
+
+### Type Parameters
+
+<table>
+<thead>
+<tr>
+<th>Type Parameter</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+
+`T`
+
+</td>
+</tr>
+</tbody>
+</table>
+
+### See
+
+[`createSafeContext`](#createsafecontext)
+
+---
+
+## SafeContext
+
+```ts
+type SafeContext<DisplayName, T> = {
+  [K in `${DisplayName}Context`]: RestrictedContext<T>;
+} & { [K in `use${DisplayName}`]: () => T };
+```
+
+Defined in: [misc/createSafeContext.ts:27](https://github.com/aweebit/react-essentials/blob/v0.7.0/src/misc/createSafeContext.ts#L27)
+
+The return type of [`createSafeContext`](#createsafecontext)
+
+### Type Parameters
+
+<table>
+<thead>
+<tr>
+<th>Type Parameter</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+
+`DisplayName` _extends_ `string`
+
+</td>
+</tr>
+<tr>
+<td>
+
+`T`
+
+</td>
+</tr>
+</tbody>
+</table>
+
+### See
+
+[`createSafeContext`](#createsafecontext)

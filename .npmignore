@@ -2,3 +2,4 @@
 *.config.*
 tsconfig
 tsconfig.json
+README-header.md
