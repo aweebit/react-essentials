@@ -15,7 +15,7 @@ type RestrictedContext<T> =
       };
 ```
 
-Defined in: [misc/createSafeContext.ts:17](https://github.com/aweebit/react-essentials/blob/v0.6.1/src/misc/createSafeContext.ts#L17)
+Defined in: [misc/createSafeContext.ts:17](https://github.com/aweebit/react-essentials/blob/v0.7.0/src/misc/createSafeContext.ts#L17)
 
 A React context with a required `displayName` and the obsolete `Consumer`
 property purposefully omitted so that it is impossible to pass the context
@@ -55,7 +55,7 @@ type SafeContext<DisplayName, T> = {
 } & { [K in `use${DisplayName}`]: () => T };
 ```
 
-Defined in: [misc/createSafeContext.ts:27](https://github.com/aweebit/react-essentials/blob/v0.6.1/src/misc/createSafeContext.ts#L27)
+Defined in: [misc/createSafeContext.ts:27](https://github.com/aweebit/react-essentials/blob/v0.7.0/src/misc/createSafeContext.ts#L27)
 
 The return type of [`createSafeContext`](#createsafecontext)
 
@@ -96,7 +96,7 @@ The return type of [`createSafeContext`](#createsafecontext)
 Adds `handler` as a listener for the event `eventName` of `target` with the
 provided `options` applied
 
-If `target` is `undefined` or not provided, `window` is used instead.
+If `target` is not provided, `window` is used instead.
 
 If `target` is `null`, no event listener is added. This is useful when
 working with DOM element refs, or when the event listener needs to be removed
@@ -120,216 +120,10 @@ useEventListener(buttonRef.current, 'click', () => console.log('click'));
 ### Call Signature
 
 ```ts
-function useEventListener<K, T>(target, eventName, handler, options?): void;
+function useEventListener<K>(eventName, handler, options?): void;
 ```
 
-Defined in: [hooks/useEventListener.ts:173](https://github.com/aweebit/react-essentials/blob/v0.6.1/src/hooks/useEventListener.ts#L173)
-
-#### Type Parameters
-
-<table>
-<thead>
-<tr>
-<th>Type Parameter</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-
-`K` _extends_ `string`
-
-</td>
-</tr>
-<tr>
-<td>
-
-`T` _extends_ `EventTarget`
-
-</td>
-</tr>
-</tbody>
-</table>
-
-#### Parameters
-
-<table>
-<thead>
-<tr>
-<th>Parameter</th>
-<th>Type</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-
-`target`
-
-</td>
-<td>
-
-`undefined` \| `null` \| `T`
-
-</td>
-</tr>
-<tr>
-<td>
-
-`eventName`
-
-</td>
-<td>
-
-`K`
-
-</td>
-</tr>
-<tr>
-<td>
-
-`handler`
-
-</td>
-<td>
-
-(`this`, `event`) => `void`
-
-</td>
-</tr>
-<tr>
-<td>
-
-`options?`
-
-</td>
-<td>
-
-`boolean` \| `AddEventListenerOptions`
-
-</td>
-</tr>
-</tbody>
-</table>
-
-#### Returns
-
-`void`
-
-#### See
-
-[`useEventListener`](#useeventlistener)
-
-### Call Signature
-
-```ts
-function useEventListener<K, T>(eventName, handler, target?, options?): void;
-```
-
-Defined in: [hooks/useEventListener.ts:183](https://github.com/aweebit/react-essentials/blob/v0.6.1/src/hooks/useEventListener.ts#L183)
-
-#### Type Parameters
-
-<table>
-<thead>
-<tr>
-<th>Type Parameter</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-
-`K` _extends_ `string`
-
-</td>
-</tr>
-<tr>
-<td>
-
-`T` _extends_ `EventTarget`
-
-</td>
-</tr>
-</tbody>
-</table>
-
-#### Parameters
-
-<table>
-<thead>
-<tr>
-<th>Parameter</th>
-<th>Type</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-
-`eventName`
-
-</td>
-<td>
-
-`K`
-
-</td>
-</tr>
-<tr>
-<td>
-
-`handler`
-
-</td>
-<td>
-
-(`this`, `event`) => `void`
-
-</td>
-</tr>
-<tr>
-<td>
-
-`target?`
-
-</td>
-<td>
-
-`null` \| `T`
-
-</td>
-</tr>
-<tr>
-<td>
-
-`options?`
-
-</td>
-<td>
-
-`boolean` \| `AddEventListenerOptions`
-
-</td>
-</tr>
-</tbody>
-</table>
-
-#### Returns
-
-`void`
-
-#### See
-
-[`useEventListener`](#useeventlistener)
-
-### Call Signature
-
-```ts
-function useEventListener<K>(eventName, handler, options): void;
-```
-
-Defined in: [hooks/useEventListener.ts:193](https://github.com/aweebit/react-essentials/blob/v0.6.1/src/hooks/useEventListener.ts#L193)
+Defined in: [hooks/useEventListener.ts:99](https://github.com/aweebit/react-essentials/blob/v0.7.0/src/hooks/useEventListener.ts#L99)
 
 #### Type Parameters
 
@@ -387,7 +181,103 @@ Defined in: [hooks/useEventListener.ts:193](https://github.com/aweebit/react-ess
 <tr>
 <td>
 
-`options`
+`options?`
+
+</td>
+<td>
+
+`boolean` \| `AddEventListenerOptions`
+
+</td>
+</tr>
+</tbody>
+</table>
+
+#### Returns
+
+`void`
+
+#### See
+
+[`useEventListener`](#useeventlistener)
+
+### Call Signature
+
+```ts
+function useEventListener<T>(target, eventName, handler, options?): void;
+```
+
+Defined in: [hooks/useEventListener.ts:108](https://github.com/aweebit/react-essentials/blob/v0.7.0/src/hooks/useEventListener.ts#L108)
+
+#### Type Parameters
+
+<table>
+<thead>
+<tr>
+<th>Type Parameter</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+
+`T` _extends_ `EventTarget`
+
+</td>
+</tr>
+</tbody>
+</table>
+
+#### Parameters
+
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+
+`target`
+
+</td>
+<td>
+
+`null` \| `T`
+
+</td>
+</tr>
+<tr>
+<td>
+
+`eventName`
+
+</td>
+<td>
+
+`string`
+
+</td>
+</tr>
+<tr>
+<td>
+
+`handler`
+
+</td>
+<td>
+
+(`this`, `event`) => `void`
+
+</td>
+</tr>
+<tr>
+<td>
+
+`options?`
 
 </td>
 <td>
@@ -415,7 +305,7 @@ Defined in: [hooks/useEventListener.ts:193](https://github.com/aweebit/react-ess
 function useForceUpdate(callback?): [() => void, bigint];
 ```
 
-Defined in: [hooks/useForceUpdate.ts:81](https://github.com/aweebit/react-essentials/blob/v0.6.1/src/hooks/useForceUpdate.ts#L81)
+Defined in: [hooks/useForceUpdate.ts:81](https://github.com/aweebit/react-essentials/blob/v0.7.0/src/hooks/useForceUpdate.ts#L81)
 
 Enables you to imperatively trigger re-rendering of components
 
@@ -535,7 +425,7 @@ function useReducerWithDeps<S, A>(
 ): [S, ActionDispatch<A>];
 ```
 
-Defined in: [hooks/useReducerWithDeps.ts:52](https://github.com/aweebit/react-essentials/blob/v0.6.1/src/hooks/useReducerWithDeps.ts#L52)
+Defined in: [hooks/useReducerWithDeps.ts:52](https://github.com/aweebit/react-essentials/blob/v0.7.0/src/hooks/useReducerWithDeps.ts#L52)
 
 `useReducer` hook with an additional dependency array `deps` that resets the
 state to `initialState` when dependencies change
@@ -671,7 +561,7 @@ function useStateWithDeps<S>(
 ): [S, Dispatch<SetStateAction<S>>];
 ```
 
-Defined in: [hooks/useStateWithDeps.ts:66](https://github.com/aweebit/react-essentials/blob/v0.6.1/src/hooks/useStateWithDeps.ts#L66)
+Defined in: [hooks/useStateWithDeps.ts:66](https://github.com/aweebit/react-essentials/blob/v0.7.0/src/hooks/useStateWithDeps.ts#L66)
 
 `useState` hook with an additional dependency array `deps` that resets the
 state to `initialState` when dependencies change
@@ -798,7 +688,7 @@ function createSafeContext<T>(): <DisplayName>(
 ) => SafeContext<DisplayName, T>;
 ```
 
-Defined in: [misc/createSafeContext.ts:89](https://github.com/aweebit/react-essentials/blob/v0.6.1/src/misc/createSafeContext.ts#L89)
+Defined in: [misc/createSafeContext.ts:89](https://github.com/aweebit/react-essentials/blob/v0.7.0/src/misc/createSafeContext.ts#L89)
 
 For a given type `T`, returns a function that produces both a context of that
 type and a hook that returns the current context value if one was provided,

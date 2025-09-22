@@ -7,7 +7,7 @@
 
 import { useEffect, useMemo, useRef } from 'react';
 
-type UseEventListenerOverloadArgsTargetFirst<
+type UseEventListenerOverloadArgs<
   EventMap,
   K extends keyof EventMap,
   T extends EventTarget,
@@ -15,17 +15,6 @@ type UseEventListenerOverloadArgsTargetFirst<
   target: T | null,
   eventName: K,
   handler: (this: NoInfer<T>, event: EventMap[K]) => void,
-  options?: AddEventListenerOptions | boolean,
-];
-
-type UseEventListenerOverloadArgsEventNameFirst<
-  EventMap,
-  K extends keyof EventMap,
-  T extends EventTarget,
-> = [
-  eventName: K,
-  handler: (this: NoInfer<T>, event: EventMap[K]) => void,
-  target: T | null,
   options?: AddEventListenerOptions | boolean,
 ];
 
@@ -33,7 +22,7 @@ type UseEventListenerOverloadArgsEventNameFirst<
  * Adds `handler` as a listener for the event `eventName` of `target` with the
  * provided `options` applied
  *
- * If `target` is `undefined` or not provided, `window` is used instead.
+ * If `target` is not provided, `window` is used instead.
  *
  * If `target` is `null`, no event listener is added. This is useful when
  * working with DOM element refs, or when the event listener needs to be removed
@@ -58,7 +47,6 @@ type UseEventListenerOverloadArgsEventNameFirst<
 export function useEventListener<K extends keyof WindowEventMap>(
   eventName: K,
   handler: (this: Window, event: WindowEventMap[K]) => void,
-  target?: Window | null,
   options?: AddEventListenerOptions | boolean,
 ): void;
 
@@ -67,10 +55,7 @@ export function useEventListener<K extends keyof WindowEventMap>(
  * @ignore
  */
 export function useEventListener<K extends keyof WindowEventMap>(
-  target: Window | null | undefined,
-  eventName: K,
-  handler: (this: Window, event: WindowEventMap[K]) => void,
-  options?: AddEventListenerOptions | boolean,
+  ...args: UseEventListenerOverloadArgs<WindowEventMap, K, Window>
 ): void;
 
 /**
@@ -78,23 +63,7 @@ export function useEventListener<K extends keyof WindowEventMap>(
  * @ignore
  */
 export function useEventListener<K extends keyof DocumentEventMap>(
-  ...args: UseEventListenerOverloadArgsTargetFirst<
-    DocumentEventMap,
-    K,
-    Document
-  >
-): void;
-
-/**
- * @see {@linkcode useEventListener}
- * @ignore
- */
-export function useEventListener<K extends keyof DocumentEventMap>(
-  ...args: UseEventListenerOverloadArgsEventNameFirst<
-    DocumentEventMap,
-    K,
-    Document
-  >
+  ...args: UseEventListenerOverloadArgs<DocumentEventMap, K, Document>
 ): void;
 
 /**
@@ -104,20 +73,7 @@ export function useEventListener<K extends keyof DocumentEventMap>(
 export function useEventListener<
   K extends keyof HTMLElementEventMap,
   T extends HTMLElement,
->(
-  ...args: UseEventListenerOverloadArgsTargetFirst<HTMLElementEventMap, K, T>
-): void;
-
-/**
- * @see {@linkcode useEventListener}
- * @ignore
- */
-export function useEventListener<
-  K extends keyof HTMLElementEventMap,
-  T extends HTMLElement,
->(
-  ...args: UseEventListenerOverloadArgsEventNameFirst<HTMLElementEventMap, K, T>
-): void;
+>(...args: UseEventListenerOverloadArgs<HTMLElementEventMap, K, T>): void;
 
 /**
  * @see {@linkcode useEventListener}
@@ -126,20 +82,7 @@ export function useEventListener<
 export function useEventListener<
   K extends keyof SVGElementEventMap,
   T extends SVGElement,
->(
-  ...args: UseEventListenerOverloadArgsTargetFirst<SVGElementEventMap, K, T>
-): void;
-
-/**
- * @see {@linkcode useEventListener}
- * @ignore
- */
-export function useEventListener<
-  K extends keyof SVGElementEventMap,
-  T extends SVGElement,
->(
-  ...args: UseEventListenerOverloadArgsEventNameFirst<SVGElementEventMap, K, T>
-): void;
+>(...args: UseEventListenerOverloadArgs<SVGElementEventMap, K, T>): void;
 
 /**
  * @see {@linkcode useEventListener}
@@ -148,44 +91,7 @@ export function useEventListener<
 export function useEventListener<
   K extends keyof MathMLElementEventMap,
   T extends MathMLElement,
->(
-  ...args: UseEventListenerOverloadArgsTargetFirst<MathMLElementEventMap, K, T>
-): void;
-
-/**
- * @see {@linkcode useEventListener}
- * @ignore
- */
-export function useEventListener<
-  K extends keyof MathMLElementEventMap,
-  T extends MathMLElement,
->(
-  ...args: UseEventListenerOverloadArgsEventNameFirst<
-    MathMLElementEventMap,
-    K,
-    T
-  >
-): void;
-
-/**
- * @see {@linkcode useEventListener}
- */
-export function useEventListener<K extends string, T extends EventTarget>(
-  target: T | null | undefined,
-  eventName: K,
-  handler: (this: NoInfer<T>, event: Event) => void,
-  options?: AddEventListenerOptions | boolean,
-): void;
-
-/**
- * @see {@linkcode useEventListener}
- */
-export function useEventListener<K extends string, T extends EventTarget>(
-  eventName: K,
-  handler: (this: NoInfer<T>, event: Event) => void,
-  target?: T | null,
-  options?: AddEventListenerOptions | boolean,
-): void;
+>(...args: UseEventListenerOverloadArgs<MathMLElementEventMap, K, T>): void;
 
 /**
  * @see {@linkcode useEventListener}
@@ -193,14 +99,24 @@ export function useEventListener<K extends string, T extends EventTarget>(
 export function useEventListener<K extends keyof WindowEventMap>(
   eventName: K,
   handler: (this: Window, event: WindowEventMap[K]) => void,
-  options: AddEventListenerOptions | boolean,
+  options?: AddEventListenerOptions | boolean,
+): void;
+
+/**
+ * @see {@linkcode useEventListener}
+ */
+export function useEventListener<T extends EventTarget>(
+  target: T | null,
+  eventName: string,
+  handler: (this: NoInfer<T>, event: Event) => void,
+  options?: AddEventListenerOptions | boolean,
 ): void;
 
 /**
  * Adds `handler` as a listener for the event `eventName` of `target` with the
  * provided `options` applied
  *
- * If `target` is `undefined` or not provided, `window` is used instead.
+ * If `target` is not provided, `window` is used instead.
  *
  * If `target` is `null`, no event listener is added. This is useful when
  * working with DOM element refs, or when the event listener needs to be removed
@@ -221,27 +137,18 @@ export function useEventListener<K extends keyof WindowEventMap>(
  * ```
  */
 export function useEventListener(
-  ...args:
-    | UseEventListenerArgsTargetFirst
-    | UseEventListenerArgsEventNameFirst
-    | UseEventListenerArgsWithoutTarget
+  ...args: UseEventListenerArgsWithoutTarget | UseEventListenerArgsWithTarget
 ) {
   let eventName: string;
   let handler: (this: EventTarget, event: Event) => void;
   let target: EventTarget | null | undefined;
   let options: AddEventListenerOptions | boolean | undefined;
 
-  if (typeof args[0] !== 'string') {
-    [target, eventName, handler, options] =
-      args as UseEventListenerArgsTargetFirst;
-  } else if (
-    args[2] == null ||
-    (typeof args[2] === 'object' && 'addEventListener' in args[2])
-  ) {
-    [eventName, handler, target, options] =
-      args as UseEventListenerArgsEventNameFirst;
-  } else {
+  if (typeof args[0] === 'string') {
     [eventName, handler, options] = args as UseEventListenerArgsWithoutTarget;
+  } else {
+    [target, eventName, handler, options] =
+      args as UseEventListenerArgsWithTarget;
   }
 
   const handlerRef = useRef(handler);
@@ -280,22 +187,15 @@ export function useEventListener(
   }, [eventName, target, memoizedOptions]);
 }
 
-type UseEventListenerArgsTargetFirst = [
-  target: EventTarget | null | undefined,
-  eventName: string,
-  handler: (event: Event) => void,
-  options?: AddEventListenerOptions | boolean | undefined,
-];
-
-type UseEventListenerArgsEventNameFirst = [
-  eventName: string,
-  handler: (event: Event) => void,
-  target?: EventTarget | null | undefined,
-  options?: AddEventListenerOptions | boolean | undefined,
-];
-
 type UseEventListenerArgsWithoutTarget = [
   eventName: string,
   handler: (event: Event) => void,
-  options: AddEventListenerOptions | boolean,
+  options?: AddEventListenerOptions | boolean | undefined,
+];
+
+type UseEventListenerArgsWithTarget = [
+  target: EventTarget | null,
+  eventName: string,
+  handler: (event: Event) => void,
+  options?: AddEventListenerOptions | boolean | undefined,
 ];
