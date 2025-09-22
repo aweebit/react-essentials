@@ -93,18 +93,14 @@ The return type of [`createSafeContext`](#createsafecontext)
 
 ## useEventListener()
 
-```ts
-function useEventListener<T>(eventName, handler, element?, options?): void;
-```
-
-Defined in: [hooks/useEventListener.ts:120](https://github.com/aweebit/react-essentials/blob/v0.6.1/src/hooks/useEventListener.ts#L120)
-
-Adds `handler` as a listener for the event `eventName` of `element` with the
+Adds `handler` as a listener for the event `eventName` of `target` with the
 provided `options` applied
 
-If `element` is `undefined`, `window` is used instead.
+If `target` is `undefined` or not provided, `window` is used instead.
 
-If `element` is `null`, no event listener is added.
+If `target` is `null`, no event listener is added. This is useful when
+working with DOM element refs, or when the event listener needs to be removed
+temporarily.
 
 ### Example
 
@@ -113,17 +109,23 @@ useEventListener('resize', () => {
   console.log(window.innerWidth, window.innerHeight);
 });
 
-useEventListener(
-  'visibilitychange',
-  () => console.log(document.visibilityState),
-  document,
-);
+useEventListener(document, 'visibilitychange', () => {
+  console.log(document.visibilityState);
+});
 
 const buttonRef = useRef<HTMLButtonElement>(null);
-useEventListener('click', () => console.log('click'), buttonRef.current);
+useEventListener(buttonRef.current, 'click', () => console.log('click'));
 ```
 
-### Type Parameters
+### Call Signature
+
+```ts
+function useEventListener<K, T>(target, eventName, handler, options?): void;
+```
+
+Defined in: [hooks/useEventListener.ts:173](https://github.com/aweebit/react-essentials/blob/v0.6.1/src/hooks/useEventListener.ts#L173)
+
+#### Type Parameters
 
 <table>
 <thead>
@@ -135,6 +137,13 @@ useEventListener('click', () => console.log('click'), buttonRef.current);
 <tr>
 <td>
 
+`K` _extends_ `string`
+
+</td>
+</tr>
+<tr>
+<td>
+
 `T` _extends_ `EventTarget`
 
 </td>
@@ -142,7 +151,7 @@ useEventListener('click', () => console.log('click'), buttonRef.current);
 </tbody>
 </table>
 
-### Parameters
+#### Parameters
 
 <table>
 <thead>
@@ -155,12 +164,24 @@ useEventListener('click', () => console.log('click'), buttonRef.current);
 <tr>
 <td>
 
+`target`
+
+</td>
+<td>
+
+`undefined` \| `null` \| `T`
+
+</td>
+</tr>
+<tr>
+<td>
+
 `eventName`
 
 </td>
 <td>
 
-`string`
+`K`
 
 </td>
 </tr>
@@ -179,7 +200,98 @@ useEventListener('click', () => console.log('click'), buttonRef.current);
 <tr>
 <td>
 
-`element?`
+`options?`
+
+</td>
+<td>
+
+`boolean` \| `AddEventListenerOptions`
+
+</td>
+</tr>
+</tbody>
+</table>
+
+#### Returns
+
+`void`
+
+#### See
+
+[`useEventListener`](#useeventlistener)
+
+### Call Signature
+
+```ts
+function useEventListener<K, T>(eventName, handler, target?, options?): void;
+```
+
+Defined in: [hooks/useEventListener.ts:183](https://github.com/aweebit/react-essentials/blob/v0.6.1/src/hooks/useEventListener.ts#L183)
+
+#### Type Parameters
+
+<table>
+<thead>
+<tr>
+<th>Type Parameter</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+
+`K` _extends_ `string`
+
+</td>
+</tr>
+<tr>
+<td>
+
+`T` _extends_ `EventTarget`
+
+</td>
+</tr>
+</tbody>
+</table>
+
+#### Parameters
+
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+
+`eventName`
+
+</td>
+<td>
+
+`K`
+
+</td>
+</tr>
+<tr>
+<td>
+
+`handler`
+
+</td>
+<td>
+
+(`this`, `event`) => `void`
+
+</td>
+</tr>
+<tr>
+<td>
+
+`target?`
 
 </td>
 <td>
@@ -203,9 +315,97 @@ useEventListener('click', () => console.log('click'), buttonRef.current);
 </tbody>
 </table>
 
-### Returns
+#### Returns
 
 `void`
+
+#### See
+
+[`useEventListener`](#useeventlistener)
+
+### Call Signature
+
+```ts
+function useEventListener<K>(eventName, handler, options): void;
+```
+
+Defined in: [hooks/useEventListener.ts:193](https://github.com/aweebit/react-essentials/blob/v0.6.1/src/hooks/useEventListener.ts#L193)
+
+#### Type Parameters
+
+<table>
+<thead>
+<tr>
+<th>Type Parameter</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+
+`K` _extends_ keyof `WindowEventMap`
+
+</td>
+</tr>
+</tbody>
+</table>
+
+#### Parameters
+
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+
+`eventName`
+
+</td>
+<td>
+
+`K`
+
+</td>
+</tr>
+<tr>
+<td>
+
+`handler`
+
+</td>
+<td>
+
+(`this`, `event`) => `void`
+
+</td>
+</tr>
+<tr>
+<td>
+
+`options`
+
+</td>
+<td>
+
+`boolean` \| `AddEventListenerOptions`
+
+</td>
+</tr>
+</tbody>
+</table>
+
+#### Returns
+
+`void`
+
+#### See
+
+[`useEventListener`](#useeventlistener)
 
 ---
 
