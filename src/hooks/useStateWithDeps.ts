@@ -6,7 +6,6 @@
  */
 
 import {
-  useCallback,
   useRef,
   type DependencyList,
   type Dispatch,
@@ -92,7 +91,7 @@ export function useStateWithDeps<S>(
 
   const [forceUpdate] = useForceUpdate();
 
-  const updateState = useCallback(function updateState(
+  const updateState = useRef(function updateState(
     newState: S | ((previousState: S) => S),
   ): void {
     let nextState: S;
@@ -105,7 +104,7 @@ export function useStateWithDeps<S>(
       state.current = nextState;
       forceUpdate();
     }
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }).current;
 
   return [state.current, updateState];
 }

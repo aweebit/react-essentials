@@ -1,4 +1,4 @@
-import { type DependencyList, useCallback, useRef } from 'react';
+import { type DependencyList, useRef } from 'react';
 import { useStateWithDeps } from './useStateWithDeps.js';
 
 // We cannot simply import the following types from @types/react since they are
@@ -60,9 +60,9 @@ export function useReducerWithDeps<S, A extends AnyActionArg>(
   // Only the initially provided reducer is used
   const reducerRef = useRef(reducer);
 
-  const dispatch = useCallback(function dispatch(...args: A): void {
+  const dispatch = useRef(function dispatch(...args: A): void {
     setState((previousState) => reducerRef.current(previousState, ...args));
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }).current;
 
   return [state, dispatch];
 }
