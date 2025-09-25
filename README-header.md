@@ -9,3 +9,8 @@
 - [createSafeContext()](#createsafecontext)
 - [RestrictedContext](#restrictedcontext)
 - [SafeContext](#safecontext)
+
+### Requirements
+
+- React ≥ 18
+- TypeScript ≥ 5.4

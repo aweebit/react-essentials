@@ -10,6 +10,11 @@
 - [RestrictedContext](#restrictedcontext)
 - [SafeContext](#safecontext)
 
+### Requirements
+
+- React ≥ 18
+- TypeScript ≥ 5.4
+
 ## useEventListener()
 
 Adds `handler` as a listener for the event `eventName` of `target` with the
@@ -480,7 +485,7 @@ function useStateWithDeps<S>(
 ): [S, Dispatch<SetStateAction<S>>];
 ```
 
-Defined in: [hooks/useStateWithDeps.ts:66](https://github.com/aweebit/react-essentials/blob/v0.7.0/src/hooks/useStateWithDeps.ts#L66)
+Defined in: [hooks/useStateWithDeps.ts:65](https://github.com/aweebit/react-essentials/blob/v0.7.0/src/hooks/useStateWithDeps.ts#L65)
 
 `useState` hook with an additional dependency array `deps` that resets the
 state to `initialState` when dependencies change
