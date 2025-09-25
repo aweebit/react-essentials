@@ -2,23 +2,50 @@
 
 [![NPM Version](https://img.shields.io/npm/v/%40aweebit%2Freact-essentials)](https://www.npmjs.com/package/@aweebit/react-essentials)
 
-- [useEventListener()](#useeventlistener)
-- [useForceUpdate()](#useforceupdate)
-- [useReducerWithDeps()](#usereducerwithdeps)
-- [useStateWithDeps()](#usestatewithdeps)
-- [createSafeContext()](#createsafecontext)
-- [RestrictedContext](#restrictedcontext)
-- [SafeContext](#safecontext)
-
 ### Requirements
 
 - React ≥ 18
 - TypeScript ≥ 5.4
 
-## useEventListener()
+### Functions
+
+- [useEventListener()](#useeventlistener)
+- [useForceUpdate()](#useforceupdate)
+- [useReducerWithDeps()](#usereducerwithdeps)
+- [useStateWithDeps()](#usestatewithdeps)
+- [createSafeContext()](#createsafecontext)
+
+### Types
+
+- [UseEventListener](#useeventlistener-1)
+- [UseEventListenerWithImplicitWindowTarget](#useeventlistenerwithimplicitwindowtarget)
+- [UseEventListenerWithExplicitTarget](#useeventlistenerwithexplicittarget)
+- [UseEventListenerWithAnyExplicitTarget](#useeventlistenerwithanyexplicittarget)
+- [UseEventListenerWithImplicitWindowTargetArgs](#useeventlistenerwithimplicitwindowtargetargs)
+- [UseEventListenerWithExplicitTargetArgs](#useeventlistenerwithexplicittargetargs)
+- [RestrictedContext](#restrictedcontext)
+- [SafeContext](#safecontext)
+
+## useEventListener
+
+```ts
+const useEventListener: UseEventListener;
+```
+
+Defined in: [hooks/useEventListener.ts:134](https://github.com/aweebit/react-essentials/blob/v0.8.0/src/hooks/useEventListener.ts#L134)
 
 Adds `handler` as a listener for the event `eventName` of `target` with the
 provided `options` applied
+
+The following call signatures are available:
+
+```ts
+function useEventListener(eventName, handler, options?): void;
+function useEventListener(target, eventName, handler, options?): void;
+```
+
+For the full definition of the function type, see
+[`UseEventListener`](#useeventlistener).
 
 If `target` is not provided, `window` is used instead.
 
@@ -41,185 +68,9 @@ const buttonRef = useRef<HTMLButtonElement>(null);
 useEventListener(buttonRef.current, 'click', () => console.log('click'));
 ```
 
-### Call Signature
+### See
 
-```ts
-function useEventListener<K>(eventName, handler, options?): void;
-```
-
-Defined in: [hooks/useEventListener.ts:99](https://github.com/aweebit/react-essentials/blob/v0.7.0/src/hooks/useEventListener.ts#L99)
-
-#### Type Parameters
-
-<table>
-<thead>
-<tr>
-<th>Type Parameter</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-
-`K` _extends_ keyof `WindowEventMap`
-
-</td>
-</tr>
-</tbody>
-</table>
-
-#### Parameters
-
-<table>
-<thead>
-<tr>
-<th>Parameter</th>
-<th>Type</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-
-`eventName`
-
-</td>
-<td>
-
-`K`
-
-</td>
-</tr>
-<tr>
-<td>
-
-`handler`
-
-</td>
-<td>
-
-(`this`, `event`) => `void`
-
-</td>
-</tr>
-<tr>
-<td>
-
-`options?`
-
-</td>
-<td>
-
-`boolean` \| `AddEventListenerOptions`
-
-</td>
-</tr>
-</tbody>
-</table>
-
-#### Returns
-
-`void`
-
-#### See
-
-[`useEventListener`](#useeventlistener)
-
-### Call Signature
-
-```ts
-function useEventListener<T>(target, eventName, handler, options?): void;
-```
-
-Defined in: [hooks/useEventListener.ts:108](https://github.com/aweebit/react-essentials/blob/v0.7.0/src/hooks/useEventListener.ts#L108)
-
-#### Type Parameters
-
-<table>
-<thead>
-<tr>
-<th>Type Parameter</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-
-`T` _extends_ `EventTarget`
-
-</td>
-</tr>
-</tbody>
-</table>
-
-#### Parameters
-
-<table>
-<thead>
-<tr>
-<th>Parameter</th>
-<th>Type</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-
-`target`
-
-</td>
-<td>
-
-`null` \| `T`
-
-</td>
-</tr>
-<tr>
-<td>
-
-`eventName`
-
-</td>
-<td>
-
-`string`
-
-</td>
-</tr>
-<tr>
-<td>
-
-`handler`
-
-</td>
-<td>
-
-(`this`, `event`) => `void`
-
-</td>
-</tr>
-<tr>
-<td>
-
-`options?`
-
-</td>
-<td>
-
-`boolean` \| `AddEventListenerOptions`
-
-</td>
-</tr>
-</tbody>
-</table>
-
-#### Returns
-
-`void`
-
-#### See
-
-[`useEventListener`](#useeventlistener)
+[`UseEventListener`](#useeventlistener)
 
 ---
 
@@ -229,7 +80,7 @@ Defined in: [hooks/useEventListener.ts:108](https://github.com/aweebit/react-ess
 function useForceUpdate(callback?): [() => void, bigint];
 ```
 
-Defined in: [hooks/useForceUpdate.ts:81](https://github.com/aweebit/react-essentials/blob/v0.7.0/src/hooks/useForceUpdate.ts#L81)
+Defined in: [hooks/useForceUpdate.ts:81](https://github.com/aweebit/react-essentials/blob/v0.8.0/src/hooks/useForceUpdate.ts#L81)
 
 Enables you to imperatively trigger re-rendering of components
 
@@ -349,7 +200,7 @@ function useReducerWithDeps<S, A>(
 ): [S, ActionDispatch<A>];
 ```
 
-Defined in: [hooks/useReducerWithDeps.ts:52](https://github.com/aweebit/react-essentials/blob/v0.7.0/src/hooks/useReducerWithDeps.ts#L52)
+Defined in: [hooks/useReducerWithDeps.ts:52](https://github.com/aweebit/react-essentials/blob/v0.8.0/src/hooks/useReducerWithDeps.ts#L52)
 
 `useReducer` hook with an additional dependency array `deps` that resets the
 state to `initialState` when dependencies change
@@ -485,7 +336,7 @@ function useStateWithDeps<S>(
 ): [S, Dispatch<SetStateAction<S>>];
 ```
 
-Defined in: [hooks/useStateWithDeps.ts:65](https://github.com/aweebit/react-essentials/blob/v0.7.0/src/hooks/useStateWithDeps.ts#L65)
+Defined in: [hooks/useStateWithDeps.ts:65](https://github.com/aweebit/react-essentials/blob/v0.8.0/src/hooks/useStateWithDeps.ts#L65)
 
 `useState` hook with an additional dependency array `deps` that resets the
 state to `initialState` when dependencies change
@@ -612,7 +463,7 @@ function createSafeContext<T>(): <DisplayName>(
 ) => SafeContext<DisplayName, T>;
 ```
 
-Defined in: [misc/createSafeContext.ts:89](https://github.com/aweebit/react-essentials/blob/v0.7.0/src/misc/createSafeContext.ts#L89)
+Defined in: [misc/createSafeContext.ts:95](https://github.com/aweebit/react-essentials/blob/v0.8.0/src/misc/createSafeContext.ts#L95)
 
 For a given type `T`, returns a function that produces both a context of that
 type and a hook that returns the current context value if one was provided,
@@ -749,6 +600,315 @@ A function that accepts a single string argument `displayName` (e.g.
 
 [`SafeContext`](#safecontext)\<`DisplayName`, `T`\>
 
+### See
+
+[`SafeContext`](#safecontext)
+
+---
+
+## UseEventListener
+
+```ts
+type UseEventListener = UseEventListenerWithImplicitWindowTarget &
+  UseEventListenerWithExplicitTarget<Window, WindowEventMap> &
+  UseEventListenerWithExplicitTarget<Document, DocumentEventMap> &
+  UseEventListenerWithExplicitTarget<HTMLElement, HTMLElementEventMap> &
+  UseEventListenerWithExplicitTarget<SVGElement, SVGElementEventMap> &
+  UseEventListenerWithExplicitTarget<MathMLElement, MathMLElementEventMap> &
+  UseEventListenerWithAnyExplicitTarget;
+```
+
+Defined in: [hooks/useEventListener.ts:19](https://github.com/aweebit/react-essentials/blob/v0.8.0/src/hooks/useEventListener.ts#L19)
+
+The type of [`useEventListener`](#useeventlistener-1)
+
+### See
+
+[`useEventListener`](#useeventlistener-1),
+[`UseEventListenerWithImplicitWindowTarget`](#useeventlistenerwithimplicitwindowtarget),
+[`UseEventListenerWithExplicitTarget`](#useeventlistenerwithexplicittarget),
+[`UseEventListenerWithAnyExplicitTarget`](#useeventlistenerwithanyexplicittarget)
+
+---
+
+## UseEventListenerWithImplicitWindowTarget()
+
+```ts
+type UseEventListenerWithImplicitWindowTarget = <K>(...args) => void;
+```
+
+Defined in: [hooks/useEventListener.ts:31](https://github.com/aweebit/react-essentials/blob/v0.8.0/src/hooks/useEventListener.ts#L31)
+
+### Type Parameters
+
+<table>
+<thead>
+<tr>
+<th>Type Parameter</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+
+`K` _extends_ keyof `WindowEventMap`
+
+</td>
+</tr>
+</tbody>
+</table>
+
+### Parameters
+
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+
+...`args`
+
+</td>
+<td>
+
+[`UseEventListenerWithImplicitWindowTargetArgs`](#useeventlistenerwithimplicitwindowtargetargs)\<`K`\>
+
+</td>
+</tr>
+</tbody>
+</table>
+
+### Returns
+
+`void`
+
+### See
+
+[`useEventListener`](#useeventlistener-1),
+[`UseEventListenerWithImplicitWindowTargetArgs`](#useeventlistenerwithimplicitwindowtargetargs)
+
+---
+
+## UseEventListenerWithExplicitTarget()
+
+```ts
+type UseEventListenerWithExplicitTarget<Target, EventMap> = <T, K>(
+  ...args
+) => void;
+```
+
+Defined in: [hooks/useEventListener.ts:42](https://github.com/aweebit/react-essentials/blob/v0.8.0/src/hooks/useEventListener.ts#L42)
+
+### Type Parameters
+
+<table>
+<thead>
+<tr>
+<th>Type Parameter</th>
+<th>Default type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+
+`Target` _extends_ `EventTarget`
+
+</td>
+<td>
+
+&hyphen;
+
+</td>
+</tr>
+<tr>
+<td>
+
+`EventMap`
+
+</td>
+<td>
+
+`Record`\<`string`, `Event`\>
+
+</td>
+</tr>
+</tbody>
+</table>
+
+### Type Parameters
+
+<table>
+<thead>
+<tr>
+<th>Type Parameter</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+
+`T` _extends_ `Target`
+
+</td>
+</tr>
+<tr>
+<td>
+
+`K` _extends_ keyof `EventMap`
+
+</td>
+</tr>
+</tbody>
+</table>
+
+### Parameters
+
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+
+...`args`
+
+</td>
+<td>
+
+[`UseEventListenerWithExplicitTargetArgs`](#useeventlistenerwithexplicittargetargs)\<`EventMap`, `T`, `K`\>
+
+</td>
+</tr>
+</tbody>
+</table>
+
+### Returns
+
+`void`
+
+### See
+
+[`useEventListener`](#useeventlistener-1),
+[`UseEventListenerWithExplicitTargetArgs`](#useeventlistenerwithexplicittargetargs)
+
+---
+
+## UseEventListenerWithAnyExplicitTarget
+
+```ts
+type UseEventListenerWithAnyExplicitTarget =
+  UseEventListenerWithExplicitTarget<EventTarget>;
+```
+
+Defined in: [hooks/useEventListener.ts:54](https://github.com/aweebit/react-essentials/blob/v0.8.0/src/hooks/useEventListener.ts#L54)
+
+### See
+
+[`useEventListener`](#useeventlistener-1),
+[`UseEventListenerWithExplicitTarget`](#useeventlistenerwithexplicittarget)
+
+---
+
+## UseEventListenerWithImplicitWindowTargetArgs
+
+```ts
+type UseEventListenerWithImplicitWindowTargetArgs<K> =
+  UseEventListenerWithExplicitTargetArgs<WindowEventMap, Window, K> extends [
+    unknown,
+    ...infer Args,
+  ]
+    ? Args
+    : never;
+```
+
+Defined in: [hooks/useEventListener.ts:62](https://github.com/aweebit/react-essentials/blob/v0.8.0/src/hooks/useEventListener.ts#L62)
+
+### Type Parameters
+
+<table>
+<thead>
+<tr>
+<th>Type Parameter</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+
+`K` _extends_ keyof `WindowEventMap`
+
+</td>
+</tr>
+</tbody>
+</table>
+
+### See
+
+[`useEventListener`](#useeventlistener-1),
+[`UseEventListenerWithExplicitTargetArgs`](#useeventlistenerwithexplicittargetargs)
+
+---
+
+## UseEventListenerWithExplicitTargetArgs
+
+```ts
+type UseEventListenerWithExplicitTargetArgs<EventMap, T, K> = [
+  T | null,
+  K,
+  (this, event) => void,
+  AddEventListenerOptions | boolean | undefined,
+];
+```
+
+Defined in: [hooks/useEventListener.ts:76](https://github.com/aweebit/react-essentials/blob/v0.8.0/src/hooks/useEventListener.ts#L76)
+
+### Type Parameters
+
+<table>
+<thead>
+<tr>
+<th>Type Parameter</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+
+`EventMap`
+
+</td>
+</tr>
+<tr>
+<td>
+
+`T` _extends_ `EventTarget`
+
+</td>
+</tr>
+<tr>
+<td>
+
+`K` _extends_ keyof `EventMap`
+
+</td>
+</tr>
+</tbody>
+</table>
+
+### See
+
+[`useEventListener`](#useeventlistener-1)
+
 ---
 
 ## RestrictedContext
@@ -766,7 +926,7 @@ type RestrictedContext<T> =
       };
 ```
 
-Defined in: [misc/createSafeContext.ts:17](https://github.com/aweebit/react-essentials/blob/v0.7.0/src/misc/createSafeContext.ts#L17)
+Defined in: [misc/createSafeContext.ts:18](https://github.com/aweebit/react-essentials/blob/v0.8.0/src/misc/createSafeContext.ts#L18)
 
 A React context with a required `displayName` and the obsolete `Consumer`
 property purposefully omitted so that it is impossible to pass the context
@@ -806,7 +966,7 @@ type SafeContext<DisplayName, T> = {
 } & { [K in `use${DisplayName}`]: () => T };
 ```
 
-Defined in: [misc/createSafeContext.ts:27](https://github.com/aweebit/react-essentials/blob/v0.7.0/src/misc/createSafeContext.ts#L27)
+Defined in: [misc/createSafeContext.ts:30](https://github.com/aweebit/react-essentials/blob/v0.8.0/src/misc/createSafeContext.ts#L30)
 
 The return type of [`createSafeContext`](#createsafecontext)
 
@@ -838,4 +998,5 @@ The return type of [`createSafeContext`](#createsafecontext)
 
 ### See
 
-[`createSafeContext`](#createsafecontext)
+[`createSafeContext`](#createsafecontext),
+[`RestrictedContext`](#restrictedcontext)

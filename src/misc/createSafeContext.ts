@@ -9,7 +9,8 @@ const moValueSymbol = Symbol('noValue');
  * as an argument to `useContext` or `use` (the hook produced with
  * {@linkcode createSafeContext} should be used instead)
  *
- * @see {@linkcode createSafeContext}
+ * @see
+ * {@linkcode createSafeContext}
  */
 // The type is conditional so that both React 18 and 19 are correctly supported.
 // The code duplication is necessary for the type to be displayed correctly by
@@ -22,7 +23,9 @@ export type RestrictedContext<T> =
 /**
  * The return type of {@linkcode createSafeContext}
  *
- * @see {@linkcode createSafeContext}
+ * @see
+ * {@linkcode createSafeContext},
+ * {@linkcode RestrictedContext}
  */
 export type SafeContext<DisplayName extends string, T> = {
   [K in `${DisplayName}Context`]: RestrictedContext<T>;
@@ -85,6 +88,9 @@ export type SafeContext<DisplayName extends string, T> = {
  * - ``` `${displayName}Context` ``` (e.g. `DirectionContext`): the context
  * - ``` `use${displayName}` ``` (e.g. `useDirection`): a hook that returns the
  *   current context value if one was provided, or throws an error otherwise
+ *
+ * @see
+ * {@linkcode SafeContext}
  */
 export function createSafeContext<T = never>() {
   return <DisplayName extends string>(

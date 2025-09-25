@@ -7,20 +7,106 @@
 
 import { useEffect, useMemo, useRef } from 'react';
 
-type UseEventListenerOverloadArgs<
+/**
+ * The type of {@linkcode useEventListener}
+ *
+ * @see
+ * {@linkcode useEventListener},
+ * {@linkcode UseEventListenerWithImplicitWindowTarget},
+ * {@linkcode UseEventListenerWithExplicitTarget},
+ * {@linkcode UseEventListenerWithAnyExplicitTarget}
+ */
+export type UseEventListener = UseEventListenerWithImplicitWindowTarget &
+  UseEventListenerWithExplicitTarget<Window, WindowEventMap> &
+  UseEventListenerWithExplicitTarget<Document, DocumentEventMap> &
+  UseEventListenerWithExplicitTarget<HTMLElement, HTMLElementEventMap> &
+  UseEventListenerWithExplicitTarget<SVGElement, SVGElementEventMap> &
+  UseEventListenerWithExplicitTarget<MathMLElement, MathMLElementEventMap> &
+  UseEventListenerWithAnyExplicitTarget;
+
+/**
+ * @see
+ * {@linkcode useEventListener},
+ * {@linkcode UseEventListenerWithImplicitWindowTargetArgs} */
+export type UseEventListenerWithImplicitWindowTarget = <
+  K extends keyof WindowEventMap,
+>(
+  ...args: UseEventListenerWithImplicitWindowTargetArgs<K>
+) => void;
+
+/**
+ * @see
+ * {@linkcode useEventListener},
+ * {@linkcode UseEventListenerWithExplicitTargetArgs}
+ */
+export type UseEventListenerWithExplicitTarget<
+  Target extends EventTarget,
+  EventMap = Record<string, Event>,
+> = <T extends Target, K extends keyof EventMap>(
+  ...args: UseEventListenerWithExplicitTargetArgs<EventMap, T, K>
+) => void;
+
+/**
+ * @see
+ * {@linkcode useEventListener},
+ * {@linkcode UseEventListenerWithExplicitTarget}
+ */
+export type UseEventListenerWithAnyExplicitTarget =
+  UseEventListenerWithExplicitTarget<EventTarget>;
+
+/**
+ * @see
+ * {@linkcode useEventListener},
+ * {@linkcode UseEventListenerWithExplicitTargetArgs}
+ */
+export type UseEventListenerWithImplicitWindowTargetArgs<
+  K extends keyof WindowEventMap,
+> =
+  UseEventListenerWithExplicitTargetArgs<WindowEventMap, Window, K> extends [
+    unknown,
+    ...infer Args,
+  ]
+    ? Args
+    : never;
+
+/**
+ * @see
+ * {@linkcode useEventListener}
+ */
+export type UseEventListenerWithExplicitTargetArgs<
   EventMap,
-  K extends keyof EventMap,
   T extends EventTarget,
+  K extends keyof EventMap,
 > = [
   target: T | null,
   eventName: K,
   handler: (this: NoInfer<T>, event: EventMap[K]) => void,
-  options?: AddEventListenerOptions | boolean,
+  options?: AddEventListenerOptions | boolean | undefined,
 ];
 
+type UseEventListenerWithImplicitWindowTargetArgsAny =
+  UseEventListenerWithImplicitWindowTargetArgs<keyof WindowEventMap>;
+
+type UseEventListenerWithExplicitTargetArgsAny =
+  UseEventListenerWithExplicitTargetArgs<
+    Record<string, Event>,
+    EventTarget,
+    string
+  >;
+
 /**
  * Adds `handler` as a listener for the event `eventName` of `target` with the
  * provided `options` applied
+ *
+ * The following call signatures are available:
+ *
+ * ```ts
+ * function useEventListener(eventName, handler, options?): void;
+ * function useEventListener(target, eventName, handler, options?): void;
+ * ```
+ *
+ * For the full definition of the function type, see
+ * {@linkcode UseEventListener}.
  *
  * If `target` is not provided, `window` is used instead.
  *
@@ -42,113 +128,25 @@ type UseEventListenerOverloadArgs<
  * useEventListener(buttonRef.current, 'click', () => console.log('click'));
  * ```
  *
- * @ignore
+ * @see
+ * {@linkcode UseEventListener}
  */
-export function useEventListener<K extends keyof WindowEventMap>(
-  eventName: K,
-  handler: (this: Window, event: WindowEventMap[K]) => void,
-  options?: AddEventListenerOptions | boolean,
-): void;
-
-/**
- * @see {@linkcode useEventListener}
- * @ignore
- */
-export function useEventListener<K extends keyof WindowEventMap>(
-  ...args: UseEventListenerOverloadArgs<WindowEventMap, K, Window>
-): void;
-
-/**
- * @see {@linkcode useEventListener}
- * @ignore
- */
-export function useEventListener<K extends keyof DocumentEventMap>(
-  ...args: UseEventListenerOverloadArgs<DocumentEventMap, K, Document>
-): void;
-
-/**
- * @see {@linkcode useEventListener}
- * @ignore
- */
-export function useEventListener<
-  K extends keyof HTMLElementEventMap,
-  T extends HTMLElement,
->(...args: UseEventListenerOverloadArgs<HTMLElementEventMap, K, T>): void;
-
-/**
- * @see {@linkcode useEventListener}
- * @ignore
- */
-export function useEventListener<
-  K extends keyof SVGElementEventMap,
-  T extends SVGElement,
->(...args: UseEventListenerOverloadArgs<SVGElementEventMap, K, T>): void;
-
-/**
- * @see {@linkcode useEventListener}
- * @ignore
- */
-export function useEventListener<
-  K extends keyof MathMLElementEventMap,
-  T extends MathMLElement,
->(...args: UseEventListenerOverloadArgs<MathMLElementEventMap, K, T>): void;
-
-/**
- * @see {@linkcode useEventListener}
- */
-export function useEventListener<K extends keyof WindowEventMap>(
-  eventName: K,
-  handler: (this: Window, event: WindowEventMap[K]) => void,
-  options?: AddEventListenerOptions | boolean,
-): void;
-
-/**
- * @see {@linkcode useEventListener}
- */
-export function useEventListener<T extends EventTarget>(
-  target: T | null,
-  eventName: string,
-  handler: (this: NoInfer<T>, event: Event) => void,
-  options?: AddEventListenerOptions | boolean,
-): void;
-
-/**
- * Adds `handler` as a listener for the event `eventName` of `target` with the
- * provided `options` applied
- *
- * If `target` is not provided, `window` is used instead.
- *
- * If `target` is `null`, no event listener is added. This is useful when
- * working with DOM element refs, or when the event listener needs to be removed
- * temporarily.
- *
- * @example
- * ```tsx
- * useEventListener('resize', () => {
- *   console.log(window.innerWidth, window.innerHeight);
- * });
- *
- * useEventListener(document, 'visibilitychange', () => {
- *   console.log(document.visibilityState);
- * });
- *
- * const buttonRef = useRef<HTMLButtonElement>(null);
- * useEventListener(buttonRef.current, 'click', () => console.log('click'));
- * ```
- */
-export function useEventListener(
-  ...args: UseEventListenerArgsWithoutTarget | UseEventListenerArgsWithTarget
+export const useEventListener: UseEventListener = function useEventListener(
+  ...args:
+    | UseEventListenerWithImplicitWindowTargetArgsAny
+    | UseEventListenerWithExplicitTargetArgsAny
 ) {
   let eventName: string;
-  let handler: (this: EventTarget, event: Event) => void;
+  let handler: (this: never, event: Event) => void;
   let target: EventTarget | null | undefined;
   let options: AddEventListenerOptions | boolean | undefined;
 
   if (typeof args[0] === 'string') {
-    [eventName, handler, options] = args as UseEventListenerArgsWithoutTarget;
+    [eventName, handler, options] =
+      args as UseEventListenerWithImplicitWindowTargetArgsAny;
   } else {
     [target, eventName, handler, options] =
-      args as UseEventListenerArgsWithTarget;
+      args as UseEventListenerWithExplicitTargetArgsAny;
   }
 
   const handlerRef = useRef(handler);
@@ -185,17 +183,4 @@ export function useEventListener(
       definedTarget.removeEventListener(eventName, listener, memoizedOptions);
     };
   }, [eventName, target, memoizedOptions]);
-}
-
-type UseEventListenerArgsWithoutTarget = [
-  eventName: string,
-  handler: (event: Event) => void,
-  options?: AddEventListenerOptions | boolean | undefined,
-];
-
-type UseEventListenerArgsWithTarget = [
-  target: EventTarget | null,
-  eventName: string,
-  handler: (event: Event) => void,
-  options?: AddEventListenerOptions | boolean | undefined,
-];
+} as UseEventListener;
