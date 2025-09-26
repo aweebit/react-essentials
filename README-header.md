@@ -10,7 +10,6 @@
 ### Functions
 
 - [useEventListener()](#useeventlistener)
-- [useForceUpdate()](#useforceupdate)
 - [useReducerWithDeps()](#usereducerwithdeps)
 - [useStateWithDeps()](#usestatewithdeps)
 - [createSafeContext()](#createsafecontext)
