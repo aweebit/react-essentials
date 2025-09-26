@@ -2,22 +2,15 @@
 
 [![NPM Version](https://img.shields.io/npm/v/%40aweebit%2Freact-essentials)](https://www.npmjs.com/package/@aweebit/react-essentials)
 
-### Requirements
-
-- React ≥ 18
-- TypeScript ≥ 5.4
-
-### Functions
-
 - [useEventListener()](#useeventlistener)
 - [useReducerWithDeps()](#usereducerwithdeps)
 - [useStateWithDeps()](#usestatewithdeps)
 - [createSafeContext()](#createsafecontext)
 
-### Types
+### Requirements
 
-- [UseEventListener](#useeventlistener-1)
-- [SafeContext](#safecontext)
+- React ≥ 18
+- TypeScript ≥ 5.4
 
 ## useEventListener
 
@@ -25,7 +18,7 @@
 const useEventListener: UseEventListener;
 ```
 
-Defined in: [hooks/useEventListener.ts:135](https://github.com/aweebit/react-essentials/blob/v0.9.0/src/hooks/useEventListener.ts#L135)
+Defined in: [hooks/useEventListener.ts:135](https://github.com/aweebit/react-essentials/blob/v0.10.0/src/hooks/useEventListener.ts#L135)
 
 Adds `handler` as a listener for the event `eventName` of `target` with the
 provided `options` applied
@@ -76,7 +69,7 @@ function useReducerWithDeps<S, A>(
 ): [S, ActionDispatch<A>];
 ```
 
-Defined in: [hooks/useReducerWithDeps.ts:59](https://github.com/aweebit/react-essentials/blob/v0.9.0/src/hooks/useReducerWithDeps.ts#L59)
+Defined in: [hooks/useReducerWithDeps.ts:59](https://github.com/aweebit/react-essentials/blob/v0.10.0/src/hooks/useReducerWithDeps.ts#L59)
 
 `useReducer` hook with an additional dependency array `deps` that resets the
 state to `initialState` when dependencies change
@@ -219,7 +212,7 @@ function useStateWithDeps<S>(
 ): [S, Dispatch<SetStateAction<S>>];
 ```
 
-Defined in: [hooks/useStateWithDeps.ts:62](https://github.com/aweebit/react-essentials/blob/v0.9.0/src/hooks/useStateWithDeps.ts#L62)
+Defined in: [hooks/useStateWithDeps.ts:62](https://github.com/aweebit/react-essentials/blob/v0.10.0/src/hooks/useStateWithDeps.ts#L62)
 
 `useState` hook with an additional dependency array `deps` that resets the
 state to `initialState` when dependencies change
@@ -348,10 +341,12 @@ Dependencies that reset the state to `initialState`
 ```ts
 function createSafeContext<T>(): <DisplayName>(
   displayName,
-) => SafeContext<DisplayName, T>;
+) => { [K in `${string}Context`]: Context<T> } & {
+  [K in `use${string}`]: () => T;
+};
 ```
 
-Defined in: [misc/createSafeContext.ts:95](https://github.com/aweebit/react-essentials/blob/v0.9.0/src/misc/createSafeContext.ts#L95)
+Defined in: [misc/createSafeContext.ts:62](https://github.com/aweebit/react-essentials/blob/v0.10.0/src/misc/createSafeContext.ts#L62)
 
 For a given type `T`, returns a function that produces both a context of that
 type and a hook that returns the current context value if one was provided,
@@ -437,7 +432,7 @@ A function that accepts a single string argument `displayName` (e.g.
   current context value if one was provided, or throws an error otherwise
 
 ```ts
-<DisplayName>(displayName): SafeContext<DisplayName, T>;
+<DisplayName>(displayName): { [K in `${string}Context`]: Context<T> } & { [K in `use${string}`]: () => T };
 ```
 
 #### Type Parameters
@@ -486,11 +481,7 @@ A function that accepts a single string argument `displayName` (e.g.
 
 #### Returns
 
-[`SafeContext`](#safecontext)\<`DisplayName`, `T`\>
-
-### See
-
-[`SafeContext`](#safecontext)
+``{ [K in `${string}Context`]: Context<T> }`` & ``{ [K in `use${string}`]: () => T }``
 
 ---
 
@@ -502,7 +493,7 @@ type UseEventListener = UseEventListenerWithImplicitWindowTarget &
   UseEventListenerWithAnyExplicitTarget;
 ```
 
-Defined in: [hooks/useEventListener.ts:12](https://github.com/aweebit/react-essentials/blob/v0.9.0/src/hooks/useEventListener.ts#L12)
+Defined in: [hooks/useEventListener.ts:12](https://github.com/aweebit/react-essentials/blob/v0.10.0/src/hooks/useEventListener.ts#L12)
 
 The type of [`useEventListener`](#useeventlistener-1)
 
@@ -521,7 +512,7 @@ The type of [`useEventListener`](#useeventlistener-1)
 type UseEventListenerWithImplicitWindowTarget = <K>(...args) => void;
 ```
 
-Defined in: [hooks/useEventListener.ts:21](https://github.com/aweebit/react-essentials/blob/v0.9.0/src/hooks/useEventListener.ts#L21)
+Defined in: [hooks/useEventListener.ts:21](https://github.com/aweebit/react-essentials/blob/v0.10.0/src/hooks/useEventListener.ts#L21)
 
 ### Type Parameters
 
@@ -589,7 +580,7 @@ type UseEventListenerWithExplicitGlobalTarget =
     UseEventListenerWithExplicitTarget<MathMLElement, MathMLElementEventMap>;
 ```
 
-Defined in: [hooks/useEventListener.ts:32](https://github.com/aweebit/react-essentials/blob/v0.9.0/src/hooks/useEventListener.ts#L32)
+Defined in: [hooks/useEventListener.ts:32](https://github.com/aweebit/react-essentials/blob/v0.10.0/src/hooks/useEventListener.ts#L32)
 
 ### See
 
@@ -606,7 +597,7 @@ type UseEventListenerWithExplicitTarget<Target, EventMap> = <T, K>(
 ) => void;
 ```
 
-Defined in: [hooks/useEventListener.ts:44](https://github.com/aweebit/react-essentials/blob/v0.9.0/src/hooks/useEventListener.ts#L44)
+Defined in: [hooks/useEventListener.ts:44](https://github.com/aweebit/react-essentials/blob/v0.10.0/src/hooks/useEventListener.ts#L44)
 
 ### Type Parameters
 
@@ -705,7 +696,7 @@ type UseEventListenerWithAnyExplicitTarget = UseEventListenerWithExplicitTarget<
 >;
 ```
 
-Defined in: [hooks/useEventListener.ts:56](https://github.com/aweebit/react-essentials/blob/v0.9.0/src/hooks/useEventListener.ts#L56)
+Defined in: [hooks/useEventListener.ts:56](https://github.com/aweebit/react-essentials/blob/v0.10.0/src/hooks/useEventListener.ts#L56)
 
 ### See
 
@@ -726,7 +717,7 @@ type UseEventListenerWithImplicitWindowTargetArgs<K> =
     : never;
 ```
 
-Defined in: [hooks/useEventListener.ts:64](https://github.com/aweebit/react-essentials/blob/v0.9.0/src/hooks/useEventListener.ts#L64)
+Defined in: [hooks/useEventListener.ts:64](https://github.com/aweebit/react-essentials/blob/v0.10.0/src/hooks/useEventListener.ts#L64)
 
 ### Type Parameters
 
@@ -771,7 +762,7 @@ type UseEventListenerWithExplicitTargetArgs<EventMap, T, K> = [
 ];
 ```
 
-Defined in: [hooks/useEventListener.ts:78](https://github.com/aweebit/react-essentials/blob/v0.9.0/src/hooks/useEventListener.ts#L78)
+Defined in: [hooks/useEventListener.ts:78](https://github.com/aweebit/react-essentials/blob/v0.10.0/src/hooks/useEventListener.ts#L78)
 
 ### Type Parameters
 
@@ -809,95 +800,3 @@ Defined in: [hooks/useEventListener.ts:78](https://github.com/aweebit/react-esse
 ### See
 
 [`useEventListener`](#useeventlistener-1)
-
----
-
-## SafeContext
-
-```ts
-type SafeContext<DisplayName, T> = {
-  [K in `${DisplayName}Context`]: RestrictedContext<T>;
-} & { [K in `use${DisplayName}`]: () => T };
-```
-
-Defined in: [misc/createSafeContext.ts:13](https://github.com/aweebit/react-essentials/blob/v0.9.0/src/misc/createSafeContext.ts#L13)
-
-The return type of [`createSafeContext`](#createsafecontext)
-
-### Type Parameters
-
-<table>
-<thead>
-<tr>
-<th>Type Parameter</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-
-`DisplayName` _extends_ `string`
-
-</td>
-</tr>
-<tr>
-<td>
-
-`T`
-
-</td>
-</tr>
-</tbody>
-</table>
-
-### See
-
-[`createSafeContext`](#createsafecontext),
-[`RestrictedContext`](#restrictedcontext)
-
----
-
-## RestrictedContext
-
-```ts
-type RestrictedContext<T> =
-  Context<T> extends Provider<T>
-    ? {
-        Provider: Provider<T>;
-        displayName: string;
-      } & Provider<T>
-    : {
-        Provider: Provider<T>;
-        displayName: string;
-      };
-```
-
-Defined in: [misc/createSafeContext.ts:31](https://github.com/aweebit/react-essentials/blob/v0.9.0/src/misc/createSafeContext.ts#L31)
-
-A React context with a required `displayName` and the obsolete `Consumer`
-property purposefully omitted so that it is impossible to pass the context
-as an argument to `useContext` or `use` (the hook produced with
-[`createSafeContext`](#createsafecontext) should be used instead)
-
-### Type Parameters
-
-<table>
-<thead>
-<tr>
-<th>Type Parameter</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-
-`T`
-
-</td>
-</tr>
-</tbody>
-</table>
-
-### See
-
-[`createSafeContext`](#createsafecontext)
