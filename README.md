@@ -17,12 +17,6 @@
 ### Types
 
 - [UseEventListener](#useeventlistener-1)
-- [UseEventListenerWithImplicitWindowTarget](#useeventlistenerwithimplicitwindowtarget)
-- [UseEventListenerWithExplicitTarget](#useeventlistenerwithexplicittarget)
-- [UseEventListenerWithAnyExplicitTarget](#useeventlistenerwithanyexplicittarget)
-- [UseEventListenerWithImplicitWindowTargetArgs](#useeventlistenerwithimplicitwindowtargetargs)
-- [UseEventListenerWithExplicitTargetArgs](#useeventlistenerwithexplicittargetargs)
-- [RestrictedContext](#restrictedcontext)
 - [SafeContext](#safecontext)
 
 ## useEventListener
@@ -827,53 +821,6 @@ Defined in: [hooks/useEventListener.ts:78](https://github.com/aweebit/react-esse
 
 ---
 
-## RestrictedContext
-
-```ts
-type RestrictedContext<T> =
-  Context<T> extends Provider<T>
-    ? {
-        Provider: Provider<T>;
-        displayName: string;
-      } & Provider<T>
-    : {
-        Provider: Provider<T>;
-        displayName: string;
-      };
-```
-
-Defined in: [misc/createSafeContext.ts:18](https://github.com/aweebit/react-essentials/blob/v0.9.0/src/misc/createSafeContext.ts#L18)
-
-A React context with a required `displayName` and the obsolete `Consumer`
-property purposefully omitted so that it is impossible to pass the context
-as an argument to `useContext` or `use` (the hook produced with
-[`createSafeContext`](#createsafecontext) should be used instead)
-
-### Type Parameters
-
-<table>
-<thead>
-<tr>
-<th>Type Parameter</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-
-`T`
-
-</td>
-</tr>
-</tbody>
-</table>
-
-### See
-
-[`createSafeContext`](#createsafecontext)
-
----
-
 ## SafeContext
 
 ```ts
@@ -882,7 +829,7 @@ type SafeContext<DisplayName, T> = {
 } & { [K in `use${DisplayName}`]: () => T };
 ```
 
-Defined in: [misc/createSafeContext.ts:30](https://github.com/aweebit/react-essentials/blob/v0.9.0/src/misc/createSafeContext.ts#L30)
+Defined in: [misc/createSafeContext.ts:13](https://github.com/aweebit/react-essentials/blob/v0.9.0/src/misc/createSafeContext.ts#L13)
 
 The return type of [`createSafeContext`](#createsafecontext)
 
@@ -916,3 +863,50 @@ The return type of [`createSafeContext`](#createsafecontext)
 
 [`createSafeContext`](#createsafecontext),
 [`RestrictedContext`](#restrictedcontext)
+
+---
+
+## RestrictedContext
+
+```ts
+type RestrictedContext<T> =
+  Context<T> extends Provider<T>
+    ? {
+        Provider: Provider<T>;
+        displayName: string;
+      } & Provider<T>
+    : {
+        Provider: Provider<T>;
+        displayName: string;
+      };
+```
+
+Defined in: [misc/createSafeContext.ts:31](https://github.com/aweebit/react-essentials/blob/v0.9.0/src/misc/createSafeContext.ts#L31)
+
+A React context with a required `displayName` and the obsolete `Consumer`
+property purposefully omitted so that it is impossible to pass the context
+as an argument to `useContext` or `use` (the hook produced with
+[`createSafeContext`](#createsafecontext) should be used instead)
+
+### Type Parameters
+
+<table>
+<thead>
+<tr>
+<th>Type Parameter</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+
+`T`
+
+</td>
+</tr>
+</tbody>
+</table>
+
+### See
+
+[`createSafeContext`](#createsafecontext)

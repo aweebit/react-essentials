@@ -17,10 +17,4 @@
 ### Types
 
 - [UseEventListener](#useeventlistener-1)
-- [UseEventListenerWithImplicitWindowTarget](#useeventlistenerwithimplicitwindowtarget)
-- [UseEventListenerWithExplicitTarget](#useeventlistenerwithexplicittarget)
-- [UseEventListenerWithAnyExplicitTarget](#useeventlistenerwithanyexplicittarget)
-- [UseEventListenerWithImplicitWindowTargetArgs](#useeventlistenerwithimplicitwindowtargetargs)
-- [UseEventListenerWithExplicitTargetArgs](#useeventlistenerwithexplicittargetargs)
-- [RestrictedContext](#restrictedcontext)
 - [SafeContext](#safecontext)

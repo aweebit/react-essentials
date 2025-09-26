@@ -4,6 +4,19 @@ import type { ArgumentFallback } from '../utils.js';
 const moValueSymbol = Symbol('noValue');
 
 /**
+ * The return type of {@linkcode createSafeContext}
+ *
+ * @see
+ * {@linkcode createSafeContext},
+ * {@linkcode RestrictedContext}
+ */
+export type SafeContext<DisplayName extends string, T> = {
+  [K in `${DisplayName}Context`]: RestrictedContext<T>;
+} & {
+  [K in `use${DisplayName}`]: () => T;
+};
+
+/**
  * A React context with a required `displayName` and the obsolete `Consumer`
  * property purposefully omitted so that it is impossible to pass the context
  * as an argument to `useContext` or `use` (the hook produced with
@@ -19,19 +32,6 @@ export type RestrictedContext<T> =
   Context<T> extends Provider<T>
     ? { Provider: Provider<T>; displayName: string } & Provider<T>
     : { Provider: Provider<T>; displayName: string };
-
-/**
- * The return type of {@linkcode createSafeContext}
- *
- * @see
- * {@linkcode createSafeContext},
- * {@linkcode RestrictedContext}
- */
-export type SafeContext<DisplayName extends string, T> = {
-  [K in `${DisplayName}Context`]: RestrictedContext<T>;
-} & {
-  [K in `use${DisplayName}`]: () => T;
-};
 
 /**
  * For a given type `T`, returns a function that produces both a context of that
