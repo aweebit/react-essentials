@@ -43,7 +43,7 @@ export type UseEventListenerWithExplicitGlobalTarget =
  */
 export type UseEventListenerWithExplicitTarget<
   Target extends EventTarget,
-  EventMap = Record<string, Event>,
+  EventMap,
 > = <T extends Target, K extends keyof EventMap>(
   ...args: UseEventListenerWithExplicitTargetArgs<EventMap, T, K>
 ) => void;
@@ -54,7 +54,7 @@ export type UseEventListenerWithExplicitTarget<
  * {@linkcode UseEventListenerWithExplicitTarget}
  */
 export type UseEventListenerWithAnyExplicitTarget =
-  UseEventListenerWithExplicitTarget<EventTarget>;
+  UseEventListenerWithExplicitTarget<EventTarget, Record<string, Event>>;
 
 /**
  * @see

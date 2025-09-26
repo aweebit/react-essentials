@@ -614,7 +614,6 @@ Defined in: [hooks/useEventListener.ts:44](https://github.com/aweebit/react-esse
 <thead>
 <tr>
 <th>Type Parameter</th>
-<th>Default type</th>
 </tr>
 </thead>
 <tbody>
@@ -624,21 +623,11 @@ Defined in: [hooks/useEventListener.ts:44](https://github.com/aweebit/react-esse
 `Target` _extends_ `EventTarget`
 
 </td>
-<td>
-
-&hyphen;
-
-</td>
 </tr>
 <tr>
 <td>
 
 `EventMap`
-
-</td>
-<td>
-
-`Record`\<`string`, `Event`\>
 
 </td>
 </tr>
@@ -710,8 +699,10 @@ Defined in: [hooks/useEventListener.ts:44](https://github.com/aweebit/react-esse
 ## UseEventListenerWithAnyExplicitTarget
 
 ```ts
-type UseEventListenerWithAnyExplicitTarget =
-  UseEventListenerWithExplicitTarget<EventTarget>;
+type UseEventListenerWithAnyExplicitTarget = UseEventListenerWithExplicitTarget<
+  EventTarget,
+  Record<string, Event>
+>;
 ```
 
 Defined in: [hooks/useEventListener.ts:56](https://github.com/aweebit/react-essentials/blob/v0.9.0/src/hooks/useEventListener.ts#L56)
