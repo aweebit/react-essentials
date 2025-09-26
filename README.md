@@ -32,7 +32,7 @@
 const useEventListener: UseEventListener;
 ```
 
-Defined in: [hooks/useEventListener.ts:126](https://github.com/aweebit/react-essentials/blob/v0.8.1/src/hooks/useEventListener.ts#L126)
+Defined in: [hooks/useEventListener.ts:135](https://github.com/aweebit/react-essentials/blob/v0.8.1/src/hooks/useEventListener.ts#L135)
 
 Adds `handler` as a listener for the event `eventName` of `target` with the
 provided `options` applied
@@ -577,11 +577,7 @@ A function that accepts a single string argument `displayName` (e.g.
 
 ```ts
 type UseEventListener = UseEventListenerWithImplicitWindowTarget &
-  UseEventListenerWithExplicitTarget<Window, WindowEventMap> &
-  UseEventListenerWithExplicitTarget<Document, DocumentEventMap> &
-  UseEventListenerWithExplicitTarget<HTMLElement, HTMLElementEventMap> &
-  UseEventListenerWithExplicitTarget<SVGElement, SVGElementEventMap> &
-  UseEventListenerWithExplicitTarget<MathMLElement, MathMLElementEventMap> &
+  UseEventListenerWithExplicitGlobalTarget &
   UseEventListenerWithAnyExplicitTarget;
 ```
 
@@ -593,7 +589,7 @@ The type of [`useEventListener`](#useeventlistener-1)
 
 [`useEventListener`](#useeventlistener-1),
 [`UseEventListenerWithImplicitWindowTarget`](#useeventlistenerwithimplicitwindowtarget),
-[`UseEventListenerWithExplicitTarget`](#useeventlistenerwithexplicittarget),
+[`UseEventListenerWithExplicitGlobalTarget`](#useeventlistenerwithexplicitglobaltarget),
 [`UseEventListenerWithAnyExplicitTarget`](#useeventlistenerwithanyexplicittarget)
 
 ---
@@ -604,7 +600,7 @@ The type of [`useEventListener`](#useeventlistener-1)
 type UseEventListenerWithImplicitWindowTarget = <K>(...args) => void;
 ```
 
-Defined in: [hooks/useEventListener.ts:24](https://github.com/aweebit/react-essentials/blob/v0.8.1/src/hooks/useEventListener.ts#L24)
+Defined in: [hooks/useEventListener.ts:21](https://github.com/aweebit/react-essentials/blob/v0.8.1/src/hooks/useEventListener.ts#L21)
 
 ### Type Parameters
 
@@ -661,6 +657,26 @@ Defined in: [hooks/useEventListener.ts:24](https://github.com/aweebit/react-esse
 
 ---
 
+## UseEventListenerWithExplicitGlobalTarget
+
+```ts
+type UseEventListenerWithExplicitGlobalTarget =
+  UseEventListenerWithExplicitTarget<Window, WindowEventMap> &
+    UseEventListenerWithExplicitTarget<Document, DocumentEventMap> &
+    UseEventListenerWithExplicitTarget<HTMLElement, HTMLElementEventMap> &
+    UseEventListenerWithExplicitTarget<SVGElement, SVGElementEventMap> &
+    UseEventListenerWithExplicitTarget<MathMLElement, MathMLElementEventMap>;
+```
+
+Defined in: [hooks/useEventListener.ts:32](https://github.com/aweebit/react-essentials/blob/v0.8.1/src/hooks/useEventListener.ts#L32)
+
+### See
+
+[`useEventListener`](#useeventlistener-1),
+[`UseEventListenerWithExplicitTarget`](#useeventlistenerwithexplicittarget)
+
+---
+
 ## UseEventListenerWithExplicitTarget()
 
 ```ts
@@ -669,7 +685,7 @@ type UseEventListenerWithExplicitTarget<Target, EventMap> = <T, K>(
 ) => void;
 ```
 
-Defined in: [hooks/useEventListener.ts:35](https://github.com/aweebit/react-essentials/blob/v0.8.1/src/hooks/useEventListener.ts#L35)
+Defined in: [hooks/useEventListener.ts:44](https://github.com/aweebit/react-essentials/blob/v0.8.1/src/hooks/useEventListener.ts#L44)
 
 ### Type Parameters
 
@@ -777,7 +793,7 @@ type UseEventListenerWithAnyExplicitTarget =
   UseEventListenerWithExplicitTarget<EventTarget>;
 ```
 
-Defined in: [hooks/useEventListener.ts:47](https://github.com/aweebit/react-essentials/blob/v0.8.1/src/hooks/useEventListener.ts#L47)
+Defined in: [hooks/useEventListener.ts:56](https://github.com/aweebit/react-essentials/blob/v0.8.1/src/hooks/useEventListener.ts#L56)
 
 ### See
 
@@ -798,7 +814,7 @@ type UseEventListenerWithImplicitWindowTargetArgs<K> =
     : never;
 ```
 
-Defined in: [hooks/useEventListener.ts:55](https://github.com/aweebit/react-essentials/blob/v0.8.1/src/hooks/useEventListener.ts#L55)
+Defined in: [hooks/useEventListener.ts:64](https://github.com/aweebit/react-essentials/blob/v0.8.1/src/hooks/useEventListener.ts#L64)
 
 ### Type Parameters
 
@@ -843,7 +859,7 @@ type UseEventListenerWithExplicitTargetArgs<EventMap, T, K> = [
 ];
 ```
 
-Defined in: [hooks/useEventListener.ts:69](https://github.com/aweebit/react-essentials/blob/v0.8.1/src/hooks/useEventListener.ts#L69)
+Defined in: [hooks/useEventListener.ts:78](https://github.com/aweebit/react-essentials/blob/v0.8.1/src/hooks/useEventListener.ts#L78)
 
 ### Type Parameters
 

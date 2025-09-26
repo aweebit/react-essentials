@@ -6,26 +6,35 @@ import { useEffect, useMemo, useRef, type RefObject } from 'react';
  * @see
  * {@linkcode useEventListener},
  * {@linkcode UseEventListenerWithImplicitWindowTarget},
- * {@linkcode UseEventListenerWithExplicitTarget},
+ * {@linkcode UseEventListenerWithExplicitGlobalTarget},
  * {@linkcode UseEventListenerWithAnyExplicitTarget}
  */
 export type UseEventListener = UseEventListenerWithImplicitWindowTarget &
-  UseEventListenerWithExplicitTarget<Window, WindowEventMap> &
-  UseEventListenerWithExplicitTarget<Document, DocumentEventMap> &
-  UseEventListenerWithExplicitTarget<HTMLElement, HTMLElementEventMap> &
-  UseEventListenerWithExplicitTarget<SVGElement, SVGElementEventMap> &
-  UseEventListenerWithExplicitTarget<MathMLElement, MathMLElementEventMap> &
+  UseEventListenerWithExplicitGlobalTarget &
   UseEventListenerWithAnyExplicitTarget;
 
 /**
  * @see
  * {@linkcode useEventListener},
- * {@linkcode UseEventListenerWithImplicitWindowTargetArgs} */
+ * {@linkcode UseEventListenerWithImplicitWindowTargetArgs}
+ */
 export type UseEventListenerWithImplicitWindowTarget = <
   K extends keyof WindowEventMap,
 >(
   ...args: UseEventListenerWithImplicitWindowTargetArgs<K>
 ) => void;
+
+/**
+ * @see
+ * {@linkcode useEventListener},
+ * {@linkcode UseEventListenerWithExplicitTarget}
+ */
+export type UseEventListenerWithExplicitGlobalTarget =
+  UseEventListenerWithExplicitTarget<Window, WindowEventMap> &
+    UseEventListenerWithExplicitTarget<Document, DocumentEventMap> &
+    UseEventListenerWithExplicitTarget<HTMLElement, HTMLElementEventMap> &
+    UseEventListenerWithExplicitTarget<SVGElement, SVGElementEventMap> &
+    UseEventListenerWithExplicitTarget<MathMLElement, MathMLElementEventMap>;
 
 /**
  * @see
