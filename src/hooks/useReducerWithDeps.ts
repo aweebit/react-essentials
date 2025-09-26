@@ -18,6 +18,13 @@ export type ActionDispatch<ActionArg extends AnyActionArg> = (
  * `useReducer` hook with an additional dependency array `deps` that resets the
  * state to `initialState` when dependencies change
  *
+ * This hook is the reducer pattern counterpart of {@linkcode useStateWithDeps}.
+ *
+ * Due to React's limitations, a change in dependencies always causes two
+ * renders when using this hook. The result of the first render is thrown away
+ * as described in
+ * [useState > Storing information from previous renders](https://react.dev/reference/react/useState#storing-information-from-previous-renders).
+ *
  * For motivation and examples, see
  * https://github.com/facebook/react/issues/33041.
  *
@@ -60,9 +67,9 @@ export function useReducerWithDeps<S, A extends AnyActionArg>(
   // Only the initially provided reducer is used
   const reducerRef = useRef(reducer);
 
-  const dispatch = useRef(function dispatch(...args: A): void {
+  function dispatch(...args: A): void {
     setState((previousState) => reducerRef.current(previousState, ...args));
-  }).current;
+  }
 
-  return [state, dispatch];
+  return [state, useRef(dispatch).current];
 }

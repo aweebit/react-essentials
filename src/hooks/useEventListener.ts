@@ -1,10 +1,3 @@
-/**
- * @file Based on {@link https://github.com/juliencrn/usehooks-ts}
- *
- * @license MIT
- * @copyright 2020 Julien CARON
- */
-
 import { useEffect, useMemo, useRef, type RefObject } from 'react';
 
 /**
@@ -149,7 +142,9 @@ export const useEventListener: UseEventListener = function useEventListener(
     target && !('addEventListener' in target) ? target.current : target;
 
   const handlerRef = useRef(handler);
-  handlerRef.current = handler;
+  useEffect(() => {
+    handlerRef.current = handler;
+  }, [handler]);
 
   const {
     capture = false,

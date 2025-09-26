@@ -1,22 +1,19 @@
-/**
- * @file Based on {@link https://github.com/peterjuras/use-state-with-deps}
- *
- * @license MIT
- * @copyright 2020 Peter Juras
- */
-
 import {
-  useRef,
+  useState,
   type DependencyList,
   type Dispatch,
   type SetStateAction,
 } from 'react';
-import { depsAreEqual, isFunction } from '../utils.js';
-import { useForceUpdate } from './useForceUpdate.js';
+import { depsAreEqual } from '../utils.js';
 
 /**
  * `useState` hook with an additional dependency array `deps` that resets the
  * state to `initialState` when dependencies change
+ *
+ * Due to React's limitations, a change in dependencies always causes two
+ * renders when using this hook. The result of the first render is thrown away
+ * as described in
+ * [useState > Storing information from previous renders](https://react.dev/reference/react/useState#storing-information-from-previous-renders).
  *
  * For motivation and more examples, see
  * https://github.com/facebook/react/issues/33041.
@@ -36,7 +33,7 @@ import { useForceUpdate } from './useForceUpdate.js';
  *   evening: ['board games', 'dinner'],
  * };
  *
- * export function Example() {
+ * function Example() {
  *   const [timeOfDay, setTimeOfDay] = useState<TimeOfDay>('morning');
  *
  *   const activityOptions = activityOptionsByTimeOfDay[timeOfDay];
@@ -66,45 +63,14 @@ export function useStateWithDeps<S>(
   initialState: S | ((previousState?: S) => S),
   deps: DependencyList,
 ): [S, Dispatch<SetStateAction<S>>] {
-  // It would be possible to use useState instead of useRef to store the state,
-  // however this would trigger re-renders whenever the state is reset due to a
-  // change in dependencies. In order to avoid these re-renders, the state is
-  // stored in a ref, and updates are triggered with forceUpdate when necessary.
-  const state = useRef(undefined as S);
+  const [state, setState] = useState(initialState);
 
-  const prevDeps = useRef(deps);
-  const isMounted = useRef(false);
+  const [prevDeps, setPrevDeps] = useState(deps);
 
-  // If first render, or if dependencies have changed since last time
-  if (!isMounted.current || !depsAreEqual(prevDeps.current, deps)) {
-    // Update state and deps
-    let nextState: S;
-    if (isFunction(initialState)) {
-      nextState = initialState(state.current);
-    } else {
-      nextState = initialState;
-    }
-    state.current = nextState;
-    prevDeps.current = deps;
-    isMounted.current = true;
+  if (!depsAreEqual(deps, prevDeps)) {
+    setPrevDeps(deps);
+    setState(initialState);
   }
 
-  const [forceUpdate] = useForceUpdate();
-
-  const updateState = useRef(function updateState(
-    newState: S | ((previousState: S) => S),
-  ): void {
-    let nextState: S;
-    if (isFunction(newState)) {
-      nextState = newState(state.current);
-    } else {
-      nextState = newState;
-    }
-    if (!Object.is(state.current, nextState)) {
-      state.current = nextState;
-      forceUpdate();
-    }
-  }).current;
-
-  return [state.current, updateState];
+  return [state, setState];
 }

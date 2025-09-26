@@ -32,7 +32,7 @@
 const useEventListener: UseEventListener;
 ```
 
-Defined in: [hooks/useEventListener.ts:133](https://github.com/aweebit/react-essentials/blob/v0.8.0/src/hooks/useEventListener.ts#L133)
+Defined in: [hooks/useEventListener.ts:126](https://github.com/aweebit/react-essentials/blob/v0.8.1/src/hooks/useEventListener.ts#L126)
 
 Adds `handler` as a listener for the event `eventName` of `target` with the
 provided `options` applied
@@ -73,68 +73,24 @@ useEventListener(buttonRef, 'click', () => console.log('click'));
 
 ---
 
-## useForceUpdate()
+## ~~useForceUpdate()~~
 
 ```ts
 function useForceUpdate(callback?): [() => void, bigint];
 ```
 
-Defined in: [hooks/useForceUpdate.ts:81](https://github.com/aweebit/react-essentials/blob/v0.8.0/src/hooks/useForceUpdate.ts#L81)
+Defined in: [hooks/useForceUpdate.ts:37](https://github.com/aweebit/react-essentials/blob/v0.8.1/src/hooks/useForceUpdate.ts#L37)
 
 Enables you to imperatively trigger re-rendering of components
 
 This hook is designed in the most general way possible in order to cover all
 imaginable use cases.
 
-### Example
+### Deprecated
 
-Sometimes, React's immutability constraints mean too much unnecessary copying
-of data when new data arrives at a high frequency. In such cases, it might be
-desirable to ignore the constraints by embracing imperative patterns.
-Here is an example of a scenario where that can make sense:
-
-```tsx
-type SensorData = { timestamp: number; value: number };
-const sensorDataRef = useRef<SensorData[]>([]);
-const mostRecentSensorDataTimestampRef = useRef<number>(0);
-
-const [forceUpdate, updateCount] = useForceUpdate();
-// Limiting the frequency of forced re-renders with some throttle function:
-const throttledForceUpdateRef = useRef(throttle(forceUpdate));
-
-useEffect(() => {
-  return sensorDataObservable.subscribe((data: SensorData) => {
-    // Imagine new sensor data arrives every 1 millisecond. If we were following
-    // React's immutability rules by creating a new array every time, the data
-    // that's already there would have to be copied many times before the new
-    // data would even get a chance to be reflected in the UI for the first time
-    // because it typically takes much longer than 1 millisecond for a new frame
-    // to be displayed. To prevent the waste of computational resources, we just
-    // mutate the existing array every time instead:
-    sensorDataRef.current.push(data);
-    if (data.timestamp > mostRecentSensorDataTimestampRef.current) {
-      mostRecentSensorDataTimestampRef.current = data.timestamp;
-    }
-    throttledForceUpdateRef.current();
-  });
-}, []);
-
-const [timeWindow, setTimeWindow] = useState(1000);
-const selectedSensorData = useMemo(
-  () => {
-    // Keep this line if you don't want to disable the
-    // react-hooks/exhaustive-deps ESLint rule:
-    updateCount;
-    const threshold = mostRecentSensorDataTimestampRef.current - timeWindow;
-    return sensorDataRef.current.filter(
-      ({ timestamp }) => timestamp >= threshold,
-    );
-  },
-  // sensorDataRef.current always references the same array, so listing it as a
-  // dependency is pointless. Instead, updateCount should be used:
-  [updateCount, timeWindow],
-);
-```
+This hook encourages patterns that are unsafe in Concurrent React.
+For details and ideas on how to get rid of it, please check the discussion at
+https://www.reddit.com/r/react/comments/1nqcsri/comment/ng76cv5/.
 
 ### Parameters
 
@@ -199,10 +155,17 @@ function useReducerWithDeps<S, A>(
 ): [S, ActionDispatch<A>];
 ```
 
-Defined in: [hooks/useReducerWithDeps.ts:52](https://github.com/aweebit/react-essentials/blob/v0.8.0/src/hooks/useReducerWithDeps.ts#L52)
+Defined in: [hooks/useReducerWithDeps.ts:59](https://github.com/aweebit/react-essentials/blob/v0.8.1/src/hooks/useReducerWithDeps.ts#L59)
 
 `useReducer` hook with an additional dependency array `deps` that resets the
 state to `initialState` when dependencies change
+
+This hook is the reducer pattern counterpart of [`useStateWithDeps`](#usestatewithdeps).
+
+Due to React's limitations, a change in dependencies always causes two
+renders when using this hook. The result of the first render is thrown away
+as described in
+[useState > Storing information from previous renders](https://react.dev/reference/react/useState#storing-information-from-previous-renders).
 
 For motivation and examples, see
 https://github.com/facebook/react/issues/33041.
@@ -335,10 +298,15 @@ function useStateWithDeps<S>(
 ): [S, Dispatch<SetStateAction<S>>];
 ```
 
-Defined in: [hooks/useStateWithDeps.ts:65](https://github.com/aweebit/react-essentials/blob/v0.8.0/src/hooks/useStateWithDeps.ts#L65)
+Defined in: [hooks/useStateWithDeps.ts:62](https://github.com/aweebit/react-essentials/blob/v0.8.1/src/hooks/useStateWithDeps.ts#L62)
 
 `useState` hook with an additional dependency array `deps` that resets the
 state to `initialState` when dependencies change
+
+Due to React's limitations, a change in dependencies always causes two
+renders when using this hook. The result of the first render is thrown away
+as described in
+[useState > Storing information from previous renders](https://react.dev/reference/react/useState#storing-information-from-previous-renders).
 
 For motivation and more examples, see
 https://github.com/facebook/react/issues/33041.
@@ -359,7 +327,7 @@ const activityOptionsByTimeOfDay: {
   evening: ['board games', 'dinner'],
 };
 
-export function Example() {
+function Example() {
   const [timeOfDay, setTimeOfDay] = useState<TimeOfDay>('morning');
 
   const activityOptions = activityOptionsByTimeOfDay[timeOfDay];
@@ -462,7 +430,7 @@ function createSafeContext<T>(): <DisplayName>(
 ) => SafeContext<DisplayName, T>;
 ```
 
-Defined in: [misc/createSafeContext.ts:95](https://github.com/aweebit/react-essentials/blob/v0.8.0/src/misc/createSafeContext.ts#L95)
+Defined in: [misc/createSafeContext.ts:95](https://github.com/aweebit/react-essentials/blob/v0.8.1/src/misc/createSafeContext.ts#L95)
 
 For a given type `T`, returns a function that produces both a context of that
 type and a hook that returns the current context value if one was provided,
@@ -617,7 +585,7 @@ type UseEventListener = UseEventListenerWithImplicitWindowTarget &
   UseEventListenerWithAnyExplicitTarget;
 ```
 
-Defined in: [hooks/useEventListener.ts:19](https://github.com/aweebit/react-essentials/blob/v0.8.0/src/hooks/useEventListener.ts#L19)
+Defined in: [hooks/useEventListener.ts:12](https://github.com/aweebit/react-essentials/blob/v0.8.1/src/hooks/useEventListener.ts#L12)
 
 The type of [`useEventListener`](#useeventlistener-1)
 
@@ -636,7 +604,7 @@ The type of [`useEventListener`](#useeventlistener-1)
 type UseEventListenerWithImplicitWindowTarget = <K>(...args) => void;
 ```
 
-Defined in: [hooks/useEventListener.ts:31](https://github.com/aweebit/react-essentials/blob/v0.8.0/src/hooks/useEventListener.ts#L31)
+Defined in: [hooks/useEventListener.ts:24](https://github.com/aweebit/react-essentials/blob/v0.8.1/src/hooks/useEventListener.ts#L24)
 
 ### Type Parameters
 
@@ -701,7 +669,7 @@ type UseEventListenerWithExplicitTarget<Target, EventMap> = <T, K>(
 ) => void;
 ```
 
-Defined in: [hooks/useEventListener.ts:42](https://github.com/aweebit/react-essentials/blob/v0.8.0/src/hooks/useEventListener.ts#L42)
+Defined in: [hooks/useEventListener.ts:35](https://github.com/aweebit/react-essentials/blob/v0.8.1/src/hooks/useEventListener.ts#L35)
 
 ### Type Parameters
 
@@ -809,7 +777,7 @@ type UseEventListenerWithAnyExplicitTarget =
   UseEventListenerWithExplicitTarget<EventTarget>;
 ```
 
-Defined in: [hooks/useEventListener.ts:54](https://github.com/aweebit/react-essentials/blob/v0.8.0/src/hooks/useEventListener.ts#L54)
+Defined in: [hooks/useEventListener.ts:47](https://github.com/aweebit/react-essentials/blob/v0.8.1/src/hooks/useEventListener.ts#L47)
 
 ### See
 
@@ -830,7 +798,7 @@ type UseEventListenerWithImplicitWindowTargetArgs<K> =
     : never;
 ```
 
-Defined in: [hooks/useEventListener.ts:62](https://github.com/aweebit/react-essentials/blob/v0.8.0/src/hooks/useEventListener.ts#L62)
+Defined in: [hooks/useEventListener.ts:55](https://github.com/aweebit/react-essentials/blob/v0.8.1/src/hooks/useEventListener.ts#L55)
 
 ### Type Parameters
 
@@ -875,7 +843,7 @@ type UseEventListenerWithExplicitTargetArgs<EventMap, T, K> = [
 ];
 ```
 
-Defined in: [hooks/useEventListener.ts:76](https://github.com/aweebit/react-essentials/blob/v0.8.0/src/hooks/useEventListener.ts#L76)
+Defined in: [hooks/useEventListener.ts:69](https://github.com/aweebit/react-essentials/blob/v0.8.1/src/hooks/useEventListener.ts#L69)
 
 ### Type Parameters
 
@@ -931,7 +899,7 @@ type RestrictedContext<T> =
       };
 ```
 
-Defined in: [misc/createSafeContext.ts:18](https://github.com/aweebit/react-essentials/blob/v0.8.0/src/misc/createSafeContext.ts#L18)
+Defined in: [misc/createSafeContext.ts:18](https://github.com/aweebit/react-essentials/blob/v0.8.1/src/misc/createSafeContext.ts#L18)
 
 A React context with a required `displayName` and the obsolete `Consumer`
 property purposefully omitted so that it is impossible to pass the context
@@ -971,7 +939,7 @@ type SafeContext<DisplayName, T> = {
 } & { [K in `use${DisplayName}`]: () => T };
 ```
 
-Defined in: [misc/createSafeContext.ts:30](https://github.com/aweebit/react-essentials/blob/v0.8.0/src/misc/createSafeContext.ts#L30)
+Defined in: [misc/createSafeContext.ts:30](https://github.com/aweebit/react-essentials/blob/v0.8.1/src/misc/createSafeContext.ts#L30)
 
 The return type of [`createSafeContext`](#createsafecontext)
 

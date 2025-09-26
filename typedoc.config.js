@@ -16,7 +16,7 @@ const config = {
   useCodeBlocks: true,
   expandObjects: true,
   sort: ['source-order'],
-  blockTagsPreserveOrder: ['@example'],
+  blockTagsPreserveOrder: ['@deprecated', '@example'],
   classPropertiesFormat: 'htmlTable',
   enumMembersFormat: 'htmlTable',
   interfacePropertiesFormat: 'htmlTable',
