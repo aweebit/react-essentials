@@ -5,7 +5,7 @@
  * @copyright 2020 Julien CARON
  */
 
-import { useEffect, useMemo, useRef } from 'react';
+import { useEffect, useMemo, useRef, type RefObject } from 'react';
 
 /**
  * The type of {@linkcode useEventListener}
@@ -78,7 +78,7 @@ export type UseEventListenerWithExplicitTargetArgs<
   T extends EventTarget,
   K extends keyof EventMap,
 > = [
-  target: T | null,
+  target: T | (RefObject<T> & { addEventListener?: never }) | null,
   eventName: K,
   handler: (this: NoInfer<T>, event: EventMap[K]) => void,
   options?: AddEventListenerOptions | boolean | undefined,
@@ -105,8 +105,7 @@ type UseEventListenerWithExplicitTargetArgsAny =
  * function useEventListener(target, eventName, handler, options?): void;
  * ```
  *
- * For the full definition of the function type, see
- * {@linkcode UseEventListener}.
+ * For the full definition of the hook's type, see {@linkcode UseEventListener}.
  *
  * If `target` is not provided, `window` is used instead.
  *
@@ -125,7 +124,7 @@ type UseEventListenerWithExplicitTargetArgsAny =
  * });
  *
  * const buttonRef = useRef<HTMLButtonElement>(null);
- * useEventListener(buttonRef.current, 'click', () => console.log('click'));
+ * useEventListener(buttonRef, 'click', () => console.log('click'));
  * ```
  *
  * @see
@@ -136,18 +135,18 @@ export const useEventListener: UseEventListener = function useEventListener(
     | UseEventListenerWithImplicitWindowTargetArgsAny
     | UseEventListenerWithExplicitTargetArgsAny
 ) {
-  let eventName: string;
-  let handler: (this: never, event: Event) => void;
-  let target: EventTarget | null | undefined;
-  let options: AddEventListenerOptions | boolean | undefined;
+  const [target, eventName, handler, options]: [
+    target: EventTarget | RefObject<EventTarget> | null,
+    eventName: string,
+    handler: (this: never, event: Event) => void,
+    options?: AddEventListenerOptions | boolean | undefined,
+  ] =
+    typeof args[0] === 'string'
+      ? [window, ...(args as UseEventListenerWithImplicitWindowTargetArgsAny)]
+      : (args as UseEventListenerWithExplicitTargetArgsAny);
 
-  if (typeof args[0] === 'string') {
-    [eventName, handler, options] =
-      args as UseEventListenerWithImplicitWindowTargetArgsAny;
-  } else {
-    [target, eventName, handler, options] =
-      args as UseEventListenerWithExplicitTargetArgsAny;
-  }
+  const unwrappedTarget =
+    target && !('addEventListener' in target) ? target.current : target;
 
   const handlerRef = useRef(handler);
   handlerRef.current = handler;
@@ -166,21 +165,19 @@ export const useEventListener: UseEventListener = function useEventListener(
   );
 
   useEffect(() => {
-    if (target === null) {
+    if (unwrappedTarget === null) {
       // No element has been attached to the ref yet
       return;
     }
-
-    const definedTarget = target ?? window;
 
     const listener: typeof handler = function (event) {
       handlerRef.current.call(this, event);
     };
 
-    definedTarget.addEventListener(eventName, listener, memoizedOptions);
+    unwrappedTarget.addEventListener(eventName, listener, memoizedOptions);
 
     return () => {
-      definedTarget.removeEventListener(eventName, listener, memoizedOptions);
+      unwrappedTarget.removeEventListener(eventName, listener, memoizedOptions);
     };
-  }, [eventName, target, memoizedOptions]);
+  }, [unwrappedTarget, eventName, memoizedOptions]);
 } as UseEventListener;

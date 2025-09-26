@@ -32,7 +32,7 @@
 const useEventListener: UseEventListener;
 ```
 
-Defined in: [hooks/useEventListener.ts:134](https://github.com/aweebit/react-essentials/blob/v0.8.0/src/hooks/useEventListener.ts#L134)
+Defined in: [hooks/useEventListener.ts:133](https://github.com/aweebit/react-essentials/blob/v0.8.0/src/hooks/useEventListener.ts#L133)
 
 Adds `handler` as a listener for the event `eventName` of `target` with the
 provided `options` applied
@@ -44,8 +44,7 @@ function useEventListener(eventName, handler, options?): void;
 function useEventListener(target, eventName, handler, options?): void;
 ```
 
-For the full definition of the function type, see
-[`UseEventListener`](#useeventlistener).
+For the full definition of the hook's type, see [`UseEventListener`](#useeventlistener).
 
 If `target` is not provided, `window` is used instead.
 
@@ -65,7 +64,7 @@ useEventListener(document, 'visibilitychange', () => {
 });
 
 const buttonRef = useRef<HTMLButtonElement>(null);
-useEventListener(buttonRef.current, 'click', () => console.log('click'));
+useEventListener(buttonRef, 'click', () => console.log('click'));
 ```
 
 ### See
@@ -863,7 +862,13 @@ Defined in: [hooks/useEventListener.ts:62](https://github.com/aweebit/react-esse
 
 ```ts
 type UseEventListenerWithExplicitTargetArgs<EventMap, T, K> = [
-  T | null,
+  (
+    | T
+    | (RefObject<T> & {
+        addEventListener?: never;
+      })
+    | null
+  ),
   K,
   (this, event) => void,
   AddEventListenerOptions | boolean | undefined,
