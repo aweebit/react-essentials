@@ -6,6 +6,7 @@
 - [useReducerWithDeps()](#usereducerwithdeps)
 - [useStateWithDeps()](#usestatewithdeps)
 - [createSafeContext()](#createsafecontext)
+- [wrapJSX()](#wrapjsx)
 
 ### Requirements
 

@@ -21,7 +21,7 @@ const moValueSymbol = Symbol('noValue');
  *   Right,
  * }
  *
- * // Before
+ * // Before:
  * const DirectionContext = createContext<Direction | undefined>(undefined);
  * DirectionContext.displayName = 'DirectionContext';
  *
@@ -38,7 +38,7 @@ const moValueSymbol = Symbol('noValue');
  *   return direction;
  * };
  *
- * // After
+ * // After:
  * const { DirectionContext, useDirection } =
  *   createSafeContext<Direction>()('Direction'); // That's it :)
  *

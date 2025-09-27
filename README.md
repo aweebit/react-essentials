@@ -6,6 +6,7 @@
 - [useReducerWithDeps()](#usereducerwithdeps)
 - [useStateWithDeps()](#usestatewithdeps)
 - [createSafeContext()](#createsafecontext)
+- [wrapJSX()](#wrapjsx)
 
 ### Requirements
 
@@ -18,7 +19,7 @@
 const useEventListener: UseEventListener;
 ```
 
-Defined in: [hooks/useEventListener.ts:135](https://github.com/aweebit/react-essentials/blob/v0.10.0/src/hooks/useEventListener.ts#L135)
+Defined in: [hooks/useEventListener.ts:135](https://github.com/aweebit/react-essentials/blob/v0.10.1/src/hooks/useEventListener.ts#L135)
 
 Adds `handler` as a listener for the event `eventName` of `target` with the
 provided `options` applied
@@ -69,7 +70,7 @@ function useReducerWithDeps<S, A>(
 ): [S, ActionDispatch<A>];
 ```
 
-Defined in: [hooks/useReducerWithDeps.ts:59](https://github.com/aweebit/react-essentials/blob/v0.10.0/src/hooks/useReducerWithDeps.ts#L59)
+Defined in: [hooks/useReducerWithDeps.ts:59](https://github.com/aweebit/react-essentials/blob/v0.10.1/src/hooks/useReducerWithDeps.ts#L59)
 
 `useReducer` hook with an additional dependency array `deps` that resets the
 state to `initialState` when dependencies change
@@ -212,7 +213,7 @@ function useStateWithDeps<S>(
 ): [S, Dispatch<SetStateAction<S>>];
 ```
 
-Defined in: [hooks/useStateWithDeps.ts:62](https://github.com/aweebit/react-essentials/blob/v0.10.0/src/hooks/useStateWithDeps.ts#L62)
+Defined in: [hooks/useStateWithDeps.ts:62](https://github.com/aweebit/react-essentials/blob/v0.10.1/src/hooks/useStateWithDeps.ts#L62)
 
 `useState` hook with an additional dependency array `deps` that resets the
 state to `initialState` when dependencies change
@@ -346,7 +347,7 @@ function createSafeContext<T>(): <DisplayName>(displayName) => {
 };
 ```
 
-Defined in: [misc/createSafeContext.ts:62](https://github.com/aweebit/react-essentials/blob/v0.10.0/src/misc/createSafeContext.ts#L62)
+Defined in: [misc/createSafeContext.ts:62](https://github.com/aweebit/react-essentials/blob/v0.10.1/src/misc/createSafeContext.ts#L62)
 
 For a given type `T`, returns a function that produces both a context of that
 type and a hook that returns the current context value if one was provided,
@@ -366,7 +367,7 @@ enum Direction {
   Right,
 }
 
-// Before
+// Before:
 const DirectionContext = createContext<Direction | undefined>(undefined);
 DirectionContext.displayName = 'DirectionContext';
 
@@ -383,7 +384,7 @@ const useDirection = () => {
   return direction;
 };
 
-// After
+// After:
 const { DirectionContext, useDirection } =
   createSafeContext<Direction>()('Direction'); // That's it :)
 
@@ -485,6 +486,97 @@ A function that accepts a single string argument `displayName` (e.g.
 
 ---
 
+## wrapJSX()
+
+```ts
+function wrapJSX(jsx): JSXWrapPipe;
+```
+
+Defined in: [misc/wrapJSX.tsx:87](https://github.com/aweebit/react-essentials/blob/v0.10.1/src/misc/wrapJSX.tsx#L87)
+
+An alternative way to compose JSX that avoids ever-increasing indentation
+
+### Example
+
+```tsx
+// Before:
+createRoot(document.getElementById('root')!).render(
+  <StrictMode>
+    <I18nextProvider i18n={i18n}>
+      <QueryClientProvider client={queryClient}>
+        <NuqsAdapter>
+          <ThemeProvider theme={theme}>
+            <ToasterProvider>
+              <App />
+            </ToasterProvider>
+          </ThemeProvider>
+        </NuqsAdapter>
+      </QueryClientProvider>
+    </I18nextProvider>
+  </StrictMode>,
+);
+
+// After:
+createRoot(document.getElementById('root')!).render(
+  wrapJSX(<App />)
+    .with(ToasterProvider)
+    .with(ThemeProvider, { theme })
+    .with(NuqsAdapter)
+    .with(QueryClientProvider, { client: queryClient })
+    .with(I18nextProvider, { i18n })
+    .with(StrictMode)
+    .end(),
+);
+```
+
+### Parameters
+
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+
+`jsx`
+
+</td>
+<td>
+
+`Element`
+
+</td>
+<td>
+
+The JSX to wrap
+
+</td>
+</tr>
+</tbody>
+</table>
+
+### Returns
+
+[`JSXWrapPipe`](#jsxwrappipe)
+
+An object with the following properties:
+
+- `with`: a function that accepts a component `Component` and props `props`
+  for it as arguments and returns
+  `wrapJSX(<Component {...props}>{jsx}</Component>)`
+- `end`: a function that returns `jsx`
+
+### See
+
+[`JSXWrapPipe`](#jsxwrappipe)
+
+---
+
 ## UseEventListener
 
 ```ts
@@ -493,7 +585,7 @@ type UseEventListener = UseEventListenerWithImplicitWindowTarget &
   UseEventListenerWithAnyExplicitTarget;
 ```
 
-Defined in: [hooks/useEventListener.ts:12](https://github.com/aweebit/react-essentials/blob/v0.10.0/src/hooks/useEventListener.ts#L12)
+Defined in: [hooks/useEventListener.ts:12](https://github.com/aweebit/react-essentials/blob/v0.10.1/src/hooks/useEventListener.ts#L12)
 
 The type of [`useEventListener`](#useeventlistener)
 
@@ -512,7 +604,7 @@ The type of [`useEventListener`](#useeventlistener)
 type UseEventListenerWithImplicitWindowTarget = <K>(...args) => void;
 ```
 
-Defined in: [hooks/useEventListener.ts:21](https://github.com/aweebit/react-essentials/blob/v0.10.0/src/hooks/useEventListener.ts#L21)
+Defined in: [hooks/useEventListener.ts:21](https://github.com/aweebit/react-essentials/blob/v0.10.1/src/hooks/useEventListener.ts#L21)
 
 ### Type Parameters
 
@@ -580,7 +672,7 @@ type UseEventListenerWithExplicitGlobalTarget =
     UseEventListenerWithExplicitTarget<MathMLElement, MathMLElementEventMap>;
 ```
 
-Defined in: [hooks/useEventListener.ts:32](https://github.com/aweebit/react-essentials/blob/v0.10.0/src/hooks/useEventListener.ts#L32)
+Defined in: [hooks/useEventListener.ts:32](https://github.com/aweebit/react-essentials/blob/v0.10.1/src/hooks/useEventListener.ts#L32)
 
 ### See
 
@@ -597,7 +689,7 @@ type UseEventListenerWithExplicitTarget<Target, EventMap> = <T, K>(
 ) => void;
 ```
 
-Defined in: [hooks/useEventListener.ts:44](https://github.com/aweebit/react-essentials/blob/v0.10.0/src/hooks/useEventListener.ts#L44)
+Defined in: [hooks/useEventListener.ts:44](https://github.com/aweebit/react-essentials/blob/v0.10.1/src/hooks/useEventListener.ts#L44)
 
 ### Type Parameters
 
@@ -696,7 +788,7 @@ type UseEventListenerWithAnyExplicitTarget = UseEventListenerWithExplicitTarget<
 >;
 ```
 
-Defined in: [hooks/useEventListener.ts:56](https://github.com/aweebit/react-essentials/blob/v0.10.0/src/hooks/useEventListener.ts#L56)
+Defined in: [hooks/useEventListener.ts:56](https://github.com/aweebit/react-essentials/blob/v0.10.1/src/hooks/useEventListener.ts#L56)
 
 ### See
 
@@ -717,7 +809,7 @@ type UseEventListenerWithImplicitWindowTargetArgs<K> =
     : never;
 ```
 
-Defined in: [hooks/useEventListener.ts:64](https://github.com/aweebit/react-essentials/blob/v0.10.0/src/hooks/useEventListener.ts#L64)
+Defined in: [hooks/useEventListener.ts:64](https://github.com/aweebit/react-essentials/blob/v0.10.1/src/hooks/useEventListener.ts#L64)
 
 ### Type Parameters
 
@@ -762,7 +854,7 @@ type UseEventListenerWithExplicitTargetArgs<EventMap, T, K> = [
 ];
 ```
 
-Defined in: [hooks/useEventListener.ts:78](https://github.com/aweebit/react-essentials/blob/v0.10.0/src/hooks/useEventListener.ts#L78)
+Defined in: [hooks/useEventListener.ts:78](https://github.com/aweebit/react-essentials/blob/v0.10.1/src/hooks/useEventListener.ts#L78)
 
 ### Type Parameters
 
@@ -800,3 +892,123 @@ Defined in: [hooks/useEventListener.ts:78](https://github.com/aweebit/react-esse
 ### See
 
 [`useEventListener`](#useeventlistener)
+
+---
+
+## JSXWrapPipe
+
+```ts
+type JSXWrapPipe = {
+  with: WrapJSXWith;
+  end: () => React.JSX.Element;
+};
+```
+
+Defined in: [misc/wrapJSX.tsx:14](https://github.com/aweebit/react-essentials/blob/v0.10.1/src/misc/wrapJSX.tsx#L14)
+
+The return type of [`wrapJSX`](#wrapjsx)
+
+### See
+
+[`wrapJSX`](#wrapjsx),
+[`WrapJSXWith`](#wrapjsxwith)
+
+### Properties
+
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+
+<a id="with"></a> `with`
+
+</td>
+<td>
+
+[`WrapJSXWith`](#wrapjsxwith)
+
+</td>
+</tr>
+<tr>
+<td>
+
+<a id="end"></a> `end`
+
+</td>
+<td>
+
+() => `React.JSX.Element`
+
+</td>
+</tr>
+</tbody>
+</table>
+
+---
+
+## WrapJSXWith()
+
+```ts
+type WrapJSXWith = <C>(...args) => JSXWrapPipe;
+```
+
+Defined in: [misc/wrapJSX.tsx:24](https://github.com/aweebit/react-essentials/blob/v0.10.1/src/misc/wrapJSX.tsx#L24)
+
+### Type Parameters
+
+<table>
+<thead>
+<tr>
+<th>Type Parameter</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+
+`C` _extends_ keyof `JSX.IntrinsicElements` \| `JSXElementConstructor`\<`any`\>
+
+</td>
+</tr>
+</tbody>
+</table>
+
+### Parameters
+
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+
+...`args`
+
+</td>
+<td>
+
+\[`C`, `...(Record<never, unknown> extends Omit<ComponentProps<C>, "children"> ? [props?: React.JSX.IntrinsicAttributes & Omit<ComponentProps<C>, "children">] : [props: React.JSX.IntrinsicAttributes & Omit<ComponentProps<C>, "children">])`\]
+
+</td>
+</tr>
+</tbody>
+</table>
+
+### Returns
+
+[`JSXWrapPipe`](#jsxwrappipe)
+
+### See
+
+[`wrapJSX`](#wrapjsx),
+[`JSXWrapPipe`](#jsxwrappipe)

@@ -15,6 +15,7 @@
     "incremental": true,
 
     /* Language: */
+    "jsx": "preserve",
     "useDefineForClassFields": true,
     "erasableSyntaxOnly": true,
 
