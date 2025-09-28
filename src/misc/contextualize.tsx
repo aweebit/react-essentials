@@ -1,4 +1,4 @@
-import type { Context, ReactNode } from 'react';
+import type { Context, ReactElement, ReactNode } from 'react';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import type { wrapJSX } from './wrapJSX.js';
@@ -10,9 +10,9 @@ import type { wrapJSX } from './wrapJSX.js';
  * {@linkcode contextualize},
  * {@linkcode ContextualizeWith}
  */
-export type ContextualizePipe = {
+export type ContextualizePipe<Children extends ReactNode> = {
   with: ContextualizeWith;
-  end: () => ReactNode;
+  end: () => Children;
 };
 
 /**
@@ -23,7 +23,7 @@ export type ContextualizePipe = {
 export type ContextualizeWith = <T>(
   Context: Context<T>,
   value: NoInfer<T>,
-) => ContextualizePipe;
+) => ContextualizePipe<ReactElement>;
 
 /**
  * An alternative way to provide context values to component trees that avoids
@@ -76,7 +76,9 @@ export type ContextualizeWith = <T>(
  * @see
  * {@linkcode ContextualizePipe}
  */
-export function contextualize(children: ReactNode): ContextualizePipe {
+export function contextualize<Children extends ReactNode>(
+  children: Children,
+): ContextualizePipe<Children> {
   return {
     with<T>(Context: Context<T>, value: T) {
       return contextualize(
