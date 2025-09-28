@@ -2,6 +2,7 @@ import type {
   ComponentProps,
   JSXElementConstructor,
   default as React,
+  ReactElement,
   ReactNode,
 } from 'react';
 
@@ -15,9 +16,9 @@ import type { contextualize } from './contextualize.js';
  * {@linkcode wrapJSX},
  * {@linkcode WrapJSXWith}
  */
-export type JSXWrapPipe = {
-  with: WrapJSXWith;
-  end: () => ReactNode;
+export type JSXWrapPipe<Children extends ReactNode> = {
+  with: WrapJSXWith<Children>;
+  end: () => Children;
 };
 
 /**
@@ -25,11 +26,15 @@ export type JSXWrapPipe = {
  * {@linkcode wrapJSX},
  * {@linkcode JSXWrapPipe}
  */
-export type WrapJSXWith =
+export type WrapJSXWith<Children extends ReactNode> =
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   <C extends keyof JSX.IntrinsicElements | JSXElementConstructor<any>>(
     ...args: [
-      Component: C,
+      Component: 'children' extends keyof ComponentProps<C>
+        ? [Children] extends [ComponentProps<C>['children']]
+          ? C
+          : never
+        : never,
       ...(Record<never, unknown> extends Omit<ComponentProps<C>, 'children'>
         ? [
             props?: React.JSX.IntrinsicAttributes &
@@ -40,7 +45,7 @@ export type WrapJSXWith =
               Omit<ComponentProps<C>, 'children'>,
           ]),
     ]
-  ) => JSXWrapPipe;
+  ) => JSXWrapPipe<ReactElement>;
 
 /**
  * An alternative way to compose JSX that avoids ever-increasing indentation
@@ -91,7 +96,9 @@ export type WrapJSXWith =
  * @see
  * {@linkcode JSXWrapPipe}
  */
-export function wrapJSX(children: ReactNode): JSXWrapPipe {
+export function wrapJSX<Children extends ReactNode>(
+  children: Children,
+): JSXWrapPipe<Children> {
   return {
     with(
       Component:
