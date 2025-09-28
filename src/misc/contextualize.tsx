@@ -12,7 +12,7 @@ import type { wrapJSX } from './wrapJSX.js';
  */
 export type ContextualizePipe = {
   with: ContextualizeWith;
-  end: () => React.JSX.Element | undefined;
+  end: () => React.JSX.Element;
 };
 
 /**
@@ -76,9 +76,7 @@ export type ContextualizeWith = <T>(
  * @see
  * {@linkcode ContextualizePipe}
  */
-export function contextualize(
-  jsx: React.JSX.Element | undefined,
-): ContextualizePipe {
+export function contextualize(jsx: React.JSX.Element): ContextualizePipe {
   return {
     with<T>(Context: Context<T>, value: T) {
       return contextualize(
