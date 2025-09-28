@@ -2,6 +2,7 @@ import type {
   ComponentProps,
   JSXElementConstructor,
   default as React,
+  ReactNode,
 } from 'react';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -16,7 +17,7 @@ import type { contextualize } from './contextualize.js';
  */
 export type JSXWrapPipe = {
   with: WrapJSXWith;
-  end: () => React.JSX.Element;
+  end: () => ReactNode;
 };
 
 /**
@@ -79,18 +80,18 @@ export type WrapJSXWith =
  * );
  * ```
  *
- * @param jsx The JSX to wrap
+ * @param children The children to wrap
  *
  * @returns An object with the following properties:
  * - `with`: a function that accepts a component `Component` and props `props`
  *   for it as arguments and returns
- *   `wrapJSX(<Component {...props}>{jsx}</Component>)`
- * - `end`: a function that returns `jsx`
+ *   `wrapJSX(<Component {...props}>{children}</Component>)`
+ * - `end`: a function that returns `children`
  *
  * @see
  * {@linkcode JSXWrapPipe}
  */
-export function wrapJSX(jsx: React.JSX.Element): JSXWrapPipe {
+export function wrapJSX(children: ReactNode): JSXWrapPipe {
   return {
     with(
       Component:
@@ -98,10 +99,10 @@ export function wrapJSX(jsx: React.JSX.Element): JSXWrapPipe {
         | JSXElementConstructor<object>,
       props: object = {},
     ) {
-      return wrapJSX(<Component {...props}>{jsx}</Component>);
+      return wrapJSX(<Component {...props}>{children}</Component>);
     },
     end() {
-      return jsx;
+      return children;
     },
   };
 }

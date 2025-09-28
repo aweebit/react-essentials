@@ -1,6 +1,6 @@
 {
   "name": "@aweebit/react-essentials",
-  "version": "0.10.3",
+  "version": "0.10.4",
   "type": "module",
   "repository": "github:aweebit/react-essentials",
   "main": "dist/index.js",

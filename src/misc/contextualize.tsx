@@ -1,4 +1,4 @@
-import type { Context, default as React } from 'react';
+import type { Context, ReactNode } from 'react';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import type { wrapJSX } from './wrapJSX.js';
@@ -12,7 +12,7 @@ import type { wrapJSX } from './wrapJSX.js';
  */
 export type ContextualizePipe = {
   with: ContextualizeWith;
-  end: () => React.JSX.Element;
+  end: () => ReactNode;
 };
 
 /**
@@ -65,26 +65,26 @@ export type ContextualizeWith = <T>(
  *   .end();
  * ```
  *
- * @param jsx The JSX to contextualize
+ * @param children The children to contextualize
  *
  * @returns An object with the following properties:
  * - `with`: a function that accepts a context `Context` and a value `value` for
  *   it as arguments and returns
- *   `contextualize(<Context.Provider value={value}>{jsx}</Context.Provider>)`
- * - `end`: a function that returns `jsx`
+ *   `contextualize(<Context.Provider value={value}>{children}</Context.Provider>)`
+ * - `end`: a function that returns `children`
  *
  * @see
  * {@linkcode ContextualizePipe}
  */
-export function contextualize(jsx: React.JSX.Element): ContextualizePipe {
+export function contextualize(children: ReactNode): ContextualizePipe {
   return {
     with<T>(Context: Context<T>, value: T) {
       return contextualize(
-        <Context.Provider value={value}>{jsx}</Context.Provider>,
+        <Context.Provider value={value}>{children}</Context.Provider>,
       );
     },
     end() {
-      return jsx;
+      return children;
     },
   };
 }

@@ -20,7 +20,7 @@
 const useEventListener: UseEventListener;
 ```
 
-Defined in: [hooks/useEventListener.ts:135](https://github.com/aweebit/react-essentials/blob/v0.10.3/src/hooks/useEventListener.ts#L135)
+Defined in: [hooks/useEventListener.ts:135](https://github.com/aweebit/react-essentials/blob/v0.10.4/src/hooks/useEventListener.ts#L135)
 
 Adds `handler` as a listener for the event `eventName` of `target` with the
 provided `options` applied
@@ -71,7 +71,7 @@ function useReducerWithDeps<S, A>(
 ): [S, ActionDispatch<A>];
 ```
 
-Defined in: [hooks/useReducerWithDeps.ts:59](https://github.com/aweebit/react-essentials/blob/v0.10.3/src/hooks/useReducerWithDeps.ts#L59)
+Defined in: [hooks/useReducerWithDeps.ts:59](https://github.com/aweebit/react-essentials/blob/v0.10.4/src/hooks/useReducerWithDeps.ts#L59)
 
 `useReducer` hook with an additional dependency array `deps` that resets the
 state to `initialState` when dependencies change
@@ -214,7 +214,7 @@ function useStateWithDeps<S>(
 ): [S, Dispatch<SetStateAction<S>>];
 ```
 
-Defined in: [hooks/useStateWithDeps.ts:62](https://github.com/aweebit/react-essentials/blob/v0.10.3/src/hooks/useStateWithDeps.ts#L62)
+Defined in: [hooks/useStateWithDeps.ts:62](https://github.com/aweebit/react-essentials/blob/v0.10.4/src/hooks/useStateWithDeps.ts#L62)
 
 `useState` hook with an additional dependency array `deps` that resets the
 state to `initialState` when dependencies change
@@ -341,10 +341,10 @@ Dependencies that reset the state to `initialState`
 ## contextualize()
 
 ```ts
-function contextualize(jsx): ContextualizePipe;
+function contextualize(children): ContextualizePipe;
 ```
 
-Defined in: [misc/contextualize.tsx:79](https://github.com/aweebit/react-essentials/blob/v0.10.3/src/misc/contextualize.tsx#L79)
+Defined in: [misc/contextualize.tsx:79](https://github.com/aweebit/react-essentials/blob/v0.10.4/src/misc/contextualize.tsx#L79)
 
 An alternative way to provide context values to component trees that avoids
 ever-increasing indentation
@@ -400,17 +400,17 @@ return contextualize(jsx)
 <tr>
 <td>
 
-`jsx`
+`children`
 
 </td>
 <td>
 
-`Element`
+`ReactNode`
 
 </td>
 <td>
 
-The JSX to contextualize
+The children to contextualize
 
 </td>
 </tr>
@@ -425,8 +425,8 @@ An object with the following properties:
 
 - `with`: a function that accepts a context `Context` and a value `value` for
   it as arguments and returns
-  `contextualize(<Context.Provider value={value}>{jsx}</Context.Provider>)`
-- `end`: a function that returns `jsx`
+  `contextualize(<Context.Provider value={value}>{children}</Context.Provider>)`
+- `end`: a function that returns `children`
 
 ### See
 
@@ -444,7 +444,7 @@ function createSafeContext<T>(): <DisplayName>(displayName) => {
 };
 ```
 
-Defined in: [misc/createSafeContext.ts:62](https://github.com/aweebit/react-essentials/blob/v0.10.3/src/misc/createSafeContext.ts#L62)
+Defined in: [misc/createSafeContext.ts:62](https://github.com/aweebit/react-essentials/blob/v0.10.4/src/misc/createSafeContext.ts#L62)
 
 For a given type `T`, returns a function that produces both a context of that
 type and a hook that returns the current context value if one was provided,
@@ -586,10 +586,10 @@ A function that accepts a single string argument `displayName` (e.g.
 ## wrapJSX()
 
 ```ts
-function wrapJSX(jsx): JSXWrapPipe;
+function wrapJSX(children): JSXWrapPipe;
 ```
 
-Defined in: [misc/wrapJSX.tsx:93](https://github.com/aweebit/react-essentials/blob/v0.10.3/src/misc/wrapJSX.tsx#L93)
+Defined in: [misc/wrapJSX.tsx:94](https://github.com/aweebit/react-essentials/blob/v0.10.4/src/misc/wrapJSX.tsx#L94)
 
 An alternative way to compose JSX that avoids ever-increasing indentation
 
@@ -643,17 +643,17 @@ createRoot(document.getElementById('root')!).render(
 <tr>
 <td>
 
-`jsx`
+`children`
 
 </td>
 <td>
 
-`Element`
+`ReactNode`
 
 </td>
 <td>
 
-The JSX to wrap
+The children to wrap
 
 </td>
 </tr>
@@ -668,8 +668,8 @@ An object with the following properties:
 
 - `with`: a function that accepts a component `Component` and props `props`
   for it as arguments and returns
-  `wrapJSX(<Component {...props}>{jsx}</Component>)`
-- `end`: a function that returns `jsx`
+  `wrapJSX(<Component {...props}>{children}</Component>)`
+- `end`: a function that returns `children`
 
 ### See
 
@@ -685,7 +685,7 @@ type UseEventListener = UseEventListenerWithImplicitWindowTarget &
   UseEventListenerWithAnyExplicitTarget;
 ```
 
-Defined in: [hooks/useEventListener.ts:12](https://github.com/aweebit/react-essentials/blob/v0.10.3/src/hooks/useEventListener.ts#L12)
+Defined in: [hooks/useEventListener.ts:12](https://github.com/aweebit/react-essentials/blob/v0.10.4/src/hooks/useEventListener.ts#L12)
 
 The type of [`useEventListener`](#useeventlistener)
 
@@ -704,7 +704,7 @@ The type of [`useEventListener`](#useeventlistener)
 type UseEventListenerWithImplicitWindowTarget = <K>(...args) => void;
 ```
 
-Defined in: [hooks/useEventListener.ts:21](https://github.com/aweebit/react-essentials/blob/v0.10.3/src/hooks/useEventListener.ts#L21)
+Defined in: [hooks/useEventListener.ts:21](https://github.com/aweebit/react-essentials/blob/v0.10.4/src/hooks/useEventListener.ts#L21)
 
 ### Type Parameters
 
@@ -772,7 +772,7 @@ type UseEventListenerWithExplicitGlobalTarget =
     UseEventListenerWithExplicitTarget<MathMLElement, MathMLElementEventMap>;
 ```
 
-Defined in: [hooks/useEventListener.ts:32](https://github.com/aweebit/react-essentials/blob/v0.10.3/src/hooks/useEventListener.ts#L32)
+Defined in: [hooks/useEventListener.ts:32](https://github.com/aweebit/react-essentials/blob/v0.10.4/src/hooks/useEventListener.ts#L32)
 
 ### See
 
@@ -789,7 +789,7 @@ type UseEventListenerWithExplicitTarget<Target, EventMap> = <T, K>(
 ) => void;
 ```
 
-Defined in: [hooks/useEventListener.ts:44](https://github.com/aweebit/react-essentials/blob/v0.10.3/src/hooks/useEventListener.ts#L44)
+Defined in: [hooks/useEventListener.ts:44](https://github.com/aweebit/react-essentials/blob/v0.10.4/src/hooks/useEventListener.ts#L44)
 
 ### Type Parameters
 
@@ -888,7 +888,7 @@ type UseEventListenerWithAnyExplicitTarget = UseEventListenerWithExplicitTarget<
 >;
 ```
 
-Defined in: [hooks/useEventListener.ts:56](https://github.com/aweebit/react-essentials/blob/v0.10.3/src/hooks/useEventListener.ts#L56)
+Defined in: [hooks/useEventListener.ts:56](https://github.com/aweebit/react-essentials/blob/v0.10.4/src/hooks/useEventListener.ts#L56)
 
 ### See
 
@@ -909,7 +909,7 @@ type UseEventListenerWithImplicitWindowTargetArgs<K> =
     : never;
 ```
 
-Defined in: [hooks/useEventListener.ts:64](https://github.com/aweebit/react-essentials/blob/v0.10.3/src/hooks/useEventListener.ts#L64)
+Defined in: [hooks/useEventListener.ts:64](https://github.com/aweebit/react-essentials/blob/v0.10.4/src/hooks/useEventListener.ts#L64)
 
 ### Type Parameters
 
@@ -954,7 +954,7 @@ type UseEventListenerWithExplicitTargetArgs<EventMap, T, K> = [
 ];
 ```
 
-Defined in: [hooks/useEventListener.ts:78](https://github.com/aweebit/react-essentials/blob/v0.10.3/src/hooks/useEventListener.ts#L78)
+Defined in: [hooks/useEventListener.ts:78](https://github.com/aweebit/react-essentials/blob/v0.10.4/src/hooks/useEventListener.ts#L78)
 
 ### Type Parameters
 
@@ -1000,11 +1000,11 @@ Defined in: [hooks/useEventListener.ts:78](https://github.com/aweebit/react-esse
 ```ts
 type ContextualizePipe = {
   with: ContextualizeWith;
-  end: () => React.JSX.Element;
+  end: () => ReactNode;
 };
 ```
 
-Defined in: [misc/contextualize.tsx:13](https://github.com/aweebit/react-essentials/blob/v0.10.3/src/misc/contextualize.tsx#L13)
+Defined in: [misc/contextualize.tsx:13](https://github.com/aweebit/react-essentials/blob/v0.10.4/src/misc/contextualize.tsx#L13)
 
 The return type of [`contextualize`](#contextualize)
 
@@ -1043,7 +1043,7 @@ The return type of [`contextualize`](#contextualize)
 </td>
 <td>
 
-() => `React.JSX.Element`
+() => `ReactNode`
 
 </td>
 </tr>
@@ -1058,7 +1058,7 @@ The return type of [`contextualize`](#contextualize)
 type ContextualizeWith = <T>(Context, value) => ContextualizePipe;
 ```
 
-Defined in: [misc/contextualize.tsx:23](https://github.com/aweebit/react-essentials/blob/v0.10.3/src/misc/contextualize.tsx#L23)
+Defined in: [misc/contextualize.tsx:23](https://github.com/aweebit/react-essentials/blob/v0.10.4/src/misc/contextualize.tsx#L23)
 
 ### Type Parameters
 
@@ -1132,11 +1132,11 @@ Defined in: [misc/contextualize.tsx:23](https://github.com/aweebit/react-essenti
 ```ts
 type JSXWrapPipe = {
   with: WrapJSXWith;
-  end: () => React.JSX.Element;
+  end: () => ReactNode;
 };
 ```
 
-Defined in: [misc/wrapJSX.tsx:17](https://github.com/aweebit/react-essentials/blob/v0.10.3/src/misc/wrapJSX.tsx#L17)
+Defined in: [misc/wrapJSX.tsx:18](https://github.com/aweebit/react-essentials/blob/v0.10.4/src/misc/wrapJSX.tsx#L18)
 
 The return type of [`wrapJSX`](#wrapjsx)
 
@@ -1175,7 +1175,7 @@ The return type of [`wrapJSX`](#wrapjsx)
 </td>
 <td>
 
-() => `React.JSX.Element`
+() => `ReactNode`
 
 </td>
 </tr>
@@ -1190,7 +1190,7 @@ The return type of [`wrapJSX`](#wrapjsx)
 type WrapJSXWith = <C>(...args) => JSXWrapPipe;
 ```
 
-Defined in: [misc/wrapJSX.tsx:27](https://github.com/aweebit/react-essentials/blob/v0.10.3/src/misc/wrapJSX.tsx#L27)
+Defined in: [misc/wrapJSX.tsx:28](https://github.com/aweebit/react-essentials/blob/v0.10.4/src/misc/wrapJSX.tsx#L28)
 
 ### Type Parameters
 
