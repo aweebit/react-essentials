@@ -10,7 +10,7 @@
     "prettier": "npm run prettier:base -- .",
     "lint": "eslint --max-warnings=0",
     "build": "rimraf dist && tsc -b -f",
-    "doc": "rimraf README.md && typedoc",
+    "doc": "rimraf README.md && typedoc && npm run prettier:base -- README.md",
     "prepack": "npm run build && npm run doc",
     "prepare": "husky"
   },

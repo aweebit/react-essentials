@@ -339,9 +339,9 @@ Dependencies that reset the state to `initialState`
 ## createSafeContext()
 
 ```ts
-function createSafeContext<T>(): <DisplayName>(
-  displayName,
-) => { [K in `${string}Context`]: Context<T> } & {
+function createSafeContext<T>(): <DisplayName>(displayName) => {
+  [K in `${string}Context`]: Context<T>;
+} & {
   [K in `use${string}`]: () => T;
 };
 ```
