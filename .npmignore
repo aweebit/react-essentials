@@ -2,4 +2,5 @@
 *.config.*
 tsconfig
 tsconfig.json
+scripts
 README-header.md
