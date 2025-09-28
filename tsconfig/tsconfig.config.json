@@ -3,6 +3,7 @@
   "compilerOptions": {
     "tsBuildInfoFile": "../node_modules/.tsbuildinfo/tsconfig.config.tsbuildinfo",
     "types": [
+      "node",
       "prettier",
       "eslint/config",
       "globals",
@@ -10,8 +11,10 @@
       "typescript-eslint",
       "eslint-plugin-react-hooks",
       "eslint-config-prettier/flat",
-      "lint-staged"
+      "lint-staged",
+      "typedoc",
+      "typedoc-plugin-markdown"
     ]
   },
-  "include": ["../*.ts", "../*.js"]
+  "include": ["../*.ts", "../*.js", "../scripts"]
 }

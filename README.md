@@ -30,7 +30,7 @@ function useEventListener(eventName, handler, options?): void;
 function useEventListener(target, eventName, handler, options?): void;
 ```
 
-For the full definition of the hook's type, see [`UseEventListener`](#useeventlistener).
+For the full definition of the hook's type, see [`UseEventListener`](#useeventlistener-1).
 
 If `target` is not provided, `window` is used instead.
 
@@ -55,7 +55,7 @@ useEventListener(buttonRef, 'click', () => console.log('click'));
 
 ### See
 
-[`UseEventListener`](#useeventlistener)
+[`UseEventListener`](#useeventlistener-1)
 
 ---
 
@@ -495,11 +495,11 @@ type UseEventListener = UseEventListenerWithImplicitWindowTarget &
 
 Defined in: [hooks/useEventListener.ts:12](https://github.com/aweebit/react-essentials/blob/v0.10.0/src/hooks/useEventListener.ts#L12)
 
-The type of [`useEventListener`](#useeventlistener-1)
+The type of [`useEventListener`](#useeventlistener)
 
 ### See
 
-[`useEventListener`](#useeventlistener-1),
+[`useEventListener`](#useeventlistener),
 [`UseEventListenerWithImplicitWindowTarget`](#useeventlistenerwithimplicitwindowtarget),
 [`UseEventListenerWithExplicitGlobalTarget`](#useeventlistenerwithexplicitglobaltarget),
 [`UseEventListenerWithAnyExplicitTarget`](#useeventlistenerwithanyexplicittarget)
@@ -564,7 +564,7 @@ Defined in: [hooks/useEventListener.ts:21](https://github.com/aweebit/react-esse
 
 ### See
 
-[`useEventListener`](#useeventlistener-1),
+[`useEventListener`](#useeventlistener),
 [`UseEventListenerWithImplicitWindowTargetArgs`](#useeventlistenerwithimplicitwindowtargetargs)
 
 ---
@@ -584,7 +584,7 @@ Defined in: [hooks/useEventListener.ts:32](https://github.com/aweebit/react-esse
 
 ### See
 
-[`useEventListener`](#useeventlistener-1),
+[`useEventListener`](#useeventlistener),
 [`UseEventListenerWithExplicitTarget`](#useeventlistenerwithexplicittarget)
 
 ---
@@ -682,7 +682,7 @@ Defined in: [hooks/useEventListener.ts:44](https://github.com/aweebit/react-esse
 
 ### See
 
-[`useEventListener`](#useeventlistener-1),
+[`useEventListener`](#useeventlistener),
 [`UseEventListenerWithExplicitTargetArgs`](#useeventlistenerwithexplicittargetargs)
 
 ---
@@ -700,7 +700,7 @@ Defined in: [hooks/useEventListener.ts:56](https://github.com/aweebit/react-esse
 
 ### See
 
-[`useEventListener`](#useeventlistener-1),
+[`useEventListener`](#useeventlistener),
 [`UseEventListenerWithExplicitTarget`](#useeventlistenerwithexplicittarget)
 
 ---
@@ -740,7 +740,7 @@ Defined in: [hooks/useEventListener.ts:64](https://github.com/aweebit/react-esse
 
 ### See
 
-[`useEventListener`](#useeventlistener-1),
+[`useEventListener`](#useeventlistener),
 [`UseEventListenerWithExplicitTargetArgs`](#useeventlistenerwithexplicittargetargs)
 
 ---
@@ -799,4 +799,4 @@ Defined in: [hooks/useEventListener.ts:78](https://github.com/aweebit/react-esse
 
 ### See
 
-[`useEventListener`](#useeventlistener-1)
+[`useEventListener`](#useeventlistener)
