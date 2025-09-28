@@ -5,6 +5,7 @@
 - [useEventListener()](#useeventlistener)
 - [useReducerWithDeps()](#usereducerwithdeps)
 - [useStateWithDeps()](#usestatewithdeps)
+- [contextualize()](#contextualize)
 - [createSafeContext()](#createsafecontext)
 - [wrapJSX()](#wrapjsx)
 
@@ -337,6 +338,102 @@ Dependencies that reset the state to `initialState`
 
 ---
 
+## contextualize()
+
+```ts
+function contextualize(jsx): ContextualizePipe;
+```
+
+Defined in: [misc/contextualize.tsx:79](https://github.com/aweebit/react-essentials/blob/v0.10.1/src/misc/contextualize.tsx#L79)
+
+An alternative way to provide context values to component trees that avoids
+ever-increasing indentation
+
+A context-specific version of the more general [`wrapJSX`](#wrapjsx) function.
+
+### Example
+
+```tsx
+// Before:
+return (
+  <CourseIdContext.Provider value={courseId}>
+    <DeckIdContext.Provider value={deckId}>
+      <FlashcardsContext.Provider value={flashcards}>
+        <EventHandlersContext.Provider value={eventHandlers}>
+          <Header />
+          <Main />
+          <Footer />
+        </EventHandlersContext.Provider>
+      </FlashcardsContext.Provider>
+    </DeckIdContext.Provider>
+  </CourseIdContext.Provider>
+);
+
+// After:
+const jsx = (
+  <>
+    <Header />
+    <Main />
+    <Footer />
+  </>
+);
+
+return contextualize(jsx)
+  .with(EventHandlersContext, eventHandlers)
+  .with(FlashcardsContext, flashcards)
+  .with(DeckIdContext, deckId)
+  .with(CourseIdContext, courseId)
+  .end();
+```
+
+### Parameters
+
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+
+`jsx`
+
+</td>
+<td>
+
+`Element`
+
+</td>
+<td>
+
+The JSX to contextualize
+
+</td>
+</tr>
+</tbody>
+</table>
+
+### Returns
+
+[`ContextualizePipe`](#contextualizepipe)
+
+An object with the following properties:
+
+- `with`: a function that accepts a context `Context` and a value `value` for
+  it as arguments and returns
+  `contextualize(<Context.Provider value={value}>{jsx}</Context.Provider>)`
+- `end`: a function that returns `jsx`
+
+### See
+
+[`ContextualizePipe`](#contextualizepipe)
+
+---
+
 ## createSafeContext()
 
 ```ts
@@ -492,9 +589,12 @@ A function that accepts a single string argument `displayName` (e.g.
 function wrapJSX(jsx): JSXWrapPipe;
 ```
 
-Defined in: [misc/wrapJSX.tsx:87](https://github.com/aweebit/react-essentials/blob/v0.10.1/src/misc/wrapJSX.tsx#L87)
+Defined in: [misc/wrapJSX.tsx:93](https://github.com/aweebit/react-essentials/blob/v0.10.1/src/misc/wrapJSX.tsx#L93)
 
 An alternative way to compose JSX that avoids ever-increasing indentation
+
+A more general version of the context-specific [`contextualize`](#contextualize)
+function.
 
 ### Example
 
@@ -895,6 +995,138 @@ Defined in: [hooks/useEventListener.ts:78](https://github.com/aweebit/react-esse
 
 ---
 
+## ContextualizePipe
+
+```ts
+type ContextualizePipe = {
+  with: ContextualizeWith;
+  end: () => React.JSX.Element;
+};
+```
+
+Defined in: [misc/contextualize.tsx:13](https://github.com/aweebit/react-essentials/blob/v0.10.1/src/misc/contextualize.tsx#L13)
+
+The return type of [`contextualize`](#contextualize)
+
+### See
+
+[`contextualize`](#contextualize),
+[`ContextualizeWith`](#contextualizewith)
+
+### Properties
+
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+
+<a id="with"></a> `with`
+
+</td>
+<td>
+
+[`ContextualizeWith`](#contextualizewith)
+
+</td>
+</tr>
+<tr>
+<td>
+
+<a id="end"></a> `end`
+
+</td>
+<td>
+
+() => `React.JSX.Element`
+
+</td>
+</tr>
+</tbody>
+</table>
+
+---
+
+## ContextualizeWith()
+
+```ts
+type ContextualizeWith = <T>(Context, value) => ContextualizePipe;
+```
+
+Defined in: [misc/contextualize.tsx:23](https://github.com/aweebit/react-essentials/blob/v0.10.1/src/misc/contextualize.tsx#L23)
+
+### Type Parameters
+
+<table>
+<thead>
+<tr>
+<th>Type Parameter</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+
+`T`
+
+</td>
+</tr>
+</tbody>
+</table>
+
+### Parameters
+
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+
+`Context`
+
+</td>
+<td>
+
+`Context`\<`T`\>
+
+</td>
+</tr>
+<tr>
+<td>
+
+`value`
+
+</td>
+<td>
+
+`NoInfer`\<`T`\>
+
+</td>
+</tr>
+</tbody>
+</table>
+
+### Returns
+
+[`ContextualizePipe`](#contextualizepipe)
+
+### See
+
+[`contextualize`](#contextualize),
+[`ContextualizePipe`](#contextualizepipe)
+
+---
+
 ## JSXWrapPipe
 
 ```ts
@@ -904,7 +1136,7 @@ type JSXWrapPipe = {
 };
 ```
 
-Defined in: [misc/wrapJSX.tsx:14](https://github.com/aweebit/react-essentials/blob/v0.10.1/src/misc/wrapJSX.tsx#L14)
+Defined in: [misc/wrapJSX.tsx:17](https://github.com/aweebit/react-essentials/blob/v0.10.1/src/misc/wrapJSX.tsx#L17)
 
 The return type of [`wrapJSX`](#wrapjsx)
 
@@ -926,7 +1158,7 @@ The return type of [`wrapJSX`](#wrapjsx)
 <tr>
 <td>
 
-<a id="with"></a> `with`
+<a id="with-1"></a> `with`
 
 </td>
 <td>
@@ -938,7 +1170,7 @@ The return type of [`wrapJSX`](#wrapjsx)
 <tr>
 <td>
 
-<a id="end"></a> `end`
+<a id="end-1"></a> `end`
 
 </td>
 <td>
@@ -958,7 +1190,7 @@ The return type of [`wrapJSX`](#wrapjsx)
 type WrapJSXWith = <C>(...args) => JSXWrapPipe;
 ```
 
-Defined in: [misc/wrapJSX.tsx:24](https://github.com/aweebit/react-essentials/blob/v0.10.1/src/misc/wrapJSX.tsx#L24)
+Defined in: [misc/wrapJSX.tsx:27](https://github.com/aweebit/react-essentials/blob/v0.10.1/src/misc/wrapJSX.tsx#L27)
 
 ### Type Parameters
 

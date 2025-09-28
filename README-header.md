@@ -5,6 +5,7 @@
 - [useEventListener()](#useeventlistener)
 - [useReducerWithDeps()](#usereducerwithdeps)
 - [useStateWithDeps()](#usestatewithdeps)
+- [contextualize()](#contextualize)
 - [createSafeContext()](#createsafecontext)
 - [wrapJSX()](#wrapjsx)
 

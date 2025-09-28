@@ -4,6 +4,9 @@ import type {
   default as React,
 } from 'react';
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import type { contextualize } from './contextualize.js';
+
 /**
  * The return type of {@linkcode wrapJSX}
  *
@@ -40,6 +43,9 @@ export type WrapJSXWith =
 
 /**
  * An alternative way to compose JSX that avoids ever-increasing indentation
+ *
+ * A more general version of the context-specific {@linkcode contextualize}
+ * function.
  *
  * @example
  * ```tsx
