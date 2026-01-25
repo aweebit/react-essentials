@@ -1379,7 +1379,7 @@ Defined in: [misc/wrapJSX.tsx:28](https://github.com/aweebit/react-essentials/bl
 </td>
 <td>
 
-\[`"children"` _extends_ keyof `ComponentProps`\<`C`\> ? \[`Children`\] _extends_ \[`ComponentProps`\<`C`\>\[`"children"`\]\] ? `C` : `never` : `never`, `...(Record<never, unknown> extends Omit<ComponentProps<C>, "children"> ? [props?: React.JSX.IntrinsicAttributes & Omit<ComponentProps<C>, "children">] : [props: React.JSX.IntrinsicAttributes & Omit<ComponentProps<C>, "children">])`\]
+\[`"children"` _extends_ keyof `ComponentProps`\<`C`\> ? \[`Children`\] _extends_ \[`ComponentProps`\<`C`\>\[`"children"`\]\] ? `C` : `never` : `never`, `...(Record<never, unknown> extends Omit<ComponentProps<C>, "children"> ? [props?: JSX.IntrinsicAttributes & Omit<ComponentProps<C>, "children">] : [props: JSX.IntrinsicAttributes & Omit<ComponentProps<C>, "children">])`\]
 
 </td>
 </tr>

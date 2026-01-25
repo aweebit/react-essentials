@@ -1,7 +1,7 @@
 import type {
   ComponentProps,
+  JSX,
   JSXElementConstructor,
-  default as React,
   ReactElement,
   ReactNode,
 } from 'react';
@@ -36,11 +36,11 @@ export type WrapJSXWith<Children extends ReactNode> =
         : never,
       ...(Record<never, unknown> extends Omit<ComponentProps<C>, 'children'>
         ? [
-            props?: React.JSX.IntrinsicAttributes &
+            props?: JSX.IntrinsicAttributes &
               Omit<ComponentProps<C>, 'children'>,
           ]
         : [
-            props: React.JSX.IntrinsicAttributes &
+            props: JSX.IntrinsicAttributes &
               Omit<ComponentProps<C>, 'children'>,
           ]),
     ]
@@ -100,9 +100,7 @@ export function wrapJSX<Children extends ReactNode>(
 ): JSXWrapPipe<Children> {
   return {
     with(
-      Component:
-        | keyof React.JSX.IntrinsicElements
-        | JSXElementConstructor<object>,
+      Component: keyof JSX.IntrinsicElements | JSXElementConstructor<object>,
       props: object = {},
     ) {
       return wrapJSX(<Component {...props}>{children}</Component>);
