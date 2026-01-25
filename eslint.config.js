@@ -1,5 +1,5 @@
 import js from '@eslint/js';
-import eslintConfigPrettierFlat from 'eslint-config-prettier/flat';
+import eslintConfigPrettier from 'eslint-config-prettier/flat';
 import reactHooks from 'eslint-plugin-react-hooks';
 import { defineConfig } from 'eslint/config';
 import globals from 'globals';
@@ -9,8 +9,8 @@ export default defineConfig(
   { ignores: ['**/dist'] },
   js.configs.recommended,
   tseslint.configs.recommended,
-  reactHooks.configs['recommended-latest'],
-  eslintConfigPrettierFlat,
+  reactHooks.configs.flat.recommended,
+  eslintConfigPrettier,
   {
     files: ['**/*.{js,jsx,ts,tsx}'],
     languageOptions: { globals: globals.browser },
