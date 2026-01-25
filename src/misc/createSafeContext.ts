@@ -1,5 +1,4 @@
 import { type Context, createContext, useContext } from 'react';
-import type { ArgumentFallback } from '../utils.js';
 
 const moValueSymbol = Symbol('noValue');
 
@@ -63,7 +62,9 @@ export function createSafeContext<T = never>() {
   return <DisplayName extends string>(
     displayName: [T] extends [never]
       ? never
-      : ArgumentFallback<DisplayName, never, string>,
+      : string extends DisplayName
+        ? never
+        : DisplayName,
   ): { [K in `${DisplayName}Context`]: Context<T> } & {
     [K in `use${DisplayName}`]: () => T;
   } => {

@@ -518,7 +518,7 @@ function createSafeContext<T>(): <DisplayName>(displayName) => {
 };
 ```
 
-Defined in: [misc/createSafeContext.ts:62](https://github.com/aweebit/react-essentials/blob/v0.10.7/src/misc/createSafeContext.ts#L62)
+Defined in: [misc/createSafeContext.ts:61](https://github.com/aweebit/react-essentials/blob/v0.10.7/src/misc/createSafeContext.ts#L61)
 
 For a given type `T`, returns a function that produces both a context of that
 type and a hook that returns the current context value if one was provided,
@@ -644,7 +644,7 @@ A function that accepts a single string argument `displayName` (e.g.
 </td>
 <td>
 
-\[`T`\] _extends_ \[`never`\] ? `never` : `ArgumentFallback`\<`DisplayName`, `never`, `string`\>
+\[`T`\] _extends_ \[`never`\] ? `never` : `string` _extends_ `DisplayName` ? `never` : `DisplayName`
 
 </td>
 </tr>
