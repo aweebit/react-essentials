@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, type RefObject } from 'react';
+import { useIsomorphicLayoutEffect } from './useIsomorphicLayoutEffect.js';
 
 /**
  * The type of {@linkcode useEventListener}
@@ -151,7 +152,7 @@ export const useEventListener: UseEventListener = function useEventListener(
     target && !('addEventListener' in target) ? target.current : target;
 
   const handlerRef = useRef(handler);
-  useEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     handlerRef.current = handler;
   }, [handler]);
 
