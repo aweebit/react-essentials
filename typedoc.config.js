@@ -29,6 +29,14 @@ const config = {
   },
   formatWithPrettier: true,
   prettierConfigFile: './prettier.config.js',
+  externalSymbolLinkMappings: {
+    '@types/react': {
+      'React.useLayoutEffect':
+        'https://react.dev/reference/react/useLayoutEffect',
+      'React.useReducer': 'https://react.dev/reference/react/useReducer',
+      'React.useState': 'https://react.dev/reference/react/useState',
+    },
+  },
 };
 
 export default config;

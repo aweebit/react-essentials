@@ -6,8 +6,8 @@ import {
 } from 'react';
 
 /**
- * Identical to `useLayoutEffect`, except it does not result in warnings when
- * used on the server
+ * Identical to {@linkcode useLayoutEffect}, except it does not result in
+ * warnings when used on the server
  */
 export const useIsomorphicLayoutEffect: (
   effect: EffectCallback,

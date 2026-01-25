@@ -1,4 +1,9 @@
-import { type DependencyList, useRef } from 'react';
+import {
+  type DependencyList,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  type useReducer,
+  useRef,
+} from 'react';
 import { useStateWithDeps } from './useStateWithDeps.js';
 
 // We cannot simply import the following types from @types/react since they are
@@ -15,8 +20,8 @@ export type ActionDispatch<ActionArg extends AnyActionArg> = (
 ) => void;
 
 /**
- * `useReducer` hook with an additional dependency array `deps` that resets the
- * state to `initialState` when dependencies change
+ * {@linkcode useReducer} hook with an additional dependency array `deps` that
+ * resets the state to `initialState` when dependencies change
  *
  * This hook is the reducer pattern counterpart of {@linkcode useStateWithDeps}.
  *

@@ -1,5 +1,4 @@
 import type { Context, ReactElement, ReactNode } from 'react';
-
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import type { wrapJSX } from './wrapJSX.js';
 

@@ -5,7 +5,6 @@ import type {
   ReactElement,
   ReactNode,
 } from 'react';
-
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import type { contextualize } from './contextualize.js';
 

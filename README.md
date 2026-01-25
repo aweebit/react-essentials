@@ -70,8 +70,8 @@ const useIsomorphicLayoutEffect: (effect, deps?) => void;
 
 Defined in: [hooks/useIsomorphicLayoutEffect.ts:12](https://github.com/aweebit/react-essentials/blob/v0.10.7/src/hooks/useIsomorphicLayoutEffect.ts#L12)
 
-Identical to `useLayoutEffect`, except it does not result in warnings when
-used on the server
+Identical to [`useLayoutEffect`](https://react.dev/reference/react/useLayoutEffect), except it does not result in
+warnings when used on the server
 
 ### Parameters
 
@@ -126,10 +126,10 @@ function useReducerWithDeps<S, A>(
 ): [S, ActionDispatch<A>];
 ```
 
-Defined in: [hooks/useReducerWithDeps.ts:59](https://github.com/aweebit/react-essentials/blob/v0.10.7/src/hooks/useReducerWithDeps.ts#L59)
+Defined in: [hooks/useReducerWithDeps.ts:64](https://github.com/aweebit/react-essentials/blob/v0.10.7/src/hooks/useReducerWithDeps.ts#L64)
 
-`useReducer` hook with an additional dependency array `deps` that resets the
-state to `initialState` when dependencies change
+[`useReducer`](https://react.dev/reference/react/useReducer) hook with an additional dependency array `deps` that
+resets the state to `initialState` when dependencies change
 
 This hook is the reducer pattern counterpart of [`useStateWithDeps`](#usestatewithdeps).
 
@@ -271,8 +271,8 @@ function useStateWithDeps<S>(
 
 Defined in: [hooks/useStateWithDeps.ts:62](https://github.com/aweebit/react-essentials/blob/v0.10.7/src/hooks/useStateWithDeps.ts#L62)
 
-`useState` hook with an additional dependency array `deps` that resets the
-state to `initialState` when dependencies change
+[`useState`](https://react.dev/reference/react/useState) hook with an additional dependency array `deps` that
+resets the state to `initialState` when dependencies change
 
 Due to React's limitations, a change in dependencies always causes two
 renders when using this hook. The result of the first render is thrown away
@@ -399,7 +399,7 @@ Dependencies that reset the state to `initialState`
 function contextualize<Children>(children): ContextualizePipe<Children>;
 ```
 
-Defined in: [misc/contextualize.tsx:79](https://github.com/aweebit/react-essentials/blob/v0.10.7/src/misc/contextualize.tsx#L79)
+Defined in: [misc/contextualize.tsx:78](https://github.com/aweebit/react-essentials/blob/v0.10.7/src/misc/contextualize.tsx#L78)
 
 An alternative way to provide context values to component trees that avoids
 ever-increasing indentation
@@ -663,7 +663,7 @@ A function that accepts a single string argument `displayName` (e.g.
 function wrapJSX<Children>(children): JSXWrapPipe<Children>;
 ```
 
-Defined in: [misc/wrapJSX.tsx:99](https://github.com/aweebit/react-essentials/blob/v0.10.7/src/misc/wrapJSX.tsx#L99)
+Defined in: [misc/wrapJSX.tsx:98](https://github.com/aweebit/react-essentials/blob/v0.10.7/src/misc/wrapJSX.tsx#L98)
 
 An alternative way to compose JSX that avoids ever-increasing indentation
 
@@ -1097,7 +1097,7 @@ type ContextualizePipe<Children> = {
 };
 ```
 
-Defined in: [misc/contextualize.tsx:13](https://github.com/aweebit/react-essentials/blob/v0.10.7/src/misc/contextualize.tsx#L13)
+Defined in: [misc/contextualize.tsx:12](https://github.com/aweebit/react-essentials/blob/v0.10.7/src/misc/contextualize.tsx#L12)
 
 The return type of [`contextualize`](#contextualize)
 
@@ -1170,7 +1170,7 @@ The return type of [`contextualize`](#contextualize)
 type ContextualizeWith = <T>(Context, value) => ContextualizePipe<ReactElement>;
 ```
 
-Defined in: [misc/contextualize.tsx:23](https://github.com/aweebit/react-essentials/blob/v0.10.7/src/misc/contextualize.tsx#L23)
+Defined in: [misc/contextualize.tsx:22](https://github.com/aweebit/react-essentials/blob/v0.10.7/src/misc/contextualize.tsx#L22)
 
 ### Type Parameters
 
@@ -1248,7 +1248,7 @@ type JSXWrapPipe<Children> = {
 };
 ```
 
-Defined in: [misc/wrapJSX.tsx:19](https://github.com/aweebit/react-essentials/blob/v0.10.7/src/misc/wrapJSX.tsx#L19)
+Defined in: [misc/wrapJSX.tsx:18](https://github.com/aweebit/react-essentials/blob/v0.10.7/src/misc/wrapJSX.tsx#L18)
 
 The return type of [`wrapJSX`](#wrapjsx)
 
@@ -1321,7 +1321,7 @@ The return type of [`wrapJSX`](#wrapjsx)
 type WrapJSXWith<Children> = <C>(...args) => JSXWrapPipe<ReactElement>;
 ```
 
-Defined in: [misc/wrapJSX.tsx:29](https://github.com/aweebit/react-essentials/blob/v0.10.7/src/misc/wrapJSX.tsx#L29)
+Defined in: [misc/wrapJSX.tsx:28](https://github.com/aweebit/react-essentials/blob/v0.10.7/src/misc/wrapJSX.tsx#L28)
 
 ### Type Parameters
 

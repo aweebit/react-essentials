@@ -7,8 +7,8 @@ import {
 import { depsAreEqual } from '../utils.js';
 
 /**
- * `useState` hook with an additional dependency array `deps` that resets the
- * state to `initialState` when dependencies change
+ * {@linkcode useState} hook with an additional dependency array `deps` that
+ * resets the state to `initialState` when dependencies change
  *
  * Due to React's limitations, a change in dependencies always causes two
  * renders when using this hook. The result of the first render is thrown away
