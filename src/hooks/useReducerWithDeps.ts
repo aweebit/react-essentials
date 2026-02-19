@@ -2,7 +2,7 @@ import {
   type DependencyList,
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   type useReducer,
-  useRef,
+  useState,
 } from 'react';
 import { useStateWithDeps } from './useStateWithDeps.js';
 
@@ -70,11 +70,14 @@ export function useReducerWithDeps<S, A extends AnyActionArg>(
   const [state, setState] = useStateWithDeps(initialState, deps);
 
   // Only the initially provided reducer is used
-  const reducerRef = useRef(reducer);
+  const [stableReducer] = useState(() => reducer);
 
-  function dispatch(...args: A): void {
-    setState((previousState) => reducerRef.current(previousState, ...args));
-  }
+  const [stableDispatch] = useState(
+    () =>
+      function dispatch(...args: A): void {
+        setState((previousState) => stableReducer(previousState, ...args));
+      },
+  );
 
-  return [state, useRef(dispatch).current];
+  return [state, stableDispatch];
 }

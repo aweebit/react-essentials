@@ -148,9 +148,6 @@ export const useEventListener: UseEventListener = function useEventListener(
       ? [window, ...(args as UseEventListenerWithImplicitWindowTargetArgsAny)]
       : (args as UseEventListenerWithExplicitTargetArgsAny);
 
-  const unwrappedTarget =
-    target && !('addEventListener' in target) ? target.current : target;
-
   const handlerRef = useRef(handler);
   useIsomorphicLayoutEffect(() => {
     handlerRef.current = handler;
@@ -170,6 +167,9 @@ export const useEventListener: UseEventListener = function useEventListener(
   );
 
   useEffect(() => {
+    const unwrappedTarget =
+      target && !('addEventListener' in target) ? target.current : target;
+
     if (unwrappedTarget === null) {
       // No element has been attached to the ref yet
       return;
@@ -184,5 +184,5 @@ export const useEventListener: UseEventListener = function useEventListener(
     return () => {
       unwrappedTarget.removeEventListener(eventName, listener, memoizedOptions);
     };
-  }, [unwrappedTarget, eventName, memoizedOptions]);
+  }, [target, eventName, memoizedOptions]);
 } as UseEventListener;
