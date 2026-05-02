@@ -1,3 +1,3 @@
 export * from './contextualize.js';
-export * from './createSafeContext.js';
+export * from './createRequiredContext.js';
 export * from './wrapJSX.js';

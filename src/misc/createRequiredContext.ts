@@ -39,7 +39,7 @@ const moValueSymbol = Symbol('noValue');
  *
  * // After:
  * const { DirectionContext, useDirection } =
- *   createSafeContext<Direction>()('Direction'); // That's it :)
+ *   createRequiredContext<Direction>()('Direction'); // That's it :)
  *
  * const Parent = () => (
  *   // Providing undefined as the value is not allowed 👍
@@ -58,7 +58,7 @@ const moValueSymbol = Symbol('noValue');
  * - ``` `use${displayName}` ``` (e.g. `useDirection`): a hook that returns the
  *   current context value if one was provided, or throws an error otherwise
  */
-export function createSafeContext<T = never>() {
+export function createRequiredContext<T = never>() {
   return <DisplayName extends string>(
     displayName: [T] extends [never]
       ? never

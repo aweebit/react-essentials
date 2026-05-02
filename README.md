@@ -7,7 +7,7 @@
 - [useReducerWithDeps()](#usereducerwithdeps)
 - [useStateWithDeps()](#usestatewithdeps)
 - [contextualize()](#contextualize)
-- [createSafeContext()](#createsafecontext)
+- [createRequiredContext()](#createsafecontext)
 - [wrapJSX()](#wrapjsx)
 
 ### Requirements
@@ -508,17 +508,17 @@ An object with the following properties:
 
 ---
 
-## createSafeContext()
+## createRequiredContext()
 
 ```ts
-function createSafeContext<T>(): <DisplayName>(displayName) => {
+function createRequiredContext<T>(): <DisplayName>(displayName) => {
   [K in `${string}Context`]: Context<T>;
 } & {
   [K in `use${string}`]: () => T;
 };
 ```
 
-Defined in: [misc/createSafeContext.ts:61](https://github.com/aweebit/react-essentials/blob/v0.11.0/src/misc/createSafeContext.ts#L61)
+Defined in: [misc/createRequiredContext.ts:61](https://github.com/aweebit/react-essentials/blob/v0.11.0/src/misc/createRequiredContext.ts#L61)
 
 For a given type `T`, returns a function that produces both a context of that
 type and a hook that returns the current context value if one was provided,
@@ -557,7 +557,7 @@ const useDirection = () => {
 
 // After:
 const { DirectionContext, useDirection } =
-  createSafeContext<Direction>()('Direction'); // That's it :)
+  createRequiredContext<Direction>()('Direction'); // That's it :)
 
 const Parent = () => (
   // Providing undefined as the value is not allowed 👍
