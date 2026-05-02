@@ -1,4 +1,4 @@
-import type { Context, ReactElement, ReactNode } from 'react';
+import type { Context, Provider, ReactElement, ReactNode } from 'react';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import type { wrapJSX } from './wrapJSX.js';
 
@@ -20,7 +20,7 @@ export type ContextualizePipe<Children extends ReactNode> = {
  * {@linkcode ContextualizePipe}
  */
 export type ContextualizeWith = <T>(
-  Context: Context<T>,
+  Provider: Provider<T> | Context<T>,
   value: NoInfer<T>,
 ) => ContextualizePipe<ReactElement>;
 
@@ -38,9 +38,7 @@ export type ContextualizeWith = <T>(
  *     <DeckIdContext.Provider value={deckId}>
  *       <FlashcardsContext.Provider value={flashcards}>
  *         <EventHandlersContext.Provider value={eventHandlers}>
- *           <Header />
- *           <Main />
- *           <Footer />
+ *           {children}
  *         </EventHandlersContext.Provider>
  *       </FlashcardsContext.Provider>
  *     </DeckIdContext.Provider>
@@ -48,15 +46,7 @@ export type ContextualizeWith = <T>(
  * );
  *
  * // After:
- * const jsx = (
- *   <>
- *     <Header />
- *     <Main />
- *     <Footer />
- *   </>
- * );
- *
- * return contextualize(jsx)
+ * return contextualize(children)
  *   .with(EventHandlersContext, eventHandlers)
  *   .with(FlashcardsContext, flashcards)
  *   .with(DeckIdContext, deckId)
@@ -67,9 +57,9 @@ export type ContextualizeWith = <T>(
  * @param children The children to contextualize
  *
  * @returns An object with the following properties:
- * - `with`: a function that accepts a context `Context` and a value `value` for
- *   it as arguments and returns
- *   `contextualize(<Context.Provider value={value}>{children}</Context.Provider>)`
+ * - `with`: a function that accepts a context provider `Provider` (or the
+ *   context it belongs to) and a value `value` for that context as arguments
+ *   and returns `contextualize(<Provider value={value}>{children}</Provider>)`
  * - `end`: a function that returns `children`
  *
  * @see
@@ -79,10 +69,9 @@ export function contextualize<Children extends ReactNode>(
   children: Children,
 ): ContextualizePipe<Children> {
   return {
-    with<T>(Context: Context<T>, value: T) {
-      return contextualize(
-        <Context.Provider value={value}>{children}</Context.Provider>,
-      );
+    with<T>(Provider: Provider<T> | Context<T>, value: T) {
+      if ('Provider' in Provider) Provider = Provider.Provider;
+      return contextualize(<Provider value={value}>{children}</Provider>);
     },
     end() {
       return children;

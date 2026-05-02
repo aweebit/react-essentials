@@ -399,7 +399,7 @@ Dependencies that reset the state to `initialState`
 function contextualize<Children>(children): ContextualizePipe<Children>;
 ```
 
-Defined in: [misc/contextualize.tsx:78](https://github.com/aweebit/react-essentials/blob/v0.11.0/src/misc/contextualize.tsx#L78)
+Defined in: [misc/contextualize.tsx:68](https://github.com/aweebit/react-essentials/blob/v0.11.0/src/misc/contextualize.tsx#L68)
 
 An alternative way to provide context values to component trees that avoids
 ever-increasing indentation
@@ -415,9 +415,7 @@ return (
     <DeckIdContext.Provider value={deckId}>
       <FlashcardsContext.Provider value={flashcards}>
         <EventHandlersContext.Provider value={eventHandlers}>
-          <Header />
-          <Main />
-          <Footer />
+          {children}
         </EventHandlersContext.Provider>
       </FlashcardsContext.Provider>
     </DeckIdContext.Provider>
@@ -425,15 +423,7 @@ return (
 );
 
 // After:
-const jsx = (
-  <>
-    <Header />
-    <Main />
-    <Footer />
-  </>
-);
-
-return contextualize(jsx)
+return contextualize(children)
   .with(EventHandlersContext, eventHandlers)
   .with(FlashcardsContext, flashcards)
   .with(DeckIdContext, deckId)
@@ -497,9 +487,9 @@ The children to contextualize
 
 An object with the following properties:
 
-- `with`: a function that accepts a context `Context` and a value `value` for
-  it as arguments and returns
-  `contextualize(<Context.Provider value={value}>{children}</Context.Provider>)`
+- `with`: a function that accepts a context provider `Provider` (or the
+  context it belongs to) and a value `value` for that context as arguments
+  and returns `contextualize(<Provider value={value}>{children}</Provider>)`
 - `end`: a function that returns `children`
 
 ### See
@@ -1117,7 +1107,10 @@ The return type of [`contextualize`](#contextualize)
 ## ContextualizeWith
 
 ```ts
-type ContextualizeWith = <T>(Context, value) => ContextualizePipe<ReactElement>;
+type ContextualizeWith = <T>(
+  Provider,
+  value,
+) => ContextualizePipe<ReactElement>;
 ```
 
 Defined in: [misc/contextualize.tsx:22](https://github.com/aweebit/react-essentials/blob/v0.11.0/src/misc/contextualize.tsx#L22)
@@ -1154,12 +1147,12 @@ Defined in: [misc/contextualize.tsx:22](https://github.com/aweebit/react-essenti
 <tr>
 <td>
 
-`Context`
+`Provider`
 
 </td>
 <td>
 
-`Context`\<`T`\>
+`Provider`\<`T`\> \| `Context`\<`T`\>
 
 </td>
 </tr>
