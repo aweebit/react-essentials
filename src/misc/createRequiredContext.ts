@@ -1,14 +1,16 @@
-import { type Context, createContext, useContext } from 'react';
+import { createContext, type Provider, useContext } from 'react';
 
-const moValueSymbol = Symbol('noValue');
+const moContextValueSymbol = Symbol(
+  '@aweebit/react-essentials/no-context-value',
+);
 
 /**
- * For a given type `T`, returns a function that produces both a context of that
- * type and a hook that returns the current context value if one was provided,
- * or throws an error otherwise
+ * For a given type `T`, returns a function that generates a context of that
+ * type, and returns both a provider component and a hook for that context where
+ * the hook will throw if no context value has been provided
  *
  * The advantages over vanilla `createContext` are that no default value has to
- * be provided, and that a meaningful context name is displayed in dev tools
+ * be specified, and that a meaningful context name is displayed in dev tools
  * instead of generic `Context.Provider`.
  *
  * @example
@@ -24,6 +26,7 @@ const moValueSymbol = Symbol('noValue');
  * const DirectionContext = createContext<Direction | undefined>(undefined);
  * DirectionContext.displayName = 'DirectionContext';
  *
+ * const DirectionProvider = DirectionContext.Provider;
  * const useDirection = () => {
  *   const direction = useContext(DirectionContext);
  *   if (direction === undefined) {
@@ -38,23 +41,68 @@ const moValueSymbol = Symbol('noValue');
  * };
  *
  * // After:
- * const { DirectionContext, useDirection } =
+ * const { DirectionProvider, useDirection } =
  *   createRequiredContext<Direction>()('Direction'); // That's it :)
  *
- * const Parent = () => (
- *   // Providing undefined as the value is not allowed 👍
- *   <Direction.Provider value={Direction.Up}>
- *     <Child />
- *   </Direction.Provider>
- * );
+ * // Intended usage with dynamic context values:
+ * const { DispatchProvider, useDispatch } = createRequiredContext<{
+ *   setDirection: (direction: Direction) => void;
+ * }>()('Dispatch');
  *
- * const Child = () => `Current direction: ${Direction[useDirection()]}`;
+ * const GameContextProvider = ({
+ *   initialDirection,
+ *   children,
+ * }: {
+ *   initialDirection: Direction;
+ *   children: React.ReactNode;
+ * }) => {
+ *   const [direction, setDirection] = useStateWithDeps(initialDirection, [
+ *     initialDirection,
+ *   ]);
+ *
+ *   return contextualize(children)
+ *     .with(DispatchProvider, { setDirection })
+ *     .with(DirectionProvider, direction)
+ *     .end();
+ * };
+ *
+ * const Game = () => {
+ *   return wrapJSX(<DirectChild />)
+ *     .with(GameContextProvider, { initialDirection: Direction.Up })
+ *     .end();
+ * };
+ *
+ * const keyDirectionMapping = {
+ *   KeyW: Direction.Up,
+ *   KeyA: Direction.Left,
+ *   KeyS: Direction.Down,
+ *   KeyD: Direction.Right,
+ * } as const;
+ *
+ * // Won't re-render when direction changes because it only uses dispatch 🥳
+ * const DirectChild = () => {
+ *   const { setDirection } = useDispatch();
+ *
+ *   useEventListener('keydown', (event) => {
+ *     if (event.code in keyDirectionMapping) {
+ *       setDirection(
+ *         keyDirectionMapping[event.code as keyof typeof keyDirectionMapping],
+ *       );
+ *     }
+ *   });
+ *
+ *   return <IndirectChild />;
+ * };
+ *
+ * // Will re-render when direction changes because it uses it 👍
+ * const IndirectChild = () => `Current direction: ${Direction[useDirection()]}`;
  * ```
  *
  * @returns
  * A function that accepts a single string argument `displayName` (e.g.
  * `"Direction"`) and returns an object with the following properties:
- * - ``` `${displayName}Context` ``` (e.g. `DirectionContext`): the context
+ * - ``` `${displayName}Provider` ``` (e.g. `DirectionProvider`): the context
+ *   provider
  * - ``` `use${displayName}` ``` (e.g. `useDirection`): a hook that returns the
  *   current context value if one was provided, or throws an error otherwise
  */
@@ -65,26 +113,30 @@ export function createRequiredContext<T = never>() {
       : string extends DisplayName
         ? never
         : DisplayName,
-  ): { [K in `${DisplayName}Context`]: Context<T> } & {
+  ): {
+    [K in `${DisplayName}Provider`]: Provider<T>;
+  } & {
     [K in `use${DisplayName}`]: () => T;
   } => {
-    const contextName = `${displayName as DisplayName}Context` as const;
+    const providerName = `${displayName as DisplayName}Provider` as const;
     const hookName = `use${displayName as DisplayName}` as const;
 
-    const Context = createContext<T | typeof moValueSymbol>(moValueSymbol);
-    Context.displayName = contextName;
+    const Context = createContext<T | typeof moContextValueSymbol>(
+      moContextValueSymbol,
+    );
+    Context.displayName = `${displayName}Context`;
 
     return {
-      [contextName]: Context as Context<T>,
+      [providerName]: Context.Provider as Provider<T>,
       [hookName]: () => {
         const value = useContext(Context);
-        if (value === moValueSymbol) {
-          throw new Error(`No ${contextName} value was provided`);
+        if (value === moContextValueSymbol) {
+          throw new Error(`No ${Context.displayName} value was provided`);
         }
         return value;
       },
     } as {
-      [K in typeof contextName]: Context<T>;
+      [K in typeof providerName]: Provider<T>;
     } & {
       [K in typeof hookName]: () => T;
     };
