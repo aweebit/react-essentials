@@ -1,6 +1,6 @@
 {
   "name": "@aweebit/react-essentials",
-  "version": "0.10.8",
+  "version": "0.11.0",
   "type": "module",
   "repository": "github:aweebit/react-essentials",
   "main": "dist/index.js",
@@ -29,26 +29,21 @@
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
-    "@types/node": "^22.19.11",
+    "@types/node": "^22.19.17",
     "@types/react": "^18.3.28",
-    "eslint": "^10.0.0",
+    "eslint": "^10.3.0",
     "eslint-config-prettier": "^10.1.8",
-    "eslint-plugin-react-hooks": "^7.0.1",
-    "globals": "^17.3.0",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "globals": "^17.6.0",
     "husky": "^9.1.7",
-    "lint-staged": "^16.2.7",
-    "prettier": "3.8.1",
+    "lint-staged": "^16.4.0",
+    "prettier": "3.8.3",
     "react": "^18.3.1",
     "rimraf": "^6.1.3",
-    "typedoc": "^0.28.17",
-    "typedoc-plugin-markdown": "^4.10.0",
-    "typescript": "~5.9.3",
-    "typescript-eslint": "^8.56.0"
+    "typedoc": "^0.28.19",
+    "typedoc-plugin-markdown": "^4.11.0",
+    "typescript": "~6.0.3",
+    "typescript-eslint": "^8.59.1"
   },
-  "license": "MIT",
-  "overrides": {
-    "eslint-plugin-react-hooks": {
-      "eslint": "^3.0.0 || ^4.0.0 || ^5.0.0 || ^6.0.0 || ^7.0.0 || ^8.0.0-0 || ^9.0.0 || ^10.0.0"
-    }
-  }
+  "license": "MIT"
 }
