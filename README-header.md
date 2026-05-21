@@ -7,6 +7,7 @@
 - [useReducerWithDeps()](#usereducerwithdeps)
 - [useStateWithDeps()](#usestatewithdeps)
 - [contextualize()](#contextualize)
+- [createGranularContext()](#creategranularcontext)
 - [createRequiredContext()](#createrequiredcontext)
 - [wrapJSX()](#wrapjsx)
 

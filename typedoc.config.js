@@ -31,6 +31,7 @@ const config = {
   prettierConfigFile: './prettier.config.js',
   externalSymbolLinkMappings: {
     '@types/react': {
+      'React.createContext': 'https://react.dev/reference/react/createContext',
       'React.useLayoutEffect':
         'https://react.dev/reference/react/useLayoutEffect',
       'React.useReducer': 'https://react.dev/reference/react/useReducer',

@@ -1,4 +1,7 @@
 import { createContext, type Provider, useContext } from 'react';
+import { capitalize } from '../utils.js';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import type { createGranularContext } from './createGranularContext.js';
 
 const moContextValueSymbol = Symbol(
   '@aweebit/react-essentials/no-context-value',
@@ -9,9 +12,13 @@ const moContextValueSymbol = Symbol(
  * type, and returns both a provider component and a hook for that context where
  * the hook will throw if no context value has been provided
  *
- * The advantages over vanilla `createContext` are that no default value has to
- * be specified, and that a meaningful context name is displayed in dev tools
- * instead of generic `Context.Provider`.
+ * The advantages over vanilla {@linkcode createContext} are that no default
+ * value has to be specified, and that a meaningful context name is displayed in
+ * dev tools instead of generic `Context.Provider`.
+ *
+ * {@linkcode createGranularContext} is a more high-level API built on top of
+ * this function. Using it should be preferred to using `createRequiredContext`
+ * directly in cases where the context value is part of the UI state.
  *
  * @example
  * ```tsx
@@ -44,87 +51,43 @@ const moContextValueSymbol = Symbol(
  * const { DirectionProvider, useDirection } =
  *   createRequiredContext<Direction>()('Direction'); // That's it :)
  *
- * // Intended usage with dynamic context values:
- * const { DispatchProvider, useDispatch } = createRequiredContext<{
- *   setDirection: (direction: Direction) => void;
- * }>()('Dispatch');
+ * const Parent = () => (
+ *   // Providing undefined as the value is not allowed 👍
+ *   <DirectionProvider value={Direction.Up}>
+ *     <Child />
+ *   </DirectionProvider>
+ * );
  *
- * const GameContextProvider = ({
- *   initialDirection,
- *   children,
- * }: {
- *   initialDirection: Direction;
- *   children: React.ReactNode;
- * }) => {
- *   const [direction, setDirection] = useStateWithDeps(initialDirection, [
- *     initialDirection,
- *   ]);
- *
- *   return contextualize(children)
- *     .with(DispatchProvider, { setDirection })
- *     .with(DirectionProvider, direction)
- *     .end();
- * };
- *
- * const Game = () => {
- *   return wrapJSX(<DirectChild />)
- *     .with(GameContextProvider, { initialDirection: Direction.Up })
- *     .end();
- * };
- *
- * const keyDirectionMapping = {
- *   KeyW: Direction.Up,
- *   KeyA: Direction.Left,
- *   KeyS: Direction.Down,
- *   KeyD: Direction.Right,
- * } as const;
- *
- * // Won't re-render when direction changes because it only uses dispatch 🥳
- * const DirectChild = () => {
- *   const { setDirection } = useDispatch();
- *
- *   useEventListener('keydown', (event) => {
- *     if (event.code in keyDirectionMapping) {
- *       setDirection(
- *         keyDirectionMapping[event.code as keyof typeof keyDirectionMapping],
- *       );
- *     }
- *   });
- *
- *   return <IndirectChild />;
- * };
- *
- * // Will re-render when direction changes because it uses it 👍
- * const IndirectChild = () => `Current direction: ${Direction[useDirection()]}`;
+ * const Child = () => `Provided direction: ${Direction[useDirection()]}`;
  * ```
  *
  * @returns
- * A function that accepts a single string argument `displayName` (e.g.
- * `"Direction"`) and returns an object with the following properties:
- * - ``` `${displayName}Provider` ``` (e.g. `DirectionProvider`): the context
- *   provider
- * - ``` `use${displayName}` ``` (e.g. `useDirection`): a hook that returns the
- *   current context value if one was provided, or throws an error otherwise
+ * A function that accepts a single string argument `name` (e.g. `"Direction"`)
+ * and returns an object with the following properties:
+ * - ``` `${capitalize(name)}Provider` ``` (e.g. `DirectionProvider`): the
+ *   context provider
+ * - ``` `use${capitalize(name)}` ``` (e.g. `useDirection`): a hook that returns
+ *   the current context value if one was provided, or throws an error otherwise
+ *
+ * @see
+ * {@linkcode createGranularContext}
  */
 export function createRequiredContext<T = never>() {
-  return <DisplayName extends string>(
-    displayName: [T] extends [never]
-      ? never
-      : string extends DisplayName
-        ? never
-        : DisplayName,
+  return <Name extends string>(
+    name: [T] extends [never] ? never : string extends Name ? never : Name,
   ): {
-    [K in `${DisplayName}Provider`]: Provider<T>;
+    [K in `${Capitalize<Name>}Provider`]: Provider<T>;
   } & {
-    [K in `use${DisplayName}`]: () => T;
+    [K in `use${Capitalize<Name>}`]: () => T;
   } => {
-    const providerName = `${displayName as DisplayName}Provider` as const;
-    const hookName = `use${displayName as DisplayName}` as const;
+    const capitalizedName = capitalize(name as Name);
+    const providerName = `${capitalizedName}Provider` as const;
+    const hookName = `use${capitalizedName}` as const;
 
     const Context = createContext<T | typeof moContextValueSymbol>(
       moContextValueSymbol,
     );
-    Context.displayName = `${displayName}Context`;
+    Context.displayName = `${capitalizedName}Context`;
 
     return {
       [providerName]: Context.Provider as Provider<T>,
