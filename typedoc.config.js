@@ -35,6 +35,7 @@ const config = {
       'React.useLayoutEffect':
         'https://react.dev/reference/react/useLayoutEffect',
       'React.useReducer': 'https://react.dev/reference/react/useReducer',
+      'React.useRef': 'https://react.dev/reference/react/useRef',
       'React.useState': 'https://react.dev/reference/react/useState',
     },
   },

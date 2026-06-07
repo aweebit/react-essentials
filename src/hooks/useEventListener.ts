@@ -1,5 +1,6 @@
-import { useEffect, useMemo, useRef, type RefObject } from 'react';
+import { useMemo, useRef, type RefObject } from 'react';
 import { useIsomorphicLayoutEffect } from './useIsomorphicLayoutEffect.js';
+import { useStateWithDeps } from './useStateWithDeps.js';
 
 /**
  * The type of {@linkcode useEventListener}
@@ -81,7 +82,13 @@ export type UseEventListenerWithExplicitTargetArgs<
   T extends EventTarget,
   K extends keyof EventMap,
 > = [
-  target: T | (RefObject<T> & { addEventListener?: never }) | null,
+  target:
+    | T
+    // null has to be explicitly included because the definition of RefObject
+    // doesn't have it in React 19
+    | (RefObject<T | null | undefined> & { addEventListener?: never })
+    | null
+    | undefined,
   eventName: K,
   handler: (this: NoInfer<T>, event: EventMap[K]) => void,
   options?: AddEventListenerOptions | boolean | undefined,
@@ -112,9 +119,16 @@ type UseEventListenerWithExplicitTargetArgsAny =
  *
  * If `target` is not provided, `window` is used instead.
  *
- * If `target` is `null`, no event listener is added. This is useful when
- * working with DOM element refs, or when the event listener needs to be removed
- * temporarily.
+ * If `target` is `null` or `undefined`, no event listener is added. This can be
+ * used to add an event listener conditionally.
+ *
+ * `target` can also be a ref object created with {@linkcode useRef}. Beware
+ * that in that case, changes to the ref's `current` value are only detected
+ * correctly if a re-render happens at the same time it is changed. In other
+ * words, it is required that whenever the ref's `current` value is updated,
+ * some state in the component using the hook also changes at the same time. Due
+ * to React's limitations, the hook also triggers an additional second re-render
+ * whenever such an update happens.
  *
  * @example
  * ```tsx
@@ -139,7 +153,11 @@ export const useEventListener: UseEventListener = function useEventListener(
     | UseEventListenerWithExplicitTargetArgsAny
 ) {
   const [target, eventName, handler, options]: [
-    target: EventTarget | RefObject<EventTarget> | null,
+    target:
+      | EventTarget
+      | RefObject<EventTarget | null | undefined>
+      | null
+      | undefined,
     eventName: string,
     handler: (this: never, event: Event) => void,
     options?: AddEventListenerOptions | boolean | undefined,
@@ -166,14 +184,25 @@ export const useEventListener: UseEventListener = function useEventListener(
     [capture, once, passive, signal],
   );
 
-  useEffect(() => {
-    const unwrappedTarget =
-      target && !('addEventListener' in target) ? target.current : target;
+  const [unwrappedTarget, setUnwrappedTarget] = useStateWithDeps<
+    EventTarget | null | undefined
+  >(
+    () => (target && !('addEventListener' in target) ? null : target),
+    [target],
+  );
 
-    if (unwrappedTarget === null) {
-      // No element has been attached to the ref yet
-      return;
+  // Reading refs' current values during rendering violates the rules of React,
+  // hence the black magic
+  useIsomorphicLayoutEffect(() => {
+    if (target && !('addEventListener' in target)) {
+      setUnwrappedTarget(target.current);
     }
+  });
+
+  // We use a layout effect here because we want the event listener to already
+  // have been added the moment the browser repaints the screen
+  useIsomorphicLayoutEffect(() => {
+    if (unwrappedTarget == null) return;
 
     const listener: typeof handler = function (event) {
       handlerRef.current.call(this, event);
@@ -184,5 +213,5 @@ export const useEventListener: UseEventListener = function useEventListener(
     return () => {
       unwrappedTarget.removeEventListener(eventName, listener, memoizedOptions);
     };
-  }, [target, eventName, memoizedOptions]);
+  }, [unwrappedTarget, eventName, memoizedOptions]);
 } as UseEventListener;

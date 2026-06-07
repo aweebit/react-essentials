@@ -17,7 +17,7 @@ export default defineConfig(
     rules: {
       'react-hooks/exhaustive-deps': [
         'warn',
-        { additionalHooks: '^useStateWithDeps$' },
+        { additionalHooks: '^useStateWithDeps|useIsomorphicLayoutEffect$' },
       ],
     },
   },
