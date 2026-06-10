@@ -216,7 +216,7 @@ export const useEventListener: UseEventListener = function useEventListener(
 
     if (cleanupRef.current) {
       cleanupRef.current();
-      cleanupRef.current = null;
+      cleanupRef.current = setupRef.current = null;
     }
 
     if (unwrappedTarget == null) return;
