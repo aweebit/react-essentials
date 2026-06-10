@@ -1,6 +1,5 @@
 import { useMemo, useRef, type RefObject } from 'react';
 import { useIsomorphicLayoutEffect } from './useIsomorphicLayoutEffect.js';
-import { useStateWithDeps } from './useStateWithDeps.js';
 
 /**
  * The type of {@linkcode useEventListener}
@@ -126,9 +125,12 @@ type UseEventListenerWithExplicitTargetArgsAny =
  * that in that case, changes to the ref's `current` value are only detected
  * correctly if a re-render happens at the same time it is changed. In other
  * words, it is required that whenever the ref's `current` value is updated,
- * some state in the component using the hook also changes at the same time. Due
- * to React's limitations, the hook also triggers an additional second re-render
- * whenever such an update happens.
+ * some state in the component using the hook also changes at the same time.
+ *
+ * You should never use a ref's `current` value as `target` directly as that
+ * violates the rule of React that forbids reading refs during rendering (see
+ * [the `refs` rule](https://react.dev/reference/eslint-plugin-react-hooks/lints/refs)
+ * of `eslint-plugin-react-hooks` for details).
  *
  * @example
  * ```tsx
@@ -184,34 +186,53 @@ export const useEventListener: UseEventListener = function useEventListener(
     [capture, once, passive, signal],
   );
 
-  const [unwrappedTarget, setUnwrappedTarget] = useStateWithDeps<
-    EventTarget | null | undefined
-  >(
-    () => (target && !('addEventListener' in target) ? null : target),
-    [target],
-  );
+  const depsRef = useRef<
+    readonly [EventTarget | null | undefined, string, typeof options] | null
+  >(null);
 
-  // Reading refs' current values during rendering violates the rules of React,
-  // hence the black magic
+  const setupRef = useRef<(() => void) | null>(null);
+  const cleanupRef = useRef<(() => void) | null>(null);
   useIsomorphicLayoutEffect(() => {
-    if (target && !('addEventListener' in target)) {
-      setUnwrappedTarget(target.current);
-    }
-  });
+    setupRef.current?.();
+    return () => cleanupRef.current?.();
+  }, []);
 
   // We use a layout effect here because we want the event listener to already
   // have been added the moment the browser repaints the screen
   useIsomorphicLayoutEffect(() => {
+    const unwrappedTarget =
+      target && !('addEventListener' in target) ? target.current : target;
+
+    const prevDeps = depsRef.current;
+    const deps = [unwrappedTarget, eventName, memoizedOptions] as const;
+
+    // == treats null and undefined as equal
+    if (prevDeps && deps.every((dep, index) => dep == prevDeps[index])) {
+      // Dependencies have not changed
+      return;
+    }
+
+    depsRef.current = deps;
+
+    if (cleanupRef.current) {
+      cleanupRef.current();
+      cleanupRef.current = null;
+    }
+
     if (unwrappedTarget == null) return;
 
     const listener: typeof handler = function (event) {
       handlerRef.current.call(this, event);
     };
 
-    unwrappedTarget.addEventListener(eventName, listener, memoizedOptions);
+    setupRef.current = () => {
+      unwrappedTarget.addEventListener(eventName, listener, memoizedOptions);
+    };
 
-    return () => {
+    cleanupRef.current = () => {
       unwrappedTarget.removeEventListener(eventName, listener, memoizedOptions);
     };
-  }, [unwrappedTarget, eventName, memoizedOptions]);
+
+    setupRef.current();
+  });
 } as UseEventListener;
