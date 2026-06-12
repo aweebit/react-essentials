@@ -101,7 +101,7 @@ export function wrapJSX<Children extends ReactNode>(
   return {
     with(
       Component: keyof JSX.IntrinsicElements | JSXElementConstructor<object>,
-      props: object = {},
+      props?: object,
     ) {
       return wrapJSX(<Component {...props}>{children}</Component>);
     },

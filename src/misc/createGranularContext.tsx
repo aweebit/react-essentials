@@ -1,7 +1,9 @@
 import { type FunctionComponent, type Provider, type ReactNode } from 'react';
 import { capitalize } from '../utils.js';
-import { contextualize } from './contextualize.js';
-import { createRequiredContext } from './createRequiredContext.js';
+import {
+  createRequiredContext,
+  type CreateRequiredContextWithCustomProviderResultProviderPart,
+} from './createRequiredContext.js';
 
 /**
  * Generates multiple related contexts using {@linkcode createRequiredContext}
@@ -50,13 +52,13 @@ import { createRequiredContext } from './createRequiredContext.js';
  * A string that the provider component's display name is derived from
  *
  * @param partNames
- * An array of strings from which the underlying contexts' display names are
- * derived from
+ * An array of strings the underlying contexts' display names are derived from
  *
  * @param providerHook
- * A function that receives props passed to the provider component and is used
- * to populate the underlying contexts' values which it returns in an object
- * mapping names from `partNames` to their respective contexts' values
+ * A function that receives props passed to the provider component as its
+ * argument and is used to populate the underlying contexts whose current values
+ * it should return in an object mapping names from `partNames` to their
+ * respective contexts' values
  *
  * @returns
  * An object with the following properties:
@@ -68,7 +70,8 @@ import { createRequiredContext } from './createRequiredContext.js';
  *   otherwise
  *
  * @see
- * {@linkcode createRequiredContext}
+ * {@linkcode createRequiredContext},
+ * {@linkcode CreateRequiredContextWithCustomProviderResultProviderPart}
  */
 export function createGranularContext<
   Name extends string,
@@ -80,21 +83,13 @@ export function createGranularContext<
   name: string extends Name ? never : Name,
   partNames: string extends PartNames[number] ? never : PartNames,
   providerHook: (props: Props) => Value,
-): {
-  [K in `${Capitalize<Name>}Provider`]: FunctionComponent<
-    Props & { children?: ReactNode | undefined }
-  >;
-} & {
+): CreateRequiredContextWithCustomProviderResultProviderPart<Name, Props> & {
   [K in PartNames[number] as `use${Capitalize<K>}`]: () => Value[K];
 } {
   const [providerMap, hooks] = partNames.reduce<
     [
-      {
-        [K in PartNames[number]]: Provider<Value[K]>;
-      },
-      {
-        [K in PartNames[number] as `use${Capitalize<K>}`]: () => Value[K];
-      },
+      { [K in PartNames[number]]: Provider<Value[K]> },
+      { [K in PartNames[number] as `use${Capitalize<K>}`]: () => Value[K] },
     ]
   >(
     (result, partName: PartNames[number]) => {
@@ -121,13 +116,12 @@ export function createGranularContext<
           Object.entries(providerMap) as Array<
             [PartNames[number], Provider<unknown>]
           >
-        )
-          .reduce(
-            (pipe, [partName, provider]) =>
-              pipe.with(provider, result[partName]),
-            contextualize(props.children),
-          )
-          .end();
+        ).reduce(
+          (jsx, [partName, Provider]) => (
+            <Provider value={result[partName]}>{jsx}</Provider>
+          ),
+          props.children,
+        );
       }) satisfies FunctionComponent<
         Props & { children?: ReactNode | undefined }
       >,

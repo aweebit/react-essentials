@@ -22,7 +22,7 @@
 const useEventListener: UseEventListener;
 ```
 
-Defined in: [hooks/useEventListener.ts:152](https://github.com/aweebit/react-essentials/blob/v0.12.2/src/hooks/useEventListener.ts#L152)
+Defined in: [hooks/useEventListener.ts:154](https://github.com/aweebit/react-essentials/blob/v0.12.3/src/hooks/useEventListener.ts#L154)
 
 Adds `handler` as a listener for the event `eventName` of `target` with the
 provided `options` applied
@@ -79,7 +79,7 @@ useEventListener(buttonRef, 'click', () => console.log('click'));
 const useIsomorphicLayoutEffect: (effect, deps?) => void;
 ```
 
-Defined in: [hooks/useIsomorphicLayoutEffect.ts:12](https://github.com/aweebit/react-essentials/blob/v0.12.2/src/hooks/useIsomorphicLayoutEffect.ts#L12)
+Defined in: [hooks/useIsomorphicLayoutEffect.ts:14](https://github.com/aweebit/react-essentials/blob/v0.12.3/src/hooks/useIsomorphicLayoutEffect.ts#L14)
 
 Identical to [`useLayoutEffect`](https://react.dev/reference/react/useLayoutEffect), except it does not result in
 warnings when used on the server
@@ -137,7 +137,7 @@ function useReducerWithDeps<S, A>(
 ): [S, ActionDispatch<A>];
 ```
 
-Defined in: [hooks/useReducerWithDeps.ts:64](https://github.com/aweebit/react-essentials/blob/v0.12.2/src/hooks/useReducerWithDeps.ts#L64)
+Defined in: [hooks/useReducerWithDeps.ts:64](https://github.com/aweebit/react-essentials/blob/v0.12.3/src/hooks/useReducerWithDeps.ts#L64)
 
 [`useReducer`](https://react.dev/reference/react/useReducer) hook with an additional dependency array `deps` that
 resets the state to `initialState` when dependencies change
@@ -280,7 +280,7 @@ function useStateWithDeps<S>(
 ): [S, Dispatch<SetStateAction<S>>];
 ```
 
-Defined in: [hooks/useStateWithDeps.ts:62](https://github.com/aweebit/react-essentials/blob/v0.12.2/src/hooks/useStateWithDeps.ts#L62)
+Defined in: [hooks/useStateWithDeps.ts:62](https://github.com/aweebit/react-essentials/blob/v0.12.3/src/hooks/useStateWithDeps.ts#L62)
 
 [`useState`](https://react.dev/reference/react/useState) hook with an additional dependency array `deps` that
 resets the state to `initialState` when dependencies change
@@ -410,7 +410,7 @@ Dependencies that reset the state to `initialState`
 function contextualize<Children>(children): ContextualizePipe<Children>;
 ```
 
-Defined in: [misc/contextualize.tsx:68](https://github.com/aweebit/react-essentials/blob/v0.12.2/src/misc/contextualize.tsx#L68)
+Defined in: [misc/contextualize.tsx:68](https://github.com/aweebit/react-essentials/blob/v0.12.3/src/misc/contextualize.tsx#L68)
 
 An alternative way to provide context values to component trees that avoids
 ever-increasing indentation
@@ -516,14 +516,12 @@ function createGranularContext<Name, PartNames, Value, Props>(
   name,
   partNames,
   providerHook,
-): {
-  [K in `${Capitalize<string>}Provider`]: FunctionComponent<
-    Props & { children?: ReactNode }
-  >;
-} & { [K in string as `use${Capitalize<K>}`]: () => Value[K] };
+): CreateRequiredContextWithCustomProviderResultProviderPart<Name, Props> & {
+  [K in string as `use${Capitalize<K>}`]: () => Value[K];
+};
 ```
 
-Defined in: [misc/createGranularContext.ts:73](https://github.com/aweebit/react-essentials/blob/v0.12.2/src/misc/createGranularContext.ts#L73)
+Defined in: [misc/createGranularContext.tsx:76](https://github.com/aweebit/react-essentials/blob/v0.12.3/src/misc/createGranularContext.tsx#L76)
 
 Generates multiple related contexts using [`createRequiredContext`](#createrequiredcontext)
 and returns hooks for each of them as well as a provider component for all
@@ -671,8 +669,7 @@ A string that the provider component's display name is derived from
 </td>
 <td>
 
-An array of strings from which the underlying contexts' display names are
-derived from
+An array of strings the underlying contexts' display names are derived from
 
 </td>
 </tr>
@@ -689,9 +686,10 @@ derived from
 </td>
 <td>
 
-A function that receives props passed to the provider component and is used
-to populate the underlying contexts' values which it returns in an object
-mapping names from `partNames` to their respective contexts' values
+A function that receives props passed to the provider component as its
+argument and is used to populate the underlying contexts whose current values
+it should return in an object mapping names from `partNames` to their
+respective contexts' values
 
 </td>
 </tr>
@@ -700,7 +698,7 @@ mapping names from `partNames` to their respective contexts' values
 
 ### Returns
 
-``{ [K in `${Capitalize<string>}Provider`]: FunctionComponent<Props & { children?: ReactNode }> }`` & ``{ [K in string as `use${Capitalize<K>}`]: () => Value[K] }``
+[`CreateRequiredContextWithCustomProviderResultProviderPart`](#createrequiredcontextwithcustomproviderresultproviderpart)\<`Name`, `Props`\> & ``{ [K in string as `use${Capitalize<K>}`]: () => Value[K] }``
 
 An object with the following properties:
 
@@ -713,33 +711,53 @@ An object with the following properties:
 
 ### See
 
-[`createRequiredContext`](#createrequiredcontext)
+[`createRequiredContext`](#createrequiredcontext),
+[`CreateRequiredContextWithCustomProviderResultProviderPart`](#createrequiredcontextwithcustomproviderresultproviderpart)
 
 ---
 
-## createRequiredContext()
+## createRequiredContext
 
 ```ts
-function createRequiredContext<T>(): <Name>(name) => {
-  [K in `${Capitalize<string>}Provider`]: Provider<T>;
-} & {
-  [K in `use${Capitalize<string>}`]: () => T;
-};
+const createRequiredContext: CreateRequiredContext;
 ```
 
-Defined in: [misc/createRequiredContext.ts:75](https://github.com/aweebit/react-essentials/blob/v0.12.2/src/misc/createRequiredContext.ts#L75)
+Defined in: [misc/createRequiredContext.tsx:230](https://github.com/aweebit/react-essentials/blob/v0.12.3/src/misc/createRequiredContext.tsx#L230)
 
-For a given type `T`, returns a function that generates a context of that
-type, and returns both a provider component and a hook for that context where
-the hook will throw if no context value has been provided
+Generates a context of type `T` and returns both a provider component and a
+hook for that context where the hook will throw an error if no context value
+has been provided
 
 The advantages over vanilla [`createContext`](https://react.dev/reference/react/createContext) are that no default
 value has to be specified, and that a meaningful context name is displayed in
-dev tools instead of generic `Context.Provider`.
+dev tools instead of a generic `Context.Provider`.
 
-[`createGranularContext`](#creategranularcontext) is a more high-level API built on top of
-this function. Using it should be preferred to using `createRequiredContext`
-directly in cases where the context value is part of the UI state.
+The following call patterns are available:
+
+```ts
+createRequiredContext<T>()(name);
+createRequiredContext(name, providerHook);
+```
+
+When the first one is used, the standard React context provider is returned.
+The type `T` has to be specified explicitly. Two calls are necessary due to
+TypeScript's limitations.
+
+The second pattern can be used when it is desired that the provider component
+incorporates custom reactive logic for context value derivation. The type `T`
+is inferred as the return type of `providerHook` which is the function where
+that custom logic resides.
+
+For the full definition of the function's type, see
+[`CreateRequiredContext`](#createrequiredcontext-1).
+
+When multiple related values are provided by a single provider component, it
+is important that values that update independently from one another are kept
+in separate contexts because otherwise, unnecessary re-renders are likely to
+happen. For example, a reactive value and its respective setter function
+should be put in separate contexts because the former can change, while the
+latter never changes. To generate contexts like that, please use
+[`createGranularContext`](#creategranularcontext).
 
 ### Example
 
@@ -781,47 +799,54 @@ const Parent = () => (
 );
 
 const Child = () => `Provided direction: ${Direction[useDirection()]}`;
+
+// Custom provider example:
+const { TimeProvider, useTime } = createRequiredContext(
+  'Time',
+  ({ startTime = 0 }: { startTime?: number }) => {
+    const [time, setTime] = useState(startTime);
+    useEffect(() => {
+      const interval = setInterval(() => setTime((t) => t + 1), 1000);
+      return () => clearInterval(interval);
+    }, []);
+    return time;
+  },
+);
+
+const Parent = () => (
+  <TimeProvider startTime={-30}>
+    <Child />
+  </TimeProvider>
+);
+
+const Child = () => `Time: ${useTime()}`;
 ```
 
-### Type Parameters
+### Param
 
-<table>
-<thead>
-<tr>
-<th>Type Parameter</th>
-<th>Default type</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
+**name**
 
-`T`
+A string the context's display name is derived from
 
-</td>
-<td>
+### Param
 
-`never`
+**providerHook**
 
-</td>
-</tr>
-</tbody>
-</table>
+An optional custom provider hook that receives props passed to the provider
+component as its argument and should return the context's current value
 
 ### Returns
 
-A function that accepts a single string argument `name` (e.g. `"Direction"`)
-and returns an object with the following properties:
+An object with the following properties:
 
 - `` `${capitalize(name)}Provider` `` (e.g. `DirectionProvider`): the
-  context provider
+  provider component
 - `` `use${capitalize(name)}` `` (e.g. `useDirection`): a hook that returns
   the current context value if one was provided, or throws an error otherwise
 
-\<`Name`\>(`name`) => ``{ [K in `${Capitalize<string>}Provider`]: Provider<T> }`` & ``{ [K in `use${Capitalize<string>}`]: () => T }``
-
 ### See
 
+[`CreateRequiredContext`](#createrequiredcontext-1),
 [`createGranularContext`](#creategranularcontext)
 
 ---
@@ -832,7 +857,7 @@ and returns an object with the following properties:
 function wrapJSX<Children>(children): JSXWrapPipe<Children>;
 ```
 
-Defined in: [misc/wrapJSX.tsx:98](https://github.com/aweebit/react-essentials/blob/v0.12.2/src/misc/wrapJSX.tsx#L98)
+Defined in: [misc/wrapJSX.tsx:98](https://github.com/aweebit/react-essentials/blob/v0.12.3/src/misc/wrapJSX.tsx#L98)
 
 An alternative way to compose JSX that avoids ever-increasing indentation
 
@@ -947,7 +972,7 @@ type UseEventListener = UseEventListenerWithImplicitWindowTarget &
   UseEventListenerWithAnyExplicitTarget;
 ```
 
-Defined in: [hooks/useEventListener.ts:13](https://github.com/aweebit/react-essentials/blob/v0.12.2/src/hooks/useEventListener.ts#L13)
+Defined in: [hooks/useEventListener.ts:13](https://github.com/aweebit/react-essentials/blob/v0.12.3/src/hooks/useEventListener.ts#L13)
 
 The type of [`useEventListener`](#useeventlistener)
 
@@ -966,7 +991,7 @@ The type of [`useEventListener`](#useeventlistener)
 type UseEventListenerWithImplicitWindowTarget = <K>(...args) => void;
 ```
 
-Defined in: [hooks/useEventListener.ts:22](https://github.com/aweebit/react-essentials/blob/v0.12.2/src/hooks/useEventListener.ts#L22)
+Defined in: [hooks/useEventListener.ts:22](https://github.com/aweebit/react-essentials/blob/v0.12.3/src/hooks/useEventListener.ts#L22)
 
 ### Type Parameters
 
@@ -1034,7 +1059,7 @@ type UseEventListenerWithExplicitGlobalTarget =
     UseEventListenerWithExplicitTarget<MathMLElement, MathMLElementEventMap>;
 ```
 
-Defined in: [hooks/useEventListener.ts:33](https://github.com/aweebit/react-essentials/blob/v0.12.2/src/hooks/useEventListener.ts#L33)
+Defined in: [hooks/useEventListener.ts:33](https://github.com/aweebit/react-essentials/blob/v0.12.3/src/hooks/useEventListener.ts#L33)
 
 ### See
 
@@ -1051,7 +1076,7 @@ type UseEventListenerWithExplicitTarget<Target, EventMap> = <T, K>(
 ) => void;
 ```
 
-Defined in: [hooks/useEventListener.ts:45](https://github.com/aweebit/react-essentials/blob/v0.12.2/src/hooks/useEventListener.ts#L45)
+Defined in: [hooks/useEventListener.ts:45](https://github.com/aweebit/react-essentials/blob/v0.12.3/src/hooks/useEventListener.ts#L45)
 
 ### Type Parameters
 
@@ -1150,7 +1175,7 @@ type UseEventListenerWithAnyExplicitTarget = UseEventListenerWithExplicitTarget<
 >;
 ```
 
-Defined in: [hooks/useEventListener.ts:57](https://github.com/aweebit/react-essentials/blob/v0.12.2/src/hooks/useEventListener.ts#L57)
+Defined in: [hooks/useEventListener.ts:57](https://github.com/aweebit/react-essentials/blob/v0.12.3/src/hooks/useEventListener.ts#L57)
 
 ### See
 
@@ -1171,7 +1196,7 @@ type UseEventListenerWithImplicitWindowTargetArgs<K> =
     : never;
 ```
 
-Defined in: [hooks/useEventListener.ts:65](https://github.com/aweebit/react-essentials/blob/v0.12.2/src/hooks/useEventListener.ts#L65)
+Defined in: [hooks/useEventListener.ts:65](https://github.com/aweebit/react-essentials/blob/v0.12.3/src/hooks/useEventListener.ts#L65)
 
 ### Type Parameters
 
@@ -1217,7 +1242,7 @@ type UseEventListenerWithExplicitTargetArgs<EventMap, T, K> = [
 ];
 ```
 
-Defined in: [hooks/useEventListener.ts:79](https://github.com/aweebit/react-essentials/blob/v0.12.2/src/hooks/useEventListener.ts#L79)
+Defined in: [hooks/useEventListener.ts:79](https://github.com/aweebit/react-essentials/blob/v0.12.3/src/hooks/useEventListener.ts#L79)
 
 ### Type Parameters
 
@@ -1267,7 +1292,7 @@ type ContextualizePipe<Children> = {
 };
 ```
 
-Defined in: [misc/contextualize.tsx:12](https://github.com/aweebit/react-essentials/blob/v0.12.2/src/misc/contextualize.tsx#L12)
+Defined in: [misc/contextualize.tsx:12](https://github.com/aweebit/react-essentials/blob/v0.12.3/src/misc/contextualize.tsx#L12)
 
 The return type of [`contextualize`](#contextualize)
 
@@ -1343,7 +1368,7 @@ type ContextualizeWith = <T>(
 ) => ContextualizePipe<ReactElement>;
 ```
 
-Defined in: [misc/contextualize.tsx:22](https://github.com/aweebit/react-essentials/blob/v0.12.2/src/misc/contextualize.tsx#L22)
+Defined in: [misc/contextualize.tsx:22](https://github.com/aweebit/react-essentials/blob/v0.12.3/src/misc/contextualize.tsx#L22)
 
 ### Type Parameters
 
@@ -1412,6 +1437,398 @@ Defined in: [misc/contextualize.tsx:22](https://github.com/aweebit/react-essenti
 
 ---
 
+## CreateRequiredContext
+
+```ts
+type CreateRequiredContext = CreateRequiredContextWithStandardProvider &
+  CreateRequiredContextWithCustomProvider;
+```
+
+Defined in: [misc/createRequiredContext.tsx:24](https://github.com/aweebit/react-essentials/blob/v0.12.3/src/misc/createRequiredContext.tsx#L24)
+
+The type of [`createRequiredContext`](#createrequiredcontext)
+
+### See
+
+[`createRequiredContext`](#createrequiredcontext),
+[`CreateRequiredContextWithStandardProvider`](#createrequiredcontextwithstandardprovider),
+[`CreateRequiredContextWithCustomProvider`](#createrequiredcontextwithcustomprovider)
+
+---
+
+## CreateRequiredContextResultHookPart
+
+```ts
+type CreateRequiredContextResultHookPart<Name, T> = {
+  [K in `use${Capitalize<Name>}`]: () => T;
+};
+```
+
+Defined in: [misc/createRequiredContext.tsx:31](https://github.com/aweebit/react-essentials/blob/v0.12.3/src/misc/createRequiredContext.tsx#L31)
+
+### Type Parameters
+
+<table>
+<thead>
+<tr>
+<th>Type Parameter</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+
+`Name` _extends_ `string`
+
+</td>
+</tr>
+<tr>
+<td>
+
+`T`
+
+</td>
+</tr>
+</tbody>
+</table>
+
+### See
+
+[`createRequiredContext`](#createrequiredcontext)
+
+---
+
+## CreateRequiredContextWithStandardProvider
+
+```ts
+type CreateRequiredContextWithStandardProvider = <T>() => <Name>(
+  name,
+) => CreateRequiredContextWithStandardProviderResult<Name, T>;
+```
+
+Defined in: [misc/createRequiredContext.tsx:40](https://github.com/aweebit/react-essentials/blob/v0.12.3/src/misc/createRequiredContext.tsx#L40)
+
+### Type Parameters
+
+<table>
+<thead>
+<tr>
+<th>Type Parameter</th>
+<th>Default type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+
+`T`
+
+</td>
+<td>
+
+`never`
+
+</td>
+</tr>
+</tbody>
+</table>
+
+### Returns
+
+\<`Name`\>(`name`) => [`CreateRequiredContextWithStandardProviderResult`](#createrequiredcontextwithstandardproviderresult)\<`Name`, `T`\>
+
+### See
+
+[`createRequiredContext`](#createrequiredcontext),
+[`CreateRequiredContextWithStandardProviderResult`](#createrequiredcontextwithstandardproviderresult)
+
+---
+
+## CreateRequiredContextWithStandardProviderResult
+
+```ts
+type CreateRequiredContextWithStandardProviderResult<Name, T> = {
+  [K in `${Capitalize<Name>}Provider`]: Provider<T>;
+} & CreateRequiredContextResultHookPart<Name, T>;
+```
+
+Defined in: [misc/createRequiredContext.tsx:51](https://github.com/aweebit/react-essentials/blob/v0.12.3/src/misc/createRequiredContext.tsx#L51)
+
+### Type Parameters
+
+<table>
+<thead>
+<tr>
+<th>Type Parameter</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+
+`Name` _extends_ `string`
+
+</td>
+</tr>
+<tr>
+<td>
+
+`T`
+
+</td>
+</tr>
+</tbody>
+</table>
+
+### See
+
+[`createRequiredContext`](#createrequiredcontext),
+[`CreateRequiredContextResultHookPart`](#createrequiredcontextresulthookpart)
+
+---
+
+## CreateRequiredContextWithCustomProvider
+
+```ts
+type CreateRequiredContextWithCustomProvider = <Name, T, Props>(
+  ...args
+) => CreateRequiredContextWithCustomProviderResult<Name, T, Props>;
+```
+
+Defined in: [misc/createRequiredContext.tsx:64](https://github.com/aweebit/react-essentials/blob/v0.12.3/src/misc/createRequiredContext.tsx#L64)
+
+### Type Parameters
+
+<table>
+<thead>
+<tr>
+<th>Type Parameter</th>
+<th>Default type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+
+`Name` _extends_ `string`
+
+</td>
+<td>
+
+&hyphen;
+
+</td>
+</tr>
+<tr>
+<td>
+
+`T`
+
+</td>
+<td>
+
+&hyphen;
+
+</td>
+</tr>
+<tr>
+<td>
+
+`Props` _extends_ `object`
+
+</td>
+<td>
+
+\{
+\}
+
+</td>
+</tr>
+</tbody>
+</table>
+
+### Parameters
+
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+
+...`args`
+
+</td>
+<td>
+
+[`CreateRequiredContextWithCustomProviderArgs`](#createrequiredcontextwithcustomproviderargs)\<`Name`, `T`, `Props`\>
+
+</td>
+</tr>
+</tbody>
+</table>
+
+### Returns
+
+[`CreateRequiredContextWithCustomProviderResult`](#createrequiredcontextwithcustomproviderresult)\<`Name`, `T`, `Props`\>
+
+### See
+
+[`createRequiredContext`](#createrequiredcontext),
+[`CreateRequiredContextWithCustomProviderArgs`](#createrequiredcontextwithcustomproviderargs),
+[`CreateRequiredContextWithCustomProviderResult`](#createrequiredcontextwithcustomproviderresult)
+
+---
+
+## CreateRequiredContextWithCustomProviderArgs
+
+```ts
+type CreateRequiredContextWithCustomProviderArgs<Name, T, Props> = [
+  string extends Name ? never : Name,
+  (props) => T,
+];
+```
+
+Defined in: [misc/createRequiredContext.tsx:77](https://github.com/aweebit/react-essentials/blob/v0.12.3/src/misc/createRequiredContext.tsx#L77)
+
+### Type Parameters
+
+<table>
+<thead>
+<tr>
+<th>Type Parameter</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+
+`Name` _extends_ `string`
+
+</td>
+</tr>
+<tr>
+<td>
+
+`T`
+
+</td>
+</tr>
+<tr>
+<td>
+
+`Props` _extends_ `object`
+
+</td>
+</tr>
+</tbody>
+</table>
+
+### See
+
+[`createRequiredContext`](#createrequiredcontext)
+
+---
+
+## CreateRequiredContextWithCustomProviderResult
+
+```ts
+type CreateRequiredContextWithCustomProviderResult<Name, T, Props> =
+  CreateRequiredContextWithCustomProviderResultProviderPart<Name, Props> &
+    CreateRequiredContextResultHookPart<Name, T>;
+```
+
+Defined in: [misc/createRequiredContext.tsx:92](https://github.com/aweebit/react-essentials/blob/v0.12.3/src/misc/createRequiredContext.tsx#L92)
+
+### Type Parameters
+
+<table>
+<thead>
+<tr>
+<th>Type Parameter</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+
+`Name` _extends_ `string`
+
+</td>
+</tr>
+<tr>
+<td>
+
+`T`
+
+</td>
+</tr>
+<tr>
+<td>
+
+`Props` _extends_ `object`
+
+</td>
+</tr>
+</tbody>
+</table>
+
+### See
+
+[`createRequiredContext`](#createrequiredcontext),
+[`CreateRequiredContextWithCustomProviderResultProviderPart`](#createrequiredcontextwithcustomproviderresultproviderpart),
+[`CreateRequiredContextResultHookPart`](#createrequiredcontextresulthookpart)
+
+---
+
+## CreateRequiredContextWithCustomProviderResultProviderPart
+
+```ts
+type CreateRequiredContextWithCustomProviderResultProviderPart<Name, Props> = {
+  [K in `${Capitalize<Name>}Provider`]: FunctionComponent<
+    Props & { children?: ReactNode }
+  >;
+};
+```
+
+Defined in: [misc/createRequiredContext.tsx:103](https://github.com/aweebit/react-essentials/blob/v0.12.3/src/misc/createRequiredContext.tsx#L103)
+
+### Type Parameters
+
+<table>
+<thead>
+<tr>
+<th>Type Parameter</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+
+`Name` _extends_ `string`
+
+</td>
+</tr>
+<tr>
+<td>
+
+`Props` _extends_ `object`
+
+</td>
+</tr>
+</tbody>
+</table>
+
+### See
+
+[`createRequiredContext`](#createrequiredcontext)
+
+---
+
 ## JSXWrapPipe
 
 ```ts
@@ -1421,7 +1838,7 @@ type JSXWrapPipe<Children> = {
 };
 ```
 
-Defined in: [misc/wrapJSX.tsx:18](https://github.com/aweebit/react-essentials/blob/v0.12.2/src/misc/wrapJSX.tsx#L18)
+Defined in: [misc/wrapJSX.tsx:18](https://github.com/aweebit/react-essentials/blob/v0.12.3/src/misc/wrapJSX.tsx#L18)
 
 The return type of [`wrapJSX`](#wrapjsx)
 
@@ -1494,7 +1911,7 @@ The return type of [`wrapJSX`](#wrapjsx)
 type WrapJSXWith<Children> = <C>(...args) => JSXWrapPipe<ReactElement>;
 ```
 
-Defined in: [misc/wrapJSX.tsx:28](https://github.com/aweebit/react-essentials/blob/v0.12.2/src/misc/wrapJSX.tsx#L28)
+Defined in: [misc/wrapJSX.tsx:28](https://github.com/aweebit/react-essentials/blob/v0.12.3/src/misc/wrapJSX.tsx#L28)
 
 ### Type Parameters
 

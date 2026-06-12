@@ -6,17 +6,19 @@ const rootDir = join(import.meta.dirname, '..');
 const headerPath = join(rootDir, 'README-header.md');
 const readmePath = join(rootDir, 'README.md');
 
-const header = await readFile(headerPath, 'utf8');
-const readme = await readFile(readmePath, 'utf8');
+const [header, readme] = await Promise.all([
+  readFile(headerPath, 'utf8'),
+  readFile(readmePath, 'utf8'),
+]);
 
 const newReadme =
   header +
   readme
     .slice(header.length)
     .replaceAll(
-      /\(#useeventlistener((?:-1)?)\)/g,
-      (match, /** @type {string} */ suffix) => {
-        return `(#useeventlistener${suffix ? '' : '-1'})`;
+      /\(#(useeventlistener|createrequiredcontext)((?:-1)?)\)/g,
+      (match, /** @type {string} */ name, /** @type {string} */ suffix) => {
+        return `(#${name}${suffix ? '' : '-1'})`;
       },
     );
 

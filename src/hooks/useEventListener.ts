@@ -148,6 +148,8 @@ type UseEventListenerWithExplicitTargetArgsAny =
  *
  * @see
  * {@linkcode UseEventListener}
+ *
+ * @group Functions
  */
 export const useEventListener: UseEventListener = function useEventListener(
   ...args:

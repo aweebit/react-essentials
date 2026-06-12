@@ -12,7 +12,7 @@ const config = {
   router: 'module',
   hidePageHeader: true,
   hideGroupHeadings: true,
-  groupOrder: ['Variables', 'Functions', '*'],
+  groupOrder: ['Functions', 'Type Aliases'],
   useCodeBlocks: true,
   expandObjects: true,
   sort: ['source-order'],
