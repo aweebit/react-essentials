@@ -29,7 +29,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
-    "@types/node": "^22.19.20",
+    "@types/node": "^22.19.21",
     "@types/react": "^18.3.31",
     "eslint": "^10.4.1",
     "eslint-config-prettier": "^10.1.8",
@@ -37,13 +37,13 @@
     "globals": "^17.6.0",
     "husky": "^9.1.7",
     "lint-staged": "^17.0.7",
-    "prettier": "3.8.3",
+    "prettier": "3.8.4",
     "react": "^18.3.1",
     "rimraf": "^6.1.3",
     "typedoc": "^0.28.19",
     "typedoc-plugin-markdown": "^4.12.0",
     "typescript": "~6.0.3",
-    "typescript-eslint": "^8.60.1"
+    "typescript-eslint": "^8.61.0"
   },
   "license": "MIT"
 }
