@@ -1,3 +1,5 @@
+
+
 # @aweebit/react-essentials
 
 [![NPM Version](https://img.shields.io/npm/v/%40aweebit%2Freact-essentials)](https://www.npmjs.com/package/@aweebit/react-essentials)
@@ -81,8 +83,7 @@ const useIsomorphicLayoutEffect: (effect, deps?) => void;
 
 Defined in: [hooks/useIsomorphicLayoutEffect.ts:14](https://github.com/aweebit/react-essentials/blob/v0.12.3/src/hooks/useIsomorphicLayoutEffect.ts#L14)
 
-Identical to [`useLayoutEffect`](https://react.dev/reference/react/useLayoutEffect), except it does not result in
-warnings when used on the server
+Identical to [`useLayoutEffect`](https://react.dev/reference/react/useLayoutEffect) on the client, but falls back to [`useEffect`](https://react.dev/reference/react/useEffect) on the server to avoid hydration warnings.
 
 ### Parameters
 
