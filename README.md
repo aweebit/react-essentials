@@ -964,6 +964,11 @@ An object with the following properties:
 
 ---
 
+<details>
+<summary>
+<h1>Types</h1>
+</summary>
+
 ## UseEventListener
 
 ```ts
@@ -1984,3 +1989,5 @@ Defined in: [misc/wrapJSX.tsx:28](https://github.com/aweebit/react-essentials/bl
 
 [`wrapJSX`](#wrapjsx),
 [`JSXWrapPipe`](#jsxwrappipe)
+
+</details>

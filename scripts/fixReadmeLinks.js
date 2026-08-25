@@ -11,7 +11,7 @@ const [header, readme] = await Promise.all([
   readFile(readmePath, 'utf8'),
 ]);
 
-const newReadme =
+let newReadme =
   header +
   readme
     .slice(header.length)
@@ -21,5 +21,19 @@ const newReadme =
         return `(#${name}${suffix ? '' : '-1'})`;
       },
     );
+
+console.log('debug');
+
+const delimiter = '---\n\n## ';
+const parts = newReadme.split(delimiter);
+const firstTypeIndex =
+  parts.findLastIndex((part) => part[0] === part[0]?.toLowerCase()) + 1;
+parts[firstTypeIndex] =
+  '---\n\n<details>\n<summary>\n<h1>Types</h1>\n</summary>\n\n## ' +
+  parts[firstTypeIndex];
+parts[parts.length - 1] += '\n</details>\n';
+newReadme =
+  parts.slice(0, firstTypeIndex).join(delimiter) +
+  parts.slice(firstTypeIndex).join(delimiter);
 
 await writeFile(readmePath, newReadme);
